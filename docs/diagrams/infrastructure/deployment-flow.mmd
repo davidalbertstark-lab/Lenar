@@ -1,0 +1,32 @@
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef prod fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef rollback fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+
+    C[Code]
+    PR[Pull Request]
+    CI[CI Checks]
+    BA[Build Artifact]
+    S[Staging]
+    V[Validation]
+    P[Production]
+    ST[Smoke Test]
+    M[Monitoring]
+    
+    RR[Rollback / Recovery Path]
+
+    C --> PR
+    PR --> CI
+    CI --> BA
+    BA --> S
+    S --> V
+    V --> P
+    P --> ST
+    ST --> M
+    
+    P -.->|If Failure| RR
+    RR -.->|Restore| P
+    
+    class C,PR,CI,BA,S,V,ST,M step;
+    class P prod;
+    class RR rollback;

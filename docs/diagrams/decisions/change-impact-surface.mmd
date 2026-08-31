@@ -1,0 +1,37 @@
+flowchart LR
+    classDef center fill:#fee2e2,stroke:#ef4444,stroke-width:3px,color:#991b1b,font-weight:bold
+    classDef node fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    SC((SIGNIFICANT<br/>CHANGE))
+
+    subgraph Impacts
+        direction TB
+        P[Product]
+        U[UX]
+        Pl[Platform]
+        D[Data]
+        S[Security]
+        OS[Offline / Sync]
+        A[Architecture]
+        T[Technology]
+        Te[Testing]
+        An[Analytics]
+        O[Operations]
+        LB[Legal / Business]
+    end
+
+    SC --- P
+    SC --- U
+    SC --- Pl
+    SC --- D
+    SC --- S
+    SC --- OS
+    SC --- A
+    SC --- T
+    SC --- Te
+    SC --- An
+    SC --- O
+    SC --- LB
+
+    class SC center;
+    class P,U,Pl,D,S,OS,A,T,Te,An,O,LB node;

@@ -1,0 +1,50 @@
+flowchart TD
+    classDef root fill:#1e293b,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
+    classDef domain fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    L[LENAR DATA & CONTENT]
+    
+    Reg[Registration / Verification]
+    UserId[User Identity]
+    AcadProf[Academic Profile Claims]
+    Enroll[Enrollment Attachment]
+    
+    Org[Organization]
+    AcadTime[Academic Time]
+    Acad[Academic Context]
+    
+    Comm[Community]
+    Mem[Membership]
+    Gov[Governance]
+    
+    Cont[Content]
+    CS[Campus Services]
+    Notif[Notifications]
+    Files[Files / Media]
+    Search[Search]
+    Sync[Synchronization]
+    Admin[Admin Control Plane / Audit]
+    
+    L --- Reg
+    L --- UserId
+    L --- AcadProf
+    L --- Enroll
+    
+    L --- Org
+    L --- AcadTime
+    L --- Acad
+    
+    L --- Comm
+    L --- Mem
+    L --- Gov
+    
+    L --- Cont
+    L --- CS
+    L --- Notif
+    L --- Files
+    L --- Search
+    L --- Sync
+    L --- Admin
+    
+    class L root;
+    class Reg,UserId,AcadProf,Enroll,Org,AcadTime,Acad,Comm,Mem,Gov,Cont,CS,Notif,Files,Search,Sync,Admin domain;

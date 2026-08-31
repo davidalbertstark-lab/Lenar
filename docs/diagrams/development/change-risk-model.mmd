@@ -1,0 +1,29 @@
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef factor fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef risk fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef outcome fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+
+    C[Change]
+    
+    subgraph Vectors [Risk Vectors]
+        direction LR
+        S[Scope]
+        SI[Security Impact]
+        DI[Data Impact]
+        Comp[Compatibility]
+        MC[Migration Complexity]
+        Rev[Reversibility]
+    end
+
+    R[Risk]
+    RVR[Required Validation / Review]
+
+    C --> Vectors
+    Vectors --> R
+    R --> RVR
+
+    class C step;
+    class S,SI,DI,Comp,MC,Rev factor;
+    class R risk;
+    class RVR outcome;

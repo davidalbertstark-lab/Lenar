@@ -1,0 +1,19 @@
+flowchart TD
+    classDef layer fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-weight:bold
+
+    U[Unit]
+    I[Integration]
+    API[API / Contract]
+    CW[Component / Widget]
+    E2E[E2E]
+    PS[Platform / System]
+    SPR[Security / Performance / Resilience]
+    
+    U --> I
+    I --> API
+    API --> CW
+    CW --> E2E
+    E2E --> PS
+    PS --> SPR
+    
+    class U,I,API,CW,E2E,PS,SPR layer;

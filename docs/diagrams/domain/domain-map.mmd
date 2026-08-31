@@ -1,0 +1,60 @@
+flowchart TD
+    classDef domain fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#1e293b,font-weight:bold
+
+    Reg[Registration]
+    UserId[User Identity]
+    AcadProf[Academic Profile]
+    AcadId[Academic Identity]
+    
+    Org[Organization]
+    AcadTime[Academic Time]
+    
+    Enroll[Enrollment]
+    Acad[Academic Context]
+    Comm[Community]
+    Mem[Membership]
+    Gov[Governance]
+    
+    Content[Content]
+    Campus[Campus Services]
+    Opp[Opportunities]
+    Notif[Notifications]
+    Search[Search]
+    Admin[Admin Control Plane]
+    Sync[Synchronization]
+    
+    Reg --- UserId
+    UserId --- AcadProf
+    AcadProf --- AcadId
+    AcadId --- Enroll
+    
+    Enroll --- Acad
+    AcadTime --- Acad
+    Org --- Acad
+    
+    Acad --- Comm
+    Comm --- Mem
+    
+    Gov --- Comm
+    
+    Org --- Content
+    Org --- Campus
+    Org --- Opp
+    
+    Content --- Notif
+    Campus --- Notif
+    Opp --- Notif
+    
+    Search -.- Content
+    Search -.- Campus
+    Search -.- Opp
+    
+    Admin -.- Org
+    Admin -.- AcadTime
+    Admin -.- Gov
+    
+    Sync -.- Content
+    Sync -.- Campus
+    Sync -.- Notif
+    
+    class Reg,UserId,AcadProf,AcadId,Org,AcadTime,Enroll,Acad,Comm,Mem,Gov,Content,Campus,Opp,Notif,Search,Admin,Sync domain;

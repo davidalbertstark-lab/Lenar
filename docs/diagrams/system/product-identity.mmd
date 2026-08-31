@@ -1,0 +1,22 @@
+flowchart TD
+    classDef core fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+    classDef quality fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
+    
+    L((LENAR))
+    
+    U[Useful]
+    T[Trustworthy]
+    S[Simple]
+    F[Fast]
+    R[Resilient]
+    Re[Respectful]
+    
+    L --- U
+    L --- T
+    L --- S
+    L --- F
+    L --- R
+    L --- Re
+    
+    class L core;
+    class U,T,S,F,R,Re quality;

@@ -1,0 +1,15 @@
+flowchart TD
+    classDef actor fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
+    classDef platform fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+
+    S((Students))
+    U((Institutional Actors))
+    
+    L[Lenar Platform]
+    
+    U -- Provides Info & Services --> L
+    L -- Delivers Coherent Experience --> S
+    S -- Engages & Reports --> L
+    
+    class S,U actor;
+    class L platform;

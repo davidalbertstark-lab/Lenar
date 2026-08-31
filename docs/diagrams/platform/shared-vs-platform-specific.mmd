@@ -1,0 +1,29 @@
+flowchart TD
+    classDef layer fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef item fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+
+    subgraph Shared [SHARED LAYER]
+        direction LR
+        S1[Semantics]
+        S2[Terminology]
+        S3[Identity]
+        S4[Permissions]
+        S5[Data Meaning]
+        S6[Core Workflows]
+    end
+
+    subgraph PlatformSpecific [PLATFORM-SPECIFIC LAYER]
+        direction LR
+        P1[Navigation]
+        P2[UI Layout]
+        P3[System APIs]
+        P4[Permissions Mechanics]
+        P5[Lifecycle]
+        P6[Distribution]
+    end
+    
+    Shared --> PlatformSpecific
+    
+    style Shared fill:#f0fdf4,stroke:#16a34a,stroke-width:2px
+    style PlatformSpecific fill:#fffbeb,stroke:#d97706,stroke-width:2px
+    class S1,S2,S3,S4,S5,S6,P1,P2,P3,P4,P5,P6 item;

@@ -1,0 +1,35 @@
+flowchart TD
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef route fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef domain fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
+
+    subgraph University Context Model
+        Univ[University]
+        
+        Univ --> AuthOrg[Authoritative Organization]
+        AuthOrg --> Fac[Faculty]
+        AuthOrg --> Dept[Department]
+        AuthOrg --> Lvl[Level]
+        
+        Univ --> AuthTime[Authoritative Academic Time]
+        AuthTime --> AcadSess[Academic Session]
+        AuthTime --> Sem[Semester]
+    end
+
+    subgraph User Attachment
+        Appr[Approved Academic Attachment] -->|Establishes| Enr[Enrollment]
+        
+        Enr -->|Establishes| CAC[Current Academic Context]
+        
+        CAC -.->|References| Univ
+        CAC -.->|References| AuthOrg
+        CAC -.->|References| Lvl
+        CAC -.->|References| AcadSess
+        CAC -.->|References| Sem
+    end
+
+    class Univ,AuthOrg,AuthTime domain;
+    class Appr process;
+    class Enr state;
+    class CAC route;

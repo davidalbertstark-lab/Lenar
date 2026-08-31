@@ -1,0 +1,21 @@
+flowchart TD
+    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef note fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic,stroke-dasharray: 4 4
+
+    D[Draft]
+    R[Review]
+    P[Published]
+    A[Active / Updated]
+    E[Expired / Archived]
+    
+    D --> R
+    D --> P
+    R --> P
+    P --> A
+    A --> E
+    P --> E
+    
+    N[Note: Content types may use different subsets of these states.<br/>Not a universal state machine.]
+    
+    class D,R,P,A,E state;
+    class N note;

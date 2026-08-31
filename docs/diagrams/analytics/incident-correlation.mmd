@@ -1,0 +1,29 @@
+flowchart TD
+    classDef input fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155
+    classDef action fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef understanding fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+
+    subgraph Signals
+        D[Deployment]
+        L[Logs]
+        M[Metrics]
+        T[Traces]
+        E[Errors]
+        PI[Product Impact]
+    end
+
+    IU[Incident Understanding]
+    AR[Action / Recovery]
+
+    D --> IU
+    L --> IU
+    M --> IU
+    T --> IU
+    E --> IU
+    PI --> IU
+
+    IU --> AR
+
+    class D,L,M,T,E,PI input;
+    class IU understanding;
+    class AR action;

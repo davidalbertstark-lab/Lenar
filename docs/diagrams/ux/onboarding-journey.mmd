@@ -1,0 +1,35 @@
+flowchart TD
+    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef authority fill:#e2e8f0,stroke:#64748b,stroke-width:1px,color:#334155,font-style:italic
+    classDef endstate fill:#10b981,color:#fff,stroke:#047857,stroke-width:2px,font-weight:bold
+
+    P[PERSON] --> Reg[Registration]
+    Reg --> EV[Email Verification]
+    EV --> PC[Academic Profile Completion]
+    PC --> PS[Profile Submission]
+    
+    PS --> PR[Pending Review]
+    
+    PR --> Rev{Review Decision}
+    
+    AuthAdmin[Admin <br/> university-level authority] -.-> Rev
+    AuthLeader[Leader <br/> Base Community context] -.-> Rev
+    
+    Rev -->|Rejected| Rj[Rejected]
+    Rj --> PC
+    
+    Rev -->|Approved| App[Approved]
+    
+    App --> En[Enrollment Established]
+    En --> AC[Academic Context]
+    AC --> BC[Base Community]
+    BC --> Mem[Membership]
+    Mem --> AA[Active Access]
+
+    class P,Reg,EV,PC,PS process;
+    class PR,Rj,App state;
+    class Rev decision;
+    class AuthAdmin,AuthLeader authority;
+    class En,AC,BC,Mem,AA endstate;

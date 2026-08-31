@@ -1,0 +1,31 @@
+flowchart TD
+    classDef core fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef required fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef secondary fill:#fee2e2,stroke:#ef4444,stroke-width:1px,color:#991b1b,stroke-dasharray: 4 4
+    
+    CPS[Core Product State]
+    
+    DB[(Database)]
+    AuthN[Authentication]
+    OS[Object Storage]
+    
+    Notif[Notifications]
+    An[Analytics]
+    Search[Search]
+    
+    CPS --> DB
+    CPS --> AuthN
+    CPS --> OS
+    
+    CPS -.-> Notif
+    CPS -.-> An
+    CPS -.-> Search
+    
+    class CPS core;
+    class DB,AuthN,OS required;
+    class Notif,An,Search secondary;
+    
+    %% Note
+    N["Solid = Critical Dependency<br/>Dashed = Secondary/Optional Boundary<br/>(Failures here must not corrupt core state)"]
+    style N fill:none,stroke:none,font-style:italic,color:#334155
+    N ~~~ CPS

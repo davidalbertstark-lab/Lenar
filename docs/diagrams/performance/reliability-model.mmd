@@ -1,0 +1,20 @@
+flowchart TD
+    classDef root fill:#1e293b,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
+    classDef property fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    RS[RELIABLE SYSTEM]
+    
+    C[Correct]
+    A[Available]
+    D[Durable]
+    R[Recoverable]
+    O[Observable]
+    
+    RS --- C
+    RS --- A
+    RS --- D
+    RS --- R
+    RS --- O
+    
+    class RS root;
+    class C,A,D,R,O property;

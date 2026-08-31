@@ -1,0 +1,20 @@
+flowchart BT
+    classDef e2e fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef integ fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef unit fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef note fill:none,stroke:none,font-style:italic,color:#334155
+
+    subgraph Pyramid [Testing Volume Distribution]
+        direction BT
+        UC["Unit / Component<br/>(Many, Fast, Focused)"]
+        Int["Integration<br/>(Fewer, Broader)"]
+        E["E2E<br/>(Few, Expensive, Realistic)"]
+        
+        UC --> Int
+        Int --> E
+    end
+
+    class E e2e;
+    class Int integ;
+    class UC unit;
+    style Pyramid fill:none,stroke:none

@@ -1,0 +1,20 @@
+flowchart TD
+    classDef source fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px
+    classDef lenar fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+    classDef outcome fill:#16a34a,color:#fff,stroke:#166534,stroke-width:2px,font-weight:bold,font-size:14px
+
+    W[WhatsApp]
+    N[Notices]
+    D[Department groups]
+    S[Social media]
+    P[Portals]
+    M[Word of mouth]
+    Doc[Documents]
+
+    W & N & D & S & P & M & Doc --> L[LENAR]
+    
+    L --> E[One coherent student experience]
+    
+    class W,N,D,S,P,M,Doc source;
+    class L lenar;
+    class E outcome;

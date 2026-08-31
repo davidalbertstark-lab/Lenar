@@ -1,0 +1,24 @@
+flowchart TD
+    classDef lc fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef no_cascade fill:#fef2f2,stroke:#f87171,stroke-width:2px,color:#b91c1c,stroke-dasharray: 5 5
+
+    Acc[Account Lifecycle]:::lc
+    Auth[Authentication/Session]:::lc
+    Onb[Onboarding]:::lc
+    Time[Academic Time]:::lc
+    Enr[Enrollment]:::lc
+    Comm[Community/Membership]:::lc
+    Gov[Governance]:::lc
+    
+    Auth -.->|Session Expiration| X1[NO Enrollment / Onboarding Reset]:::no_cascade
+    X1 -.- Enr
+    X1 -.- Onb
+    
+    Time -.->|Academic Progression| X2[NO Governance Auto-Revocation]:::no_cascade
+    X2 -.- Gov
+    
+    Gov -.->|Leader Revocation| X3[NO Subordinate Auto-Revocation]:::no_cascade
+    
+    Acc -.->|Account Suspension| X4[NO Enrollment / Gov-History Deletion]:::no_cascade
+    X4 -.- Enr
+    X4 -.- Gov

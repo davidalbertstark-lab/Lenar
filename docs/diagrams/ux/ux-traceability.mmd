@@ -1,0 +1,23 @@
+flowchart TD
+    classDef origin fill:#f1f5f9,stroke:#475569,stroke-width:2px,font-weight:bold,color:#0f172a
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef target fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,font-weight:bold,color:#1e40af
+
+    UN[User Need]
+    R[Requirement]
+    J[Journey]
+    F[Flow]
+    S[Screen]
+    I[Interaction]
+    FB[Feedback]
+    
+    UN --> R
+    R --> J
+    J --> F
+    F --> S
+    S --> I
+    I --> FB
+    
+    class UN origin;
+    class R,J,F,S,I step;
+    class FB target;

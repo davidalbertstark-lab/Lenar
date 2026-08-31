@@ -1,0 +1,21 @@
+flowchart TD
+    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef decision fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+
+    D[Demand]
+    MB[Measured Bottleneck]
+    CSL[Current Solution Limit]
+    CS[Candidate Solution]
+    CC[Cost / Complexity]
+    EB[Expected Benefit]
+    Dec[Decision]
+    
+    D --> MB
+    MB --> CSL
+    CSL --> CS
+    CS --> CC
+    CC --> EB
+    EB --> Dec
+    
+    class D,MB,CSL,CS,CC,EB state;
+    class Dec decision;

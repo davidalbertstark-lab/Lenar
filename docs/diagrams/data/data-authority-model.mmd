@@ -1,0 +1,22 @@
+flowchart TD
+    classDef auth fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef secondary fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef local fill:#e2e8f0,stroke:#475569,stroke-width:1px,color:#334155,font-style:italic
+
+    Auth[AUTHORITATIVE SERVER STATE]
+    
+    CC[CLIENT CACHE]
+    SI[SEARCH INDEX]
+    AT[ANALYTICS / TELEMETRY]
+    
+    LR[LOCAL REPRESENTATION]
+    
+    Auth --> CC
+    Auth --> SI
+    Auth --> AT
+    
+    CC --> LR
+    
+    class Auth auth;
+    class CC,SI,AT secondary;
+    class LR local;

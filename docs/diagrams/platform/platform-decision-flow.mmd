@@ -1,0 +1,23 @@
+flowchart TD
+    classDef origin fill:#f1f5f9,stroke:#475569,stroke-width:2px,font-weight:bold,color:#0f172a
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef decision fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+
+    UN[User Need]
+    R[Requirement]
+    PC[Platform Capability]
+    SP[Security / Privacy]
+    P[Performance]
+    MC[Maintenance Cost]
+    PD[Platform Decision]
+    
+    UN --> R
+    R --> PC
+    PC --> SP
+    SP --> P
+    P --> MC
+    MC --> PD
+    
+    class UN origin;
+    class R,PC,SP,P,MC step;
+    class PD decision;

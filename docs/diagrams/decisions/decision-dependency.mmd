@@ -1,0 +1,37 @@
+flowchart TD
+    classDef main flow fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef cross fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,font-weight:bold
+
+    PR[Product Requirements]
+    Arch[Architecture]
+    Tech[Technology]
+    Imp[Implementation]
+    Test[Testing]
+    Ops[Operations]
+
+    PR --> Arch
+    Arch --> Tech
+    Tech --> Imp
+    Imp --> Test
+    Test --> Ops
+
+    Sec[Security]
+    Sec <--> Arch
+    Arch <--> Tech
+
+    OS[Offline/Sync]
+    Data[Data]
+    Mob[Mobile]
+    OS <--> Data
+    Data <--> Arch
+    Arch <--> Mob
+
+    LP[Legal/Privacy]
+    An[Analytics]
+    Infra[Infrastructure]
+    LP <--> Data
+    Data <--> An
+    An <--> Infra
+
+    class PR,Arch,Tech,Imp,Test,Ops main;
+    class Sec,OS,Data,Mob,LP,An,Infra cross;

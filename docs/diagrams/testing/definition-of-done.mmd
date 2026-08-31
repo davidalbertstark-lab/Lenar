@@ -1,0 +1,30 @@
+flowchart LR
+    classDef attr fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef ready fill:#dcfce3,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold
+
+    R[Requirement]
+    UX[UX]
+    I[Implementation]
+    T[Tests]
+    S[Security]
+    OS[Offline / Sync]
+    A[Accessibility]
+    P[Performance]
+    O[Observability]
+    D[Documentation]
+    
+    RDY((READY))
+    
+    R --> RDY
+    UX --> RDY
+    I --> RDY
+    T --> RDY
+    S --> RDY
+    OS --> RDY
+    A --> RDY
+    P --> RDY
+    O --> RDY
+    D --> RDY
+    
+    class R,UX,I,T,S,OS,A,P,O,D attr;
+    class RDY ready;
