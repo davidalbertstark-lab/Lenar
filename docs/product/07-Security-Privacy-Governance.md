@@ -43,11 +43,11 @@ Trust
 
 The security of Lenar relies on explicit trust boundaries. Clients (mobile, web) are strictly classified as **untrusted**.
 
-![Lenar Trust Boundaries](diagrams/security/trust-boundaries.svg)
+![Lenar Trust Boundaries](../diagrams/security/trust-boundaries.svg)
 
 Every interaction must proceed through a systemic verification path.
 
-![Security Mental Model](diagrams/security/security-mental-model.svg)
+![Security Mental Model](../diagrams/security/security-mental-model.svg)
 
 ---
 
@@ -101,7 +101,7 @@ Holding a role is insufficient for authorization without matching scope and reso
 
 Creator Assignment dictates what a user is authorized to manage, while Membership simply represents participation or belonging. Governance manages Creator Roles, Assignments, Revocation, and Transfer.
 
-![Authorization Model](diagrams/security/authorization-model.svg)
+![Authorization Model](../diagrams/security/authorization-model.svg)
 
 ---
 
@@ -133,7 +133,7 @@ These systemic streams are conceptually separated:
 
 When security incidents or widespread failures occur, Lenar operations follow a structured response lifecycle.
 
-![Incident Response Lifecycle](diagrams/security/incident-response.svg)
+![Incident Response Lifecycle](../diagrams/security/incident-response.svg)
 
 ---
 
@@ -154,11 +154,11 @@ For how these security rules intersect with other system concerns, refer to:
 
 - [03-Product-Requirements.md](03-Product-Requirements.md)
 - [06-Data-Content.md](06-Data-Content.md)
-- [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
-- [09-System-Architecture.md](09-System-Architecture.md)
-- [10-Technology-Stack.md](10-Technology-Stack.md)
-- [12-Testing-Quality.md](12-Testing-Quality.md)
-- [13-Analytics-Observability.md](13-Analytics-Observability.md)
-- [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
+- [../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md)
+- [../architecture/09-System-Architecture.md](../architecture/09-System-Architecture.md)
+- [../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md)
+- [../architecture/12-Testing-Quality.md](../architecture/12-Testing-Quality.md)
+- [../architecture/13-Analytics-Observability.md](../architecture/13-Analytics-Observability.md)
+- [../architecture/14-Infrastructure-Operations.md](../architecture/14-Infrastructure-Operations.md)
 - [15-Legal-Business.md](15-Legal-Business.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

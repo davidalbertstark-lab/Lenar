@@ -38,7 +38,7 @@ This means:
 
 The conceptual module map logically groups related domains within the monolith:
 
-![Module Map](diagrams/architecture/module-map.svg)
+![Module Map](../diagrams/architecture/module-map.svg)
 
 ### 1.1 The Admin Control Plane
 An important architectural responsibility within this monolith is the **Admin Control Plane**. It is responsible for governing authoritative system state, particularly:
@@ -56,7 +56,7 @@ The control plane also participates in determining and establishing the user's e
 
 The broader ecosystem encompasses users, clients, the central Lenar Application, core infrastructure, and necessary external providers.
 
-![System Context](diagrams/architecture/system-context.svg)
+![System Context](../diagrams/architecture/system-context.svg)
 
 ---
 
@@ -64,7 +64,7 @@ The broader ecosystem encompasses users, clients, the central Lenar Application,
 
 To preserve maintainability, Lenar enforces a strict dependency direction across its layers.
 
-![Backend Layer Architecture](diagrams/architecture/backend-layer-architecture.svg)
+![Backend Layer Architecture](../diagrams/architecture/backend-layer-architecture.svg)
 
 Domain logic must not depend directly on FastAPI request objects, Flutter UI states, PostgreSQL drivers, or specific provider SDKs.
 
@@ -72,7 +72,7 @@ Domain logic must not depend directly on FastAPI request objects, Flutter UI sta
 
 The API is the primary boundary between untrusted clients and server-side behavior. It is responsible for authentication, authorization, validation, and invoking application flows, ensuring that not all business logic is carelessly dumped into routes.
 
-![Request Data Flow](diagrams/architecture/request-data-flow.svg)
+![Request Data Flow](../diagrams/architecture/request-data-flow.svg)
 
 ---
 
@@ -94,7 +94,7 @@ A correct mental model of Lenar requires preserving these boundaries:
 
 Architectural resilience requires distinguishing between critical dependencies (which fail the core product) and optional/secondary dependencies (which degrade gracefully). 
 
-![Failure Boundaries](diagrams/architecture/failure-boundaries.svg)
+![Failure Boundaries](../diagrams/architecture/failure-boundaries.svg)
 
 For example, primary authoritative data is a core dependency. Analytics, error monitoring, and notification delivery are secondary to a successful authoritative state change.
 
@@ -137,11 +137,11 @@ The intended scaling path is:
 
 ## Related Documentation
 
-- [01-Lenar-Foundation.md](01-Lenar-Foundation.md)
-- [03-Product-Requirements.md](03-Product-Requirements.md)
+- [../product/01-Lenar-Foundation.md](../product/01-Lenar-Foundation.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
 - [05-Platform.md](05-Platform.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
@@ -149,4 +149,4 @@ The intended scaling path is:
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

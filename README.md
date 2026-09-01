@@ -1,6 +1,6 @@
 # Lenar
 
-**Lenar** is an authoritative academic platform designed to model, manage, and facilitate the complex realities of academic institutional life—handling institutional structures, academic progression, grouping, and governance securely.
+**Lenar** is a platform built for university students to connect, stay informed, and participate in their academic community.
 
 ## Project Status
 

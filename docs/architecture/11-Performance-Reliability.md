@@ -52,7 +52,7 @@ Performance cannot be treated as a single metric. Lenar evaluates performance ac
 ### 2.1 End-to-End Performance Focus
 Optimization must reflect the true user experience, evaluating the complete journey through the stack.
 
-![End-to-End Performance](diagrams/performance/end-to-end-performance.svg)
+![End-to-End Performance](../diagrams/performance/end-to-end-performance.svg)
 
 ---
 
@@ -68,7 +68,7 @@ Reliability is significantly broader than uptime. A system can be reachable but 
 - **Failure Handling:** The system degrades gracefully when components break.
 - **Observability:** Operators can accurately determine system health.
 
-![Reliability Model](diagrams/performance/reliability-model.svg)
+![Reliability Model](../diagrams/performance/reliability-model.svg)
 
 > [!WARNING]
 > AVAILABLE ≠ CORRECT ≠ RESILIENT
@@ -108,12 +108,12 @@ The reliability model dictates that failures in secondary systems must be isolat
 ### 7.1 Optimization
 Optimization must follow a strictly evidence-driven loop.
 
-![Optimization Flow](diagrams/performance/optimization-flow.svg)
+![Optimization Flow](../diagrams/performance/optimization-flow.svg)
 
 ### 7.2 Scaling
 Do not introduce microservices, Kubernetes, message brokers, or specialized search engines merely because they could theoretically improve scale.
 
-![Scaling Flow](diagrams/performance/scaling-flow.svg)
+![Scaling Flow](../diagrams/performance/scaling-flow.svg)
 
 ---
 
@@ -125,11 +125,11 @@ Do not introduce microservices, Kubernetes, message brokers, or specialized sear
 
 ## Related Documentation
 
-- [03-Product-Requirements.md](03-Product-Requirements.md)
-- [04-UX-UI.md](04-UX-UI.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/04-UX-UI.md](../product/04-UX-UI.md)
 - [05-Platform.md](05-Platform.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
@@ -137,4 +137,4 @@ Do not introduce microservices, Kubernetes, message brokers, or specialized sear
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

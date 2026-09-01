@@ -51,7 +51,7 @@ Deletion where appropriate
 
 The Lenar domain requires modeling several conceptual families of data that interact closely to create the student experience.
 
-![Information Model](diagrams/data/information-model.svg)
+![Information Model](../diagrams/data/information-model.svg)
 
 ### 2.1 Core Conceptual Entities
 
@@ -78,7 +78,7 @@ Lenar relies on the following core conceptual entities. *(Note: This is a domain
 
 A critical boundary in Lenar is the distinction between authoritative state and secondary representations. 
 
-![Data Authority Model](diagrams/data/data-authority-model.svg)
+![Data Authority Model](../diagrams/data/data-authority-model.svg)
 
 ### 3.1 Essential Distinctions
 
@@ -115,7 +115,7 @@ Information in Lenar is not static. Content transitions through states of visibi
 
 Content (such as Announcements or Opportunities) experiences a visibility and validation lifecycle.
 
-![Content Lifecycle](diagrams/data/content-lifecycle.svg)
+![Content Lifecycle](../diagrams/data/content-lifecycle.svg)
 
 - **Publication State vs Content Validity:** A draft (publication state) is distinct from an expired notice (content validity).
 - **Current State vs Historical State:** The system must distinguish between what is actively applicable today versus what was applicable previously.
@@ -124,7 +124,7 @@ Content (such as Announcements or Opportunities) experiences a visibility and va
 
 At a systemic level, all records proceed through a generalized operational lifecycle.
 
-![Data Lifecycle](diagrams/data/data-lifecycle.svg)
+![Data Lifecycle](../diagrams/data/data-lifecycle.svg)
 
 ---
 
@@ -170,10 +170,10 @@ For how this data model connects to the rest of the Lenar system, refer to:
 - [02-Problem-Users-Domain.md](02-Problem-Users-Domain.md)
 - [03-Product-Requirements.md](03-Product-Requirements.md)
 - [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
-- [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
-- [09-System-Architecture.md](09-System-Architecture.md)
-- [10-Technology-Stack.md](10-Technology-Stack.md)
-- [11-Performance-Reliability.md](11-Performance-Reliability.md)
-- [13-Analytics-Observability.md](13-Analytics-Observability.md)
-- [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
+- [../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md)
+- [../architecture/09-System-Architecture.md](../architecture/09-System-Architecture.md)
+- [../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md)
+- [../architecture/11-Performance-Reliability.md](../architecture/11-Performance-Reliability.md)
+- [../architecture/13-Analytics-Observability.md](../architecture/13-Analytics-Observability.md)
+- [../architecture/14-Infrastructure-Operations.md](../architecture/14-Infrastructure-Operations.md)
 - [15-Legal-Business.md](15-Legal-Business.md)

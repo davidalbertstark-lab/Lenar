@@ -19,7 +19,7 @@ Lenar uses a deliberately practical technology stack. The goal is not to assembl
 - effective testing;
 - operational simplicity.
 
-These choices are organized around the system architecture defined in [09-System-Architecture.md](09-System-Architecture.md) and the product requirements defined in [03-Product-Requirements.md](03-Product-Requirements.md).
+These choices are organized around the system architecture defined in [09-System-Architecture.md](09-System-Architecture.md) and the product requirements defined in [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md).
 
 ---
 
@@ -50,7 +50,7 @@ Cost
 
 The stack is composed of grouped responsibility layers to ensure cohesive development across environments.
 
-![Technology Stack Overview](diagrams/technology/technology-stack.svg)
+![Technology Stack Overview](../diagrams/technology/technology-stack.svg)
 
 ---
 
@@ -58,7 +58,7 @@ The stack is composed of grouped responsibility layers to ensure cohesive develo
 
 Technologies in Lenar have strict responsibility boundaries. A single tool must not silently become responsible for unrelated concerns. 
 
-![Technology Responsibility Map](diagrams/technology/technology-responsibility.svg)
+![Technology Responsibility Map](../diagrams/technology/technology-responsibility.svg)
 
 ### Current Core Boundaries
 - **React** → Web UI
@@ -85,7 +85,7 @@ Technologies in Lenar have strict responsibility boundaries. A single tool must 
 
 A technology implements product responsibilities; it does not redefine product or domain authority. 
 
-![Technology Boundary Model](diagrams/technology/technology-boundaries.svg)
+![Technology Boundary Model](../diagrams/technology/technology-boundaries.svg)
 
 We explicitly separate related but distinct responsibilities:
 - **AUTHENTICATION ≠ AUTHORIZATION**
@@ -130,7 +130,7 @@ None of these tools are permitted to become a structural dependency for core, au
 
 Technology choices are lifecycle-managed rather than permanent by default.
 
-![Technology Lifecycle](diagrams/technology/technology-lifecycle.svg)
+![Technology Lifecycle](../diagrams/technology/technology-lifecycle.svg)
 
 **The core rule:** If the existing stack can safely and adequately satisfy a requirement, prefer using it over introducing another dependency.
 
@@ -143,10 +143,10 @@ Any new technology addition or replacement must be formally justified by:
 
 For context on how these technologies fulfill product and architectural needs, refer to:
 
-- [03-Product-Requirements.md](03-Product-Requirements.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
 - [05-Platform.md](05-Platform.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
@@ -154,4 +154,4 @@ For context on how these technologies fulfill product and architectural needs, r
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

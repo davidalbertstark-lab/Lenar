@@ -28,7 +28,7 @@ The required sequence of verification is:
 Requirement → Expected Behavior → Test → Implementation → Verification → Evidence
 ```
 
-![Quality Traceability Chain](diagrams/testing/quality-traceability.svg)
+![Quality Traceability Chain](../diagrams/testing/quality-traceability.svg)
 
 > [!WARNING]
 > Do not reverse this flow. Do not write the implementation first and then generate tests merely to match what already exists.
@@ -39,11 +39,11 @@ Requirement → Expected Behavior → Test → Implementation → Verification �
 
 Testing is not solely about unit tests. We rely on a multi-layer verification model where no single layer replaces the responsibilities of the others.
 
-![Testing Layers](diagrams/testing/testing-layers.svg)
+![Testing Layers](../diagrams/testing/testing-layers.svg)
 
 This forms a conceptual distribution pyramid: many fast, focused tests at the base, and fewer, highly realistic, expensive tests at the top.
 
-![Test Pyramid](diagrams/testing/test-pyramid.svg)
+![Test Pyramid](../diagrams/testing/test-pyramid.svg)
 
 ---
 
@@ -126,7 +126,7 @@ The policy is: **Identify → Investigate → Fix / Remove when genuinely invali
 ### 7.2 The Failure Verification Loop
 Fixing a bug is not just patching code; it is strengthening the system.
 
-![Failure Verification Loop](diagrams/testing/failure-loop.svg)
+![Failure Verification Loop](../diagrams/testing/failure-loop.svg)
 
 ### 7.3 Code Coverage
 Code coverage percentage is evidence of testing execution; it is **not** the definition of quality. We do not chase a mandatory arbitrary percentage. The correct question is always: *"What important behavior remains insufficiently verified?"*
@@ -150,7 +150,7 @@ All AI-generated tests must be human-reviewed against:
 
 A feature is considered "Done" and ready for release only when all relevant quality dimensions have been satisfied.
 
-![Definition of Done](diagrams/testing/definition-of-done.svg)
+![Definition of Done](../diagrams/testing/definition-of-done.svg)
 
 *(Note: This is a generalized quality model. The exact weight of each category scales with the risk of the change).*
 
@@ -158,11 +158,11 @@ A feature is considered "Done" and ready for release only when all relevant qual
 
 ## Related Documentation
 
-- [03-Product-Requirements.md](03-Product-Requirements.md)
-- [04-UX-UI.md](04-UX-UI.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/04-UX-UI.md](../product/04-UX-UI.md)
 - [05-Platform.md](05-Platform.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
@@ -170,4 +170,4 @@ A feature is considered "Done" and ready for release only when all relevant qual
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

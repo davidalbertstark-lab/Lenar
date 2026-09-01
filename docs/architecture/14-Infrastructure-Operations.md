@@ -25,7 +25,7 @@ Lenar prefers **managed infrastructure** where it meaningfully reduces operation
 
 Lenar's infrastructure logically separates clients, core data processing, and supporting external services.
 
-![Infrastructure Context](diagrams/infrastructure/infrastructure-context.svg)
+![Infrastructure Context](../diagrams/infrastructure/infrastructure-context.svg)
 
 ---
 
@@ -33,7 +33,7 @@ Lenar's infrastructure logically separates clients, core data processing, and su
 
 Environments are rigorously separated. We do not use production data casually in development.
 
-![Environment Separation](diagrams/infrastructure/environment-separation.svg)
+![Environment Separation](../diagrams/infrastructure/environment-separation.svg)
 
 Each environment isolates its:
 - **Data**
@@ -48,7 +48,7 @@ Each environment isolates its:
 ### 3.1 Deployment Flow
 Changes move through a strict validation path before reaching production.
 
-![Deployment Flow](diagrams/infrastructure/deployment-flow.svg)
+![Deployment Flow](../diagrams/infrastructure/deployment-flow.svg)
 
 ### 3.2 Rollback vs. Recovery
 **Rollback ≠ Recovery.** 
@@ -92,7 +92,7 @@ A running process (liveness) is not necessarily a service that is ready to accep
 ### 5.2 Recovery Model
 Incident response follows a structured path. We explicitly distinguish routine operational recovery from Major Disaster Recovery (which involves catastrophic loss requiring infrastructure restoration or rebuilding).
 
-![Recovery Model](diagrams/infrastructure/recovery-model.svg)
+![Recovery Model](../diagrams/infrastructure/recovery-model.svg)
 
 ### 5.3 Business Continuity
 Operational resilience is supported by the application architecture itself. Offline mobile capabilities, cached information, and graceful degradation reduce the dependency on a single operational path during an incident.
@@ -143,13 +143,13 @@ Infrastructure decisions must weigh the cost implications of:
 
 ## Related Documentation
 
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
-- [15-Legal-Business.md](15-Legal-Business.md)
+- [../product/15-Legal-Business.md](../product/15-Legal-Business.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

@@ -20,7 +20,7 @@ Speed + Quality + Security + Consistency + Traceability + Recoverability
 
 The development lifecycle connects requirements to observed production behavior, creating a continuous feedback loop.
 
-![Development Lifecycle](diagrams/development/development-lifecycle.svg)
+![Development Lifecycle](../diagrams/development/development-lifecycle.svg)
 
 ### 1.1 The Source of Truth
 - **Canonical documentation** defines product and architecture intent.
@@ -34,7 +34,7 @@ If implementation reveals a contradiction or flaw in the architecture, you must 
 
 Not every change requires identical process depth. A minor typo fix does not require the same scrutiny as a core database migration.
 
-![Change Risk Model](diagrams/development/change-risk-model.svg)
+![Change Risk Model](../diagrams/development/change-risk-model.svg)
 
 - **Small Changes:** Typo, small UI fix, isolated bug fix, minor refactor.
 - **Significant Changes:** New capability, domain rule, security change, architecture change, database migration, sync protocol change, or new provider. 
@@ -59,7 +59,7 @@ Code review is not merely about formatting and syntax. A high-quality review mus
 
 Lenar utilizes a structured Continuous Integration and Continuous Deployment pipeline to validate code before it reaches users.
 
-![CI/CD Flow](diagrams/development/ci-cd-flow.svg)
+![CI/CD Flow](../diagrams/development/ci-cd-flow.svg)
 
 *(Note: The exact CI providers and deployment platforms are implemented in code, but they strictly follow this conceptual validation funnel).*
 
@@ -91,7 +91,7 @@ Because of client compatibility, migrations should conceptually follow an **expa
 
 ## 7. Release & Recovery
 
-![Release & Recovery Flow](diagrams/development/release-recovery.svg)
+![Release & Recovery Flow](../diagrams/development/release-recovery.svg)
 
 ### 7.1 Rollback vs. Recovery
 **Rollback ≠ Recovery.**
@@ -134,13 +134,13 @@ Development pipelines are privileged environments. We explicitly protect:
 
 ## Related Documentation
 
-- [01-Lenar-Foundation.md](01-Lenar-Foundation.md)
-- [03-Product-Requirements.md](03-Product-Requirements.md)
+- [../product/01-Lenar-Foundation.md](../product/01-Lenar-Foundation.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
-- [15-Legal-Business.md](15-Legal-Business.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../product/15-Legal-Business.md](../product/15-Legal-Business.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

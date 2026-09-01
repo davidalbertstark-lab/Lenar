@@ -69,7 +69,7 @@ PWA
 → browser-first experience with installable capabilities
 ```
 
-![Shared vs Platform Specific](diagrams/platform/shared-vs-platform-specific.svg)
+![Shared vs Platform Specific](../diagrams/platform/shared-vs-platform-specific.svg)
 
 ---
 
@@ -77,7 +77,7 @@ PWA
 
 Lenar branches into dedicated platforms to best serve the user's immediate context. 
 
-![Platform Map](diagrams/platform/platform-map.svg)
+![Platform Map](../diagrams/platform/platform-map.svg)
 
 ---
 
@@ -95,7 +95,7 @@ It is important to emphasize that framework choices are driven by product requir
 
 The lifecycle of the application varies significantly by platform. For example, mobile app lifecycles (App Store distribution, strict updates) differ mechanically from Browser/PWA lifecycles (continuous deployment, immediate updates).
 
-![Platform Lifecycle Model](diagrams/platform/platform-lifecycle.svg)
+![Platform Lifecycle Model](../diagrams/platform/platform-lifecycle.svg)
 
 ---
 
@@ -103,7 +103,7 @@ The lifecycle of the application varies significantly by platform. For example, 
 
 When introducing new features or capabilities, the decision of how to implement them on a platform is guided by a structured evaluation of product needs against platform reality.
 
-![Platform Decision Flow](diagrams/platform/platform-decision-flow.svg)
+![Platform Decision Flow](../diagrams/platform/platform-decision-flow.svg)
 
 ---
 
@@ -128,15 +128,15 @@ The following rules govern how features should be approached across platforms:
 
 For detailed specifications connected to this platform strategy, refer to the following canonical documents:
 
-- [03-Product-Requirements.md](03-Product-Requirements.md)
-- [04-UX-UI.md](04-UX-UI.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/04-UX-UI.md](../product/04-UX-UI.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
-- [15-Legal-Business.md](15-Legal-Business.md)
+- [../product/15-Legal-Business.md](../product/15-Legal-Business.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

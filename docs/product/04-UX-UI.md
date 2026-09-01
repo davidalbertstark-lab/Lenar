@@ -65,13 +65,13 @@ Simple user experience
 
 The UX is built around a sequential journey of interaction.
 
-![Lenar Experience Model](diagrams/ux/experience-model.svg)
+![Lenar Experience Model](../diagrams/ux/experience-model.svg)
 
 ### 2.1 The Onboarding Journey
 
 The user onboarding journey follows a precise progression of distinct product states that must be accurately reflected in the user experience:
 
-![Onboarding Journey](diagrams/ux/onboarding-journey.svg)
+![Onboarding Journey](../diagrams/ux/onboarding-journey.svg)
 
 1. **Registration:** User provides initial identity information (e.g., email/password).
 2. **Verification:** User verifies their identity (e.g., email confirmation).
@@ -93,7 +93,7 @@ These product onboarding states (Verified, Profile Complete, Submitted, Pending 
 
 The information architecture structures the major user-facing areas of Lenar.
 
-![Information Architecture](diagrams/ux/information-architecture.svg)
+![Information Architecture](../diagrams/ux/information-architecture.svg)
 
 *(Note: Administration is role-dependent and not universally available to all users).*
 
@@ -103,7 +103,7 @@ The information architecture structures the major user-facing areas of Lenar.
 
 The interface must accurately communicate system state at all times. 
 
-![Interface State Model](diagrams/ux/interface-state-model.svg)
+![Interface State Model](../diagrams/ux/interface-state-model.svg)
 
 ### 4.1 Important State Distinctions
 
@@ -155,7 +155,7 @@ Do not require Web, PWA, Android, and iOS to have identical layouts. Do not crea
 
 UX is derived from product needs, not isolated visual design. 
 
-![UX Traceability](diagrams/ux/ux-traceability.svg)
+![UX Traceability](../diagrams/ux/ux-traceability.svg)
 
 ### 7.1 Documentation Boundaries
 
@@ -163,10 +163,10 @@ This document sits within a broader architectural context. The boundaries are st
 
 - **[03 — Product & Requirements](03-Product-Requirements.md):** What users need the product to accomplish.
 - **04 — UX & UI:** How those needs should be experienced.
-- **[05 — Platform](05-Platform.md):** How the experience adapts to platforms.
+- **[05 — Platform](../architecture/05-Platform.md):** How the experience adapts to platforms.
 - **[06 — Data & Content](06-Data-Content.md):** What information is represented.
 - **[07 — Security, Privacy & Governance](07-Security-Privacy-Governance.md):** How access and protection are enforced.
-- **[08 — Offline, Sync & Resilience](08-Offline-Sync-Resilience.md):** How disconnected behavior works.
-- **[09 — System Architecture](09-System-Architecture.md):** How the system implements the experience.
-- **[12 — Testing & Quality](12-Testing-Quality.md):** How the experience is validated.
-- **[13 — Analytics & Observability](13-Analytics-Observability.md):** How useful product behavior and system health are measured.
+- **[08 — Offline, Sync & Resilience](../architecture/08-Offline-Sync-Resilience.md):** How disconnected behavior works.
+- **[09 — System Architecture](../architecture/09-System-Architecture.md):** How the system implements the experience.
+- **[12 — Testing & Quality](../architecture/12-Testing-Quality.md):** How the experience is validated.
+- **[13 — Analytics & Observability](../architecture/13-Analytics-Observability.md):** How useful product behavior and system health are measured.

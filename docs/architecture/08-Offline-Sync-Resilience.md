@@ -50,7 +50,7 @@ supported features adapt
 
 The mobile client maintains a clear separation between its internal local database, its queue of outbound operations, and the synchronization engine responsible for talking to the network.
 
-![Synchronization Architecture](diagrams/offline-sync/synchronization-architecture.svg)
+![Synchronization Architecture](../diagrams/offline-sync/synchronization-architecture.svg)
 
 ---
 
@@ -58,7 +58,7 @@ The mobile client maintains a clear separation between its internal local databa
 
 When a user performs an action offline, it must be safely durably preserved, then correctly synchronized.
 
-![Offline Write & Sync](diagrams/offline-sync/offline-write-sync.svg)
+![Offline Write & Sync](../diagrams/offline-sync/offline-write-sync.svg)
 
 ### 3.1 Critical Conceptual Distinctions
 
@@ -79,7 +79,7 @@ These states must never be collapsed or confused in either the architecture or t
 
 Operations progress through a predictable lifecycle as they transition from local intent to authoritative server state.
 
-![Operation Lifecycle](diagrams/offline-sync/operation-lifecycle.svg)
+![Operation Lifecycle](../diagrams/offline-sync/operation-lifecycle.svg)
 
 ### 4.1 Idempotency
 A single logical user operation must not accidentally become multiple authoritative effects because of:
@@ -101,7 +101,7 @@ The server re-evaluates authorization when the operation reaches the authoritati
 ### 5.2 Conflict Handling
 Lenar does not rely on one universal conflict algorithm. Conflict strategy depends strictly on domain semantics. Potential strategies (e.g., server wins, merge, reject, user resolution) are applied only where justified by the specific domain rule.
 
-![Conflict and Recovery](diagrams/offline-sync/conflict-recovery.svg)
+![Conflict and Recovery](../diagrams/offline-sync/conflict-recovery.svg)
 
 ---
 
@@ -134,7 +134,7 @@ The user interface should clearly distinguish: Offline, Saved locally, Pending, 
 
 The architecture must have a clear path from failure back toward a trusted state.
 
-![Resilience Model](diagrams/offline-sync/resilience-model.svg)
+![Resilience Model](../diagrams/offline-sync/resilience-model.svg)
 
 ### 7.1 Testing the Model
 The resilience model demands robust testing across critical scenarios, including:
@@ -166,14 +166,14 @@ Synchronization health should be measurable. Key metrics include:
 
 For how offline behavior connects to the broader system, refer to:
 
-- [03-Product-Requirements.md](03-Product-Requirements.md)
-- [04-UX-UI.md](04-UX-UI.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/04-UX-UI.md](../product/04-UX-UI.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

@@ -42,7 +42,7 @@ What decision could this information improve?
 
 Lenar cleanly separates the measurement of product behavior from the measurement of application and infrastructure health.
 
-![Lenar Measurement Model](diagrams/analytics/measurement-model.svg)
+![Lenar Measurement Model](../diagrams/analytics/measurement-model.svg)
 
 ---
 
@@ -65,7 +65,7 @@ Analytics may later measure meaningful onboarding outcomes such as: registration
 ### 3.3 Analytics Flow and Failure
 Analytics explicitly do not modify the authoritative state of the product. 
 
-![Analytics Flow](diagrams/analytics/analytics-flow.svg)
+![Analytics Flow](../diagrams/analytics/analytics-flow.svg)
 
 **Analytics failure must never be a dependency for core product correctness.** 
 If PostHog is unavailable, the analytics signal is degraded, but the authoritative user action (e.g., submitting an issue) must still succeed.
@@ -78,7 +78,7 @@ Lenar uses **Sentry** for error monitoring and **OpenTelemetry** for application
 
 Observability focuses on system behavior and diagnostic detection. Similar to analytics, observability failure reduces visibility but must not corrupt or block the authoritative product state.
 
-![Observability Flow](diagrams/analytics/observability-flow.svg)
+![Observability Flow](../diagrams/analytics/observability-flow.svg)
 
 ---
 
@@ -122,7 +122,7 @@ Operational metrics capture system dimensions such as request rate, latency, err
 
 During an incident, traces and correlation identifiers connect these technical signals back to actual user impact.
 
-![Incident Investigation Correlation](diagrams/analytics/incident-correlation.svg)
+![Incident Investigation Correlation](../diagrams/analytics/incident-correlation.svg)
 
 ---
 
@@ -140,7 +140,7 @@ Dashboards are conceptually separated by their audience and purpose. An infrastr
 
 Product use and system health provide parallel paths toward the same goal: **Lenar Improvement.**
 
-![Combined Measurement Model](diagrams/analytics/combined-measurement.svg)
+![Combined Measurement Model](../diagrams/analytics/combined-measurement.svg)
 
 ### 9.1 Experiments & Feature Flags
 When evaluating improvements via experimentation, the process requires a formal hypothesis, defined audience, success metric, explicit duration, safety boundary, and clear rollback conditions. Feature flags must have an owner and a review/expiry discipline to prevent permanent technical debt.
@@ -152,16 +152,16 @@ Analytics instrumentation is code and must be tested. Tests should verify that t
 
 ## Related Documentation
 
-- [03-Product-Requirements.md](03-Product-Requirements.md)
-- [04-UX-UI.md](04-UX-UI.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/04-UX-UI.md](../product/04-UX-UI.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
-- [15-Legal-Business.md](15-Legal-Business.md)
+- [../product/15-Legal-Business.md](../product/15-Legal-Business.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

@@ -55,9 +55,6 @@ It preserves the clear conceptual boundaries:
 - [12-Testing-Quality.md](../../architecture/12-Testing-Quality.md)
 - [17-Decisions-Risks-Evolution.md](../../decisions/17-Decisions-Risks-Evolution.md)
 - [Specification Framework README](../README.md)
-- [Canonical Phase B Model](../../phase-b/canonical-phase-b-model.md)
-- [Pass 2 Domain Decisions](../../phase-b/pass-2-domain-decisions.md)
-- [Final Correction Report](../../phase-b/final-correction-report.md)
 
 ## 4. Dependencies
 

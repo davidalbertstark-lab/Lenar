@@ -22,7 +22,7 @@ The central principle is:
 
 The objective is to avoid preventable problems caused by ignoring real-world constraints. Major product and integration decisions must account for more than just engineering feasibility.
 
-![Legal & Business Decision Model](diagrams/legal-business/legal-business-decision-model.svg)
+![Legal & Business Decision Model](../diagrams/legal-business/legal-business-decision-model.svg)
 
 ---
 
@@ -45,7 +45,7 @@ Where these are required, they require explicit authority and agreement.
 
 Legal and privacy considerations must follow user data through its entire lifecycle.
 
-![Data / Legal Boundary Model](diagrams/legal-business/data-legal-boundary.svg)
+![Data / Legal Boundary Model](../diagrams/legal-business/data-legal-boundary.svg)
 
 Lenar's architecture must support fundamental privacy principles:
 - **Data Minimization:** Only collect what is strictly necessary.
@@ -78,7 +78,7 @@ When deciding whether to build or buy a component, we evaluate: *cost, control, 
 
 For our chosen providers, we must ask strict conceptual questions before full production reliance:
 
-![Provider Dependency Model](diagrams/legal-business/provider-dependency.svg)
+![Provider Dependency Model](../diagrams/legal-business/provider-dependency.svg)
 
 For providers like **Cloudflare R2, FCM, PostHog, Sentry,** and **OpenTelemetry** infrastructure, we must review their provider terms, data processing agreements, retention policies, pricing limits, and exportability.
 
@@ -99,7 +99,7 @@ Mobile distribution relies on third-party gatekeepers. We must anticipate constr
 
 Operational sustainability requires preparing for dependency failures that go beyond server crashes. 
 
-![Business Continuity Model](diagrams/legal-business/business-continuity.svg)
+![Business Continuity Model](../diagrams/legal-business/business-continuity.svg)
 
 We must actively manage the risk of:
 - **Key-Person Dependency:** Loss of important organizational knowledge.
@@ -135,13 +135,13 @@ For example, a legal decision regarding data retention directly dictates databas
 
 - [01-Lenar-Foundation.md](01-Lenar-Foundation.md)
 - [03-Product-Requirements.md](03-Product-Requirements.md)
-- [05-Platform.md](05-Platform.md)
+- [../architecture/05-Platform.md](../architecture/05-Platform.md)
 - [06-Data-Content.md](06-Data-Content.md)
 - [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
-- [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
-- [10-Technology-Stack.md](10-Technology-Stack.md)
-- [11-Performance-Reliability.md](11-Performance-Reliability.md)
-- [13-Analytics-Observability.md](13-Analytics-Observability.md)
-- [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
-- [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md)
+- [../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md)
+- [../architecture/11-Performance-Reliability.md](../architecture/11-Performance-Reliability.md)
+- [../architecture/13-Analytics-Observability.md](../architecture/13-Analytics-Observability.md)
+- [../architecture/14-Infrastructure-Operations.md](../architecture/14-Infrastructure-Operations.md)
+- [../architecture/16-Development-Release.md](../architecture/16-Development-Release.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

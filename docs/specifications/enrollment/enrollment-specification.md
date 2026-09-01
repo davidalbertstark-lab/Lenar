@@ -47,11 +47,6 @@ It explains what Enrollment means as a domain concept, without becoming the spec
 - [12-Testing-Quality.md](../../architecture/12-Testing-Quality.md)
 - [17-Decisions-Risks-Evolution.md](../../decisions/17-Decisions-Risks-Evolution.md)
 - [Specification Framework README](../README.md)
-- [Canonical Phase B Model](../../phase-b/canonical-phase-b-model.md)
-- [Pass 2 Domain Decisions](../../phase-b/pass-2-domain-decisions.md)
-- [Final Correction Report](../../phase-b/final-correction-report.md)
-- [Onboarding Specification Audit](../../phase-b/onboarding-specification-audit.md)
-- [Authentication + Session Integrated Audit](../../phase-b/authentication-session-integrated-audit.md)
 
 ## 4. Dependencies
 

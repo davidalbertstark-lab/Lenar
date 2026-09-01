@@ -76,7 +76,7 @@ Ease of use
 
 Lenar groups its functionality into distinct, focused product areas. Each area serves a clear segment of the student experience while connecting to the same unified platform identity.
 
-![Product Area Map](diagrams/product/product-area-map.svg)
+![Product Area Map](../diagrams/product/product-area-map.svg)
 
 ---
 
@@ -106,7 +106,7 @@ The current V1 scope restricts feature expansion to ensure a stable, dependable 
 
 Capabilities in Lenar do not exist in isolation. Many user-facing features rely on shared foundational models.
 
-![Feature Dependencies](diagrams/product/feature-dependencies.svg)
+![Feature Dependencies](../diagrams/product/feature-dependencies.svg)
 
 ---
 
@@ -116,7 +116,7 @@ Capabilities in Lenar do not exist in isolation. Many user-facing features rely 
 
 Lenar ensures every line of code traces back to a genuine user need. We do not invent features in isolation.
 
-![Requirement Traceability](diagrams/product/requirement-traceability.svg)
+![Requirement Traceability](../diagrams/product/requirement-traceability.svg)
 
 *(Note: Not every feature requires a heavy artifact at every layer, but the logical traceability must remain intact).*
 
@@ -124,7 +124,7 @@ Lenar ensures every line of code traces back to a genuine user need. We do not i
 
 Every feature in Lenar must account for the reality of mobile usage, unpredictable networks, and missing data. Features should progressively adapt their state.
 
-![Generalized Feature State Model](diagrams/product/feature-state-model.svg)
+![Generalized Feature State Model](../diagrams/product/feature-state-model.svg)
 
 ---
 
@@ -160,14 +160,14 @@ For how these product requirements translate into specific domain models, design
 
 - [02-Problem-Users-Domain.md](02-Problem-Users-Domain.md)
 - [04-UX-UI.md](04-UX-UI.md)
-- [05-Platform.md](05-Platform.md)
+- [../architecture/05-Platform.md](../architecture/05-Platform.md)
 - [06-Data-Content.md](06-Data-Content.md)
 - [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
-- [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
-- [09-System-Architecture.md](09-System-Architecture.md)
-- [10-Technology-Stack.md](10-Technology-Stack.md)
-- [11-Performance-Reliability.md](11-Performance-Reliability.md)
-- [12-Testing-Quality.md](12-Testing-Quality.md)
-- [13-Analytics-Observability.md](13-Analytics-Observability.md)
-- [16-Development-Release.md](16-Development-Release.md)
-- [17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)
+- [../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md)
+- [../architecture/09-System-Architecture.md](../architecture/09-System-Architecture.md)
+- [../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md)
+- [../architecture/11-Performance-Reliability.md](../architecture/11-Performance-Reliability.md)
+- [../architecture/12-Testing-Quality.md](../architecture/12-Testing-Quality.md)
+- [../architecture/13-Analytics-Observability.md](../architecture/13-Analytics-Observability.md)
+- [../architecture/16-Development-Release.md](../architecture/16-Development-Release.md)
+- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

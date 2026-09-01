@@ -46,7 +46,7 @@ ADRs should be created for choices that materially affect:
 
 **Do NOT create ADRs for every tiny coding decision.** ADRs are conceptually stored under `docs/adr/`. 
 
-![Decision Lifecycle](diagrams/decisions/decision-lifecycle.svg)
+![Decision Lifecycle](../diagrams/decisions/decision-lifecycle.svg)
 
 ---
 
@@ -108,7 +108,7 @@ Current State → Observed Problem → Evidence → Smallest Effective Change �
 **Risk ≠ Issue.** An issue is a problem occurring now; a risk is a future possibility.
 `Risk = Probability × Impact`
 
-![Risk Lifecycle](diagrams/decisions/risk-lifecycle.svg)
+![Risk Lifecycle](../diagrams/decisions/risk-lifecycle.svg)
 
 ### 6.2 Technical Debt
 We explicitly distinguish between **intentional debt** (taken deliberately to meet a deadline with a known cost) and **unintentional debt** (accrued through poor quality or misunderstanding).
@@ -121,11 +121,11 @@ All recorded technical debt should have a reason, documented impact, risk, assig
 
 Major decisions rarely exist in isolation; they influence the entire system topology.
 
-![Decision Dependency Graph](diagrams/decisions/decision-dependency.svg)
+![Decision Dependency Graph](../diagrams/decisions/decision-dependency.svg)
 
 Consequently, a significant architectural or technological change has a massive impact surface that must be explicitly reviewed across disciplines.
 
-![Change Impact Surface](diagrams/decisions/change-impact-surface.svg)
+![Change Impact Surface](../diagrams/decisions/change-impact-surface.svg)
 
 ---
 
@@ -161,17 +161,17 @@ This divergence is treated as a defect requiring attention, not as acceptable co
 
 ## Related Documentation
 
-- [01-Lenar-Foundation.md](01-Lenar-Foundation.md)
-- [03-Product-Requirements.md](03-Product-Requirements.md)
-- [05-Platform.md](05-Platform.md)
-- [06-Data-Content.md](06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](07-Security-Privacy-Governance.md)
-- [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
-- [09-System-Architecture.md](09-System-Architecture.md)
-- [10-Technology-Stack.md](10-Technology-Stack.md)
-- [11-Performance-Reliability.md](11-Performance-Reliability.md)
-- [12-Testing-Quality.md](12-Testing-Quality.md)
-- [13-Analytics-Observability.md](13-Analytics-Observability.md)
-- [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
-- [15-Legal-Business.md](15-Legal-Business.md)
-- [16-Development-Release.md](16-Development-Release.md)
+- [../product/01-Lenar-Foundation.md](../product/01-Lenar-Foundation.md)
+- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../architecture/05-Platform.md](../architecture/05-Platform.md)
+- [../product/06-Data-Content.md](../product/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
+- [../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md)
+- [../architecture/09-System-Architecture.md](../architecture/09-System-Architecture.md)
+- [../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md)
+- [../architecture/11-Performance-Reliability.md](../architecture/11-Performance-Reliability.md)
+- [../architecture/12-Testing-Quality.md](../architecture/12-Testing-Quality.md)
+- [../architecture/13-Analytics-Observability.md](../architecture/13-Analytics-Observability.md)
+- [../architecture/14-Infrastructure-Operations.md](../architecture/14-Infrastructure-Operations.md)
+- [../product/15-Legal-Business.md](../product/15-Legal-Business.md)
+- [../architecture/16-Development-Release.md](../architecture/16-Development-Release.md)

@@ -25,7 +25,7 @@ This fragmentation causes real problems:
 
 Lenar exists to reduce this fragmentation. It makes useful university information and services **discoverable, trustworthy, accessible, actionable, and resilient**.
 
-![The Problem Lenar Solves](diagrams/system/problem-lenar.svg)
+![The Problem Lenar Solves](../diagrams/system/problem-lenar.svg)
 
 ---
 
@@ -52,7 +52,7 @@ Our mission emphasizes five pillars:
 
 Lenar is defined by six core qualities that separate it from a generic software tool. It must feel dependable enough to become a normal part of university life.
 
-![Lenar Product Identity](diagrams/system/product-identity.svg)
+![Lenar Product Identity](../diagrams/system/product-identity.svg)
 
 | Quality | Description |
 | :--- | :--- |
@@ -70,7 +70,7 @@ Lenar is defined by six core qualities that separate it from a generic software 
 ### The Trust Model
 Trust is central to Lenar. A visually attractive platform is useless if students cannot trust its content. Users must be able to distinguish between official announcements, verified information, user-generated content, and potentially stale data.
 
-![Lenar Trust Model](diagrams/security/trust-model.svg)
+![Lenar Trust Model](../diagrams/security/trust-model.svg)
 
 ### The Resilience Model
 Lenar must degrade safely. It is designed to progressively tolerate weak networks, zero connectivity, request failures, and temporary backend outages.
@@ -78,7 +78,7 @@ Lenar must degrade safely. It is designed to progressively tolerate weak network
 > [!IMPORTANT]  
 > **Failures should be recoverable without unnecessary loss of user work, data integrity, or trust.**
 
-For detailed implementation of offline and sync behavior, see [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md).
+For detailed implementation of offline and sync behavior, see [../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md).
 
 ---
 
@@ -161,7 +161,7 @@ Technology exists to serve the product. A technically impressive feature with no
 - **Resilience:** Offline-first + server-authoritative synchronization (SQLite-based local architecture)
 
 > [!NOTE]  
-> For authoritative technology decisions and their rationale, see [10-Technology-Stack.md](10-Technology-Stack.md).
+> For authoritative technology decisions and their rationale, see [../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md).
 
 ---
 
@@ -172,8 +172,8 @@ This document establishes what Lenar is and how decisions are made. For detailed
 - **[02-Problem-Users-Domain.md](02-Problem-Users-Domain.md)**: Who are we serving and what world are we modeling?
 - **[03-Product-Requirements.md](03-Product-Requirements.md)**: Exactly what are we building?
 - **[04-UX-UI.md](04-UX-UI.md)**: How should users experience it?
-- **[05-Platform.md](05-Platform.md)**: Where does it exist?
-- **[08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)**: How does it remain reliable under poor connectivity?
-- **[09-System-Architecture.md](09-System-Architecture.md)**: How are the technical pieces structured?
-- **[10-Technology-Stack.md](10-Technology-Stack.md)**: What technologies implement the architecture?
-- **[17-Decisions-Risks-Evolution.md](17-Decisions-Risks-Evolution.md)**: Why did we choose this and when should it change?
+- **[../architecture/05-Platform.md](../architecture/05-Platform.md)**: Where does it exist?
+- **[../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md)**: How does it remain reliable under poor connectivity?
+- **[../architecture/09-System-Architecture.md](../architecture/09-System-Architecture.md)**: How are the technical pieces structured?
+- **[../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md)**: What technologies implement the architecture?
+- **[../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)**: Why did we choose this and when should it change?

@@ -23,9 +23,6 @@ This specification does **not** cover:
 - Exact governance permission matrices for calendar administration.
 
 ## 3. Canonical References
-- `docs/archive/phase-b/canonical-phase-b-model.md`
-- `docs/archive/phase-b/pass-2-domain-decisions.md`
-- `docs/archive/phase-b/final-correction-report.md`
 - `docs/product/01-Lenar-Foundation.md`
 - `docs/product/02-Problem-Users-Domain.md`
 - `docs/product/03-Product-Requirements.md`

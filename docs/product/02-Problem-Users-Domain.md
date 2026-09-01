@@ -26,7 +26,7 @@ The central domain idea is:
 
 The initial domain context is **FUTA** and a **BSc university environment**, while the architecture should avoid hard-coding assumptions that would make future institutional expansion unnecessarily difficult.
 
-![People Around Lenar](diagrams/domain/people-around-lenar.svg)
+![People Around Lenar](../diagrams/domain/people-around-lenar.svg)
 
 ---
 
@@ -78,7 +78,7 @@ Lenar must therefore model information as more than text. Where meaningful, info
 
 Lenar operates within a structured university environment. However, this structure acts primarily as a contextual hierarchy, not an absolute authorization model.
 
-![Organizational Context](diagrams/domain/organizational-context.svg)
+![Organizational Context](../diagrams/domain/organizational-context.svg)
 
 This hierarchy helps Lenar organize content, route notifications, and determine relevance. It ensures that students see information scoped to their specific faculty, department, or level.
 
@@ -106,7 +106,7 @@ The currently established roles are:
 
 Lenar does not rely on simple role-based access control (RBAC). A user's ability to perform an action is determined by a combination of their identity, their assigned role, the scope of that role, the specific resource, and the action requested.
 
-![Authorization Context](diagrams/security/authorization-context.svg)
+![Authorization Context](../diagrams/security/authorization-context.svg)
 
 ---
 
@@ -114,7 +114,7 @@ Lenar does not rely on simple role-based access control (RBAC). A user's ability
 
 To function as a cohesive digital layer, Lenar models several distinct domains. 
 
-![Domain Map](diagrams/domain/domain-map.svg)
+![Domain Map](../diagrams/domain/domain-map.svg)
 
 ### 4.1 Foundational Domains
 
@@ -160,7 +160,7 @@ For detailed specifications, refer to the following canonical documents:
 - [04 — UX & UI](04-UX-UI.md)
 - [06 — Data & Content](06-Data-Content.md)
 - [07 — Security, Privacy & Governance](07-Security-Privacy-Governance.md)
-- [08 — Offline, Sync & Resilience](08-Offline-Sync-Resilience.md)
-- [09 — System Architecture](09-System-Architecture.md)
-- [12 — Testing & Quality](12-Testing-Quality.md)
-- [17 — Decisions, Risks & Evolution](17-Decisions-Risks-Evolution.md)
+- [08 — Offline, Sync & Resilience](../architecture/08-Offline-Sync-Resilience.md)
+- [09 — System Architecture](../architecture/09-System-Architecture.md)
+- [12 — Testing & Quality](../architecture/12-Testing-Quality.md)
+- [17 — Decisions, Risks & Evolution](../decisions/17-Decisions-Risks-Evolution.md)
