@@ -2,7 +2,9 @@
 
 This document details how the nine foundational domains interact. 
 
-*(Reference Diagram: ```mermaid
+*(Reference Diagram:)*
+
+```mermaid
 flowchart TD
     classDef lc fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
     classDef no_cascade fill:#fef2f2,stroke:#f87171,stroke-width:2px,color:#b91c1c,stroke-dasharray: 5 5
@@ -27,7 +29,7 @@ flowchart TD
     Acc -.->|Account Suspension| X4[NO Enrollment / Gov-History Deletion]:::no_cascade
     X4 -.- Enr
     X4 -.- Gov
-```)*
+```
 
 ### Onboarding → Account Lifecycle
 - **Relationship:** Influences / Triggers.

@@ -2,7 +2,9 @@
 
 This map explicitly defines the responsibilities and boundaries of each domain.
 
-*(Reference Diagram: ```mermaid
+*(Reference Diagram:)*
+
+```mermaid
 flowchart TD
     classDef client fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,stroke-dasharray: 5 5
     classDef server fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
@@ -37,7 +39,7 @@ flowchart TD
     
     class ClientLayer client;
     class ServerLayer server;
-```)*
+```
 
 ## Domain Responsibility Map
 

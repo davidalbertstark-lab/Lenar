@@ -9,7 +9,9 @@ To make the system easy to understand at first glance, the model is divided into
 ### Diagram A: The Student Journey
 This flow shows the chronological path a new user takes. Notice that important system states (like *Account Active* or *Enrollment*) are only established after explicit approval.
 
-*(Reference Diagram: ```mermaid
+*(Reference Diagram:)*
+
+```mermaid
 flowchart TD
     classDef userAction fill:#f8fafc,stroke:#64748b,stroke-dasharray: 5 5
     classDef systemState fill:#eff6ff,stroke:#2563eb,stroke-width:2px,font-weight:bold
@@ -42,12 +44,14 @@ flowchart TD
 
     Mem ===> Access(((Normal Platform Access))):::outcome
     Active ===> Access
-```)*
+```
 
 ### Diagram B: What Determines Normal Access
 This diagram shows the static checkpoints the system evaluates when a user attempts to do something. It separates the baseline requirements for normal access from the strict evaluation of Governance Authority.
 
-*(Reference Diagram: ```mermaid
+*(Reference Diagram:)*
+
+```mermaid
 flowchart TD
     classDef condition fill:#eff6ff,stroke:#2563eb,stroke-width:2px,font-weight:bold
     classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px
@@ -74,7 +78,7 @@ flowchart TD
     Authz{Authorization Engine}:::decision
     Authz -->|All conditions met & scope valid| Allow(((ALLOW: Platform Access))):::allow
     Authz -->|Missing condition, mismatch, or revoked| Deny(((DENY: Access Blocked))):::deny
-```)*
+```
 
 
 ---

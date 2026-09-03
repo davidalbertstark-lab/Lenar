@@ -4,7 +4,9 @@ The Lenar foundation is divided into nine explicit behavioural domains to ensure
 
 This conceptual map organizes the domains into four logical groups to help you orient yourself. Note that these groups are for presentation only—they are not architectural layers or sequential pipeline steps.
 
-*(Reference Diagram: ```mermaid
+*(Reference Diagram:)*
+
+```mermaid
 flowchart TD
     classDef group fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,stroke-dasharray: 5 5,font-weight:bold
     classDef domain fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
@@ -40,7 +42,7 @@ flowchart TD
     Gov -.->|Provides assignments for| Authz
 
     class Identity,Foundation,Participation,Authority group;
-```)*
+```
 
 
 Below is the baseline ownership for each domain:

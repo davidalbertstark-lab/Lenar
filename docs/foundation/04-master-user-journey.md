@@ -2,7 +2,9 @@
 
 This document outlines the standard path a user takes from first contact to normal platform access, alongside critical return behaviors.
 
-*(Reference Diagram: ```mermaid
+*(Reference Diagram:)*
+
+```mermaid
 flowchart TD
     classDef main fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
     classDef return fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,stroke-dasharray: 5 5
@@ -65,7 +67,7 @@ flowchart TD
     Susp[Suspension]:::exit
     Acc -.-> Susp
     Susp -.->|Login Denied| Logout
-```)*
+```
 
 ## 1. The Standard Journey
 
