@@ -109,7 +109,7 @@ flowchart TD
 
     UserNode(["User (Active Student)"])
 
-    Context -.->|Associates with (1:1)| BaseComm
+    Context -.->|"Associates with (1:1)"| BaseComm
     BaseComm -->|Requires| BaseMem
     OtherComm -->|Enables| OtherMem
 

@@ -92,20 +92,20 @@ It clearly separates Authorization ("May you do this?") from Authentication ("Wh
 
 ```mermaid
 flowchart TD
-    subgraph Authority Factors
+    subgraph AuthFactors [Authority Factors]
         Act[Authenticated Actor]
         Auth[Role + Scope + Context]
     end
 
-    subgraph Operation Target
+    subgraph OpTarget [Operation Target]
         Res[Resource]
         Op[Action]
     end
 
     Eval{Policy Engine}
     
-    Authority Factors --> Eval
-    Operation Target --> Eval
+    AuthFactors --> Eval
+    OpTarget --> Eval
 
     Eval -->|Policy Satisfied| Allow([ALLOW])
     Eval -->|Default / Missing / Mismatch| Deny([DENY])
@@ -120,14 +120,14 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    subgraph Authority Context Inputs
+    subgraph AuthInputs [Authority Context Inputs]
         Gov[Governance Role & Scope]
         Enr[Enrollment Context]
         Mem[Community Memberships]
         Acc[Account Status]
     end
 
-    subgraph Requested Operation
+    subgraph ReqOp [Requested Operation]
         Res[Target Resource]
         Action[Action Requested]
     end
@@ -135,8 +135,8 @@ flowchart LR
     Policy{Authorization Engine}
     Result([ALLOW / DENY])
 
-    Authority Context Inputs --> Policy
-    Requested Operation --> Policy
+    AuthInputs --> Policy
+    ReqOp --> Policy
     Policy --> Result
 
     style Policy fill:#fef08a,stroke:#ca8a04,stroke-width:2px

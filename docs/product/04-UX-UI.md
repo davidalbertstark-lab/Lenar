@@ -102,10 +102,10 @@ stateDiagram-v2
     Verified --> ProfileComplete: Enter Academic Claims
     ProfileComplete --> PendingReview: Submit for Review
 
-    PendingReview --> Rejected: Review Decision: Rejected
+    PendingReview --> Rejected: Review Decision - Rejected
     Rejected --> ProfileComplete: Correct & Resubmit
 
-    PendingReview --> Approved: Review Decision: Approved (Leader / Admin)
+    PendingReview --> Approved: Review Decision - Approved (Leader / Admin)
     Approved --> Enrolled: Establish Academic Context
     Enrolled --> ActiveAccess: Assign Base Community Membership
     ActiveAccess --> [*]
