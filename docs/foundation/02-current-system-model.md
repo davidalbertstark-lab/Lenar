@@ -18,7 +18,7 @@ flowchart TD
     classDef outcome fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,font-weight:bold
     classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px
     
-    subgraph 1. Entry & Onboarding
+    subgraph EntryOnb [1. Entry & Onboarding]
         direction TB
         Reg([Registration]) -.-> Acct[Account: Created]:::systemState
         Acct -.-> Email([Email Verification])
@@ -27,7 +27,7 @@ flowchart TD
         Prof --> Pend[State: Pending Review]:::systemState
     end
 
-    subgraph 2. Academic Foundation
+    subgraph AcadFound [2. Academic Foundation]
         direction TB
         Pend -->|Review Decision| Appr{Approval}:::decision
         Appr -->|Rejected| Prof
@@ -36,7 +36,7 @@ flowchart TD
         Enr -->|Determines| Ctx[Current Academic Context]:::systemState
     end
 
-    subgraph 3. Community Placement
+    subgraph CommPlace [3. Community Placement]
         direction TB
         Ctx -->|Maps to| BC[Base Community]:::systemState
         BC -->|Automatically grants| Mem[Base Membership]:::systemState
@@ -58,7 +58,7 @@ flowchart TD
     classDef allow fill:#f0fdf4,stroke:#16a34a,stroke-width:3px,font-weight:bold
     classDef deny fill:#fef2f2,stroke:#dc2626,stroke-width:3px,font-weight:bold
 
-    subgraph 1. Baseline Identity Conditions
+    subgraph BaseId [1. Baseline Identity Conditions]
         direction TB
         Act[Account is Active]:::condition
         Sess[Valid Authentication Session]:::condition
@@ -67,12 +67,12 @@ flowchart TD
         Mem[Base Community Membership]:::condition
     end
     
-    subgraph 2. Governance Authority
+    subgraph GovAuth [2. Governance Authority]
         direction TB
         Gov[Governance Assignment]:::condition --> Role[Role + Authority Context]:::condition
     end
 
-    1. Baseline Identity Conditions --> Authz
+    BaseId --> Authz
     Role -.->|Optional: If performing admin actions| Authz
     
     Authz{Authorization Engine}:::decision
