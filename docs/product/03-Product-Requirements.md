@@ -76,31 +76,31 @@ Ease of use
 
 Lenar groups its functionality into distinct, focused product areas. Each area serves a clear segment of the student experience while connecting to the same unified platform identity.
 
+*(Reference Diagram: Major Product Areas Hierarchy)*
+
 ```mermaid
 flowchart TD
-    classDef center fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
-    classDef area fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
+    classDef platform fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#ffffff,font-weight:bold
+    classDef category fill:#2563eb,stroke:#1d4ed8,stroke-width:1.5px,color:#ffffff,font-weight:bold
+    classDef student fill:#eff6ff,stroke:#3b82f6,stroke-width:1.5px,color:#1e40af,font-weight:bold
+    classDef enabler fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#334155,font-weight:bold
+    classDef admin fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#92400e,font-weight:bold
 
-    L((LENAR))
-    
-    A[Information & Announcements]
-    B[Campus Services & Issues]
-    C[Opportunities]
-    D[Notifications]
-    E[Search & Discovery]
-    F[Student Context]
-    G[Admin Control Plane]
-    
-    L --- A
-    L --- B
-    L --- C
-    L --- D
-    L --- E
-    L --- F
-    L --- G
-    
-    class L center;
-    class A,B,C,D,E,F,G area;
+    Platform["Lenar Platform"]:::platform
+
+    Platform --> Cat1["Student-Facing Services"]:::category
+    Platform --> Cat2["Platform Enablers"]:::category
+    Platform --> Cat3["Institutional Operations"]:::category
+
+    Cat1 --> A["Information & Announcements"]:::student
+    Cat1 --> B["Campus Services & Issues"]:::student
+    Cat1 --> C["Opportunities"]:::student
+
+    Cat2 --> D["Student Context"]:::enabler
+    Cat2 --> E["Search & Discovery"]:::enabler
+    Cat2 --> F["Notifications"]:::enabler
+
+    Cat3 --> G["Admin Control Plane"]:::admin
 ```
 
 ---
@@ -129,60 +129,90 @@ The current V1 scope restricts feature expansion to ensure a stable, dependable 
 
 ## 4. Feature Dependencies
 
-Capabilities in Lenar do not exist in isolation. Many user-facing features rely on shared foundational models.
+Capabilities in Lenar do not exist in isolation. Many user-facing features rely on shared foundational models and resilience services.
+
+### Diagram A: Functional Capability Dependencies
+Foundational identity and academic context must be established before student-facing services become accessible, which in turn feed cross-cutting search and notifications.
+
+*(Reference Diagram:)*
 
 ```mermaid
 flowchart TD
-    classDef default fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#334155
-    classDef foundation fill:#e2e8f0,stroke:#64748b,stroke-width:2px,font-weight:bold,color:#0f172a
-    classDef feature fill:#bfdbfe,stroke:#2563eb,stroke-width:1px,font-weight:bold,color:#1e40af
+    classDef foundation fill:#eff6ff,stroke:#2563eb,stroke-width:1.5px,color:#1e40af,font-weight:bold
+    classDef feature fill:#f0fdf4,stroke:#16a34a,stroke-width:1.5px,color:#166534,font-weight:bold
+    classDef discovery fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#334155,font-weight:bold
+    classDef admin fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#92400e,font-weight:bold
 
-    Auth[Authentication]
-    Prof[Academic Profile]
-    Rev[Review / Approval]
-    Enr[Enrollment]
-    Context[Student Context]
-    Comm[Base Community / Membership]
-    
-    Content[Content]
-    Search[Search]
-    Issue[Issue Reporting]
-    Opp[Opportunities]
-    Notif[Notifications]
-    Local[Local Persistence]
-    Offline[Offline Operations]
-    Sync[Synchronization]
-    Admin[Admin Control Plane]
-    
-    Auth --> Prof
-    Prof --> Rev
-    Rev --> Enr
-    Enr --> Context
-    Context --> Comm
-    
+    subgraph Foundation ["Identity & Academic Foundation"]
+        direction TB
+        Auth["Authentication"]:::foundation --> Prof["Academic Profile"]:::foundation
+        Prof --> Rev["Review & Approval"]:::foundation
+        Rev --> Enr["Authoritative Enrollment"]:::foundation
+        Enr --> Context["Academic Context"]:::foundation
+        Context --> Comm["Base Community Membership"]:::foundation
+    end
+
+    subgraph AdminTrack ["Administration Track"]
+        Admin["Admin Control Plane"]:::admin
+    end
+
+    subgraph Features ["Student-Facing Services"]
+        direction LR
+        Content["Information & Announcements"]:::feature
+        Issue["Campus Services & Issues"]:::feature
+        Opp["Opportunities"]:::feature
+    end
+
+    subgraph Enablers ["Downstream Capabilities"]
+        direction LR
+        Search["Search & Discovery"]:::discovery
+        Notif["Notifications"]:::discovery
+    end
+
     Auth --> Admin
-    
     Comm --> Content
     Comm --> Issue
     Comm --> Opp
-    
+
     Content --> Search
     Issue --> Search
     Opp --> Search
-    
+
     Content --> Notif
     Issue --> Notif
     Opp --> Notif
-    
-    Local --> Offline
-    Offline --> Sync
-    
-    Sync -.-> Content
-    Sync -.-> Issue
-    Sync -.-> Opp
-    
-    class Auth,Prof,Rev,Enr,Context,Comm,Local,Offline,Sync,Admin foundation;
-    class Content,Search,Issue,Opp,Notif feature;
+```
+
+### Diagram B: Offline Resilience Pipeline
+Client-side persistence and action queueing ensure that student features remain dependable even during intermittent or absent network connectivity.
+
+*(Reference Diagram:)*
+
+```mermaid
+flowchart LR
+    classDef storage fill:#eff6ff,stroke:#2563eb,stroke-width:1.5px,color:#1e40af,font-weight:bold
+    classDef queue fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#92400e,font-weight:bold
+    classDef sync fill:#ecfdf5,stroke:#059669,stroke-width:1.5px,color:#065f46,font-weight:bold
+    classDef feature fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#334155,font-weight:bold
+
+    subgraph ClientPipeline ["Offline Resilience Engine"]
+        direction LR
+        Local["Local Persistence<br/>(Cache & Drafts)"]:::storage
+        Queue["Offline Operations<br/>(Outbox Queue)"]:::queue
+        Sync["Sync Engine<br/>(Background Reconciler)"]:::sync
+
+        Local --> Queue --> Sync
+    end
+
+    subgraph SupportedFeatures ["Student Feature Integration"]
+        direction TB
+        Content["Announcements (Read Cache)"]:::feature
+        Issues["Issue Reports (Queued Actions)"]:::feature
+        Opps["Opportunities (Read Cache)"]:::feature
+    end
+
+    Sync -.->|Reconciles authoritative state| SupportedFeatures
+    SupportedFeatures -.->|Dispatches pending actions| Queue
 ```
 
 ---
@@ -193,38 +223,51 @@ flowchart TD
 
 Lenar ensures every line of code traces back to a genuine user need. We do not invent features in isolation.
 
-```mermaid
-flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+*(Reference Diagram: End-to-End Requirement Traceability Pipeline)*
 
-    P[Problem]
-    UN[User Need]
-    PR[Product Requirement]
-    F[Feature]
-    UC[Use Case]
-    UX[UX Flow]
-    S[Screen]
-    API[API / Domain]
-    D[Data]
-    Sec[Security]
-    OB[Offline Behavior]
-    T[Test]
-    A[Analytics]
-    
-    P --> UN
-    UN --> PR
-    PR --> F
+```mermaid
+flowchart LR
+    classDef phase1 fill:#eff6ff,stroke:#2563eb,stroke-width:1.5px,color:#1e40af,font-weight:bold
+    classDef phase2 fill:#f0fdf4,stroke:#16a34a,stroke-width:1.5px,color:#166534,font-weight:bold
+    classDef phase3 fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#92400e,font-weight:bold
+    classDef phase4 fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px,color:#0f172a,font-weight:bold
+
+    subgraph P1 ["1. Product Definition"]
+        direction TB
+        P["Problem"]:::phase1
+        UN["User Need"]:::phase1
+        PR["Product Requirement"]:::phase1
+        F["Feature"]:::phase1
+        P --> UN --> PR --> F
+    end
+
+    subgraph P2 ["2. Experience Design"]
+        direction TB
+        UC["Use Case"]:::phase2
+        UX["UX Flow"]:::phase2
+        S["Screen / UI"]:::phase2
+        UC --> UX --> S
+    end
+
+    subgraph P3 ["3. Technical Architecture"]
+        direction TB
+        API["API / Domain"]:::phase3
+        D["Data Model"]:::phase3
+        Sec["Security"]:::phase3
+        OB["Offline Behavior"]:::phase3
+        API --> D --> Sec --> OB
+    end
+
+    subgraph P4 ["4. Quality & Observability"]
+        direction TB
+        T["Automated Tests"]:::phase4
+        A["Analytics & Telemetry"]:::phase4
+        T --> A
+    end
+
     F --> UC
-    UC --> UX
-    UX --> S
     S --> API
-    API --> D
-    D --> Sec
-    Sec --> OB
     OB --> T
-    T --> A
-    
-    class P,UN,PR,F,UC,UX,S,API,D,Sec,OB,T,A step;
 ```
 
 *(Note: Not every feature requires a heavy artifact at every layer, but the logical traceability must remain intact).*
@@ -233,22 +276,22 @@ flowchart TD
 
 Every feature in Lenar must account for the reality of mobile usage, unpredictable networks, and missing data. Features should progressively adapt their state.
 
+*(Reference Diagram: Universal UI and Feature State Transitions)*
+
 ```mermaid
-flowchart TD
-    classDef default fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
-    classDef state fill:#e2e8f0,stroke:#64748b,stroke-width:1px,font-weight:bold
+stateDiagram-v2
+    [*] --> Initializing
+    Initializing --> Loading : Dispatch query or action
 
-    title[Generalized Product State Model<br/>Not a literal state machine for every feature]
-    style title fill:none,stroke:none,font-weight:bold,font-size:14px
+    Loading --> ContentReady : Data loaded successfully
+    Loading --> Empty : Zero records found
+    Loading --> Offline : Connection unavailable (serve cache or queue outbox)
+    Loading --> Error : Request or validation failure
 
-    E[Entry] --> L[Loading]
-    
-    L --> S[Success] --> C[Content / Action]
-    L --> Em[Empty] --> ES[Empty State]
-    L --> Er[Error] --> RE[Recoverable Error]
-    L --> O[Offline] --> OS[Offline / Pending State]
-    
-    class E,L,S,C,Em,ES,Er,RE,O,OS state;
+    ContentReady --> Loading : Refresh or filter update
+    Empty --> Loading : Refresh
+    Offline --> Loading : Network restored
+    Error --> Loading : User retry
 ```
 
 ---

@@ -106,65 +106,115 @@ It preserves the clear conceptual boundaries:
 - **Restricted authenticated onboarding access:** An incomplete valid account can establish a restricted session sufficient to continue onboarding, without receiving normal Lenar access.
 - **Account ≠ Session.** An account may have zero, one, or multiple sessions. An Active account may be unauthenticated.
 
-## 9. State Model
+## 9. State Models and Diagrams
+
+### Authentication and State-Aware Resume Flow
+*Flow of credential verification, session establishment, and dynamic resume routing based on account and onboarding state.*
 
 ```mermaid
 flowchart TD
-    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef route fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
-    classDef endstate fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
-    classDef error fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
+    subgraph AuthEntry["Authentication Entry"]
+        direction TB
+        Reg["Registration<br/>(Email + Password)"] --> Unv["Account Created<br/>(Unverified)"]
+        Unv --> OTP["Email OTP Verification"]
+        OTP -->|Verification Success| Authenticated["Authenticated Identity Established"]
 
-    subgraph Authentication & Resume Flow
-        Reg([Registration]) --> AC[Account Created]
-        AC --> VR[Verification Required]
-        VR --> EV[Email Verification]
-        EV -->|Success| AA[Automatically Authenticated]
-        
-        Login([Login]) -->|Success| AA
-        AA --> NS[New Session Created]
-        
-        NS --> VS[Valid Session]
-        VS --> Det[Determine Current State]
-        
-        Det -->|Unverified| SR_Unv[Verification]
-        Det -->|Profile Incomplete| SR_PC[Profile Completion]
-        Det -->|Pending Review| SR_PR[Pending Review]
-        Det -->|Rejected| SR_Rej[Profile Completion]
-        Det -->|Active| SR_Act[Normal Lenar]
+        Login["Login<br/>(Email + Password)"] -->|Valid Credentials| Authenticated
     end
 
-    subgraph Session Lifecycle
-        Curr[Current Session]
-        Oth[Other Session B]
-        
-        Curr -->|Logout / Revoke Current| Inv[Session Invalidated]
-        Curr -->|Lifetime Exceeded| Inv
-        
-        Curr -->|Revoke Session B| OthInv[Session B Invalid]
-        Oth -->|Lifetime Exceeded| OthInv
-        
-        Curr -->|Log out all other sessions| AllOthInv[Other Sessions Invalidated]
-        Oth --> AllOthInv
-        Curr -->|Remains Valid| Curr
-        
-        Curr -->|Password Reset| AllInv[All Sessions Invalidated]
-        Oth --> AllInv
-        AllInv --> NeedLogin[Login]
-        
-        Curr -->|Change Password| CP[Password Updated]
-        CP -->|Current Session| Curr
-        CP -->|Other Sessions| AllOthInv
-        
-        Susp[Account Suspended] --> AllInv
+    subgraph SessionEstablishment["Session Establishment"]
+        Authenticated --> NewSess["Create New Session<br/>(Distinct Access Instance)"]
+        NewSess --> StateRouter{"Determine Account &<br/>Onboarding State"}
     end
 
-    class Reg,EV,Det,Login,CP process;
-    class AC,VR,AA,NS,VS,Curr,Oth,Susp state;
-    class SR_Unv,SR_PC,SR_PR,SR_Rej,SR_Act route;
-    class NeedLogin endstate;
-    class Inv,OthInv,AllOthInv,AllInv error;
+    subgraph DynamicRouting["State-Aware Resume Routing"]
+        direction TB
+        StateRouter -->|Unverified| RouteUnv["Email Verification Required"]
+        StateRouter -->|Incomplete / Rejected| RouteProfile["Profile Completion<br/>(Restricted Session)"]
+        StateRouter -->|Pending Review| RouteReview["Pending Review Status<br/>(Locked Restricted Session)"]
+        StateRouter -->|Active| RouteActive["Normal Lenar Platform<br/>(Full Platform Access)"]
+    end
+
+    classDef action fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a;
+    classDef highlight fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold;
+    classDef route fill:#fef08a,stroke:#ca8a04,stroke-width:1.5px,color:#854d0e,font-weight:bold;
+    classDef success fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold;
+
+    class Reg,Unv,OTP,Login action;
+    class Authenticated,NewSess highlight;
+    class StateRouter,RouteUnv,RouteProfile,RouteReview route;
+    class RouteActive success;
+```
+
+### Session Lifecycle State Model
+*State machine governing an individual authenticated session from creation through invalidation.*
+
+```mermaid
+stateDiagram-v2
+    [*] --> ValidSession: Authentication Success (Login / Verification)
+
+    state ValidSession {
+        [*] --> CheckStatus
+        state CheckStatus <<choice>>
+        CheckStatus --> Restricted: Onboarding Incomplete
+        CheckStatus --> Active: Account Active
+
+        Restricted --> Active: Onboarding Approved & Activated
+
+        Restricted: Restricted Session (Onboarding Only)
+        Active: Unrestricted Session (Normal Access)
+    }
+
+    ValidSession --> InvalidSession: Logout / Revoke Current
+    ValidSession --> InvalidSession: Session Lifetime Exceeded (Timeout)
+    ValidSession --> InvalidSession: Remote Session Revocation
+    ValidSession --> InvalidSession: Password Reset / Change
+    ValidSession --> InvalidSession: Account Suspended
+
+    state InvalidSession {
+        [*] --> Terminated
+        Terminated: Protected operations blocked
+        Terminated: Account/onboarding state preserved
+    }
+
+    InvalidSession --> [*]: Re-authentication Required
+```
+
+### Concurrent Session Invalidation Scopes
+*Impact of user-initiated actions and security events across concurrent sessions.*
+
+```mermaid
+flowchart TD
+    subgraph SingleScope["1. Targeted Invalidation (Single Session)"]
+        direction TB
+        S_Action["Action Triggers:<br/>• Explicit Logout / Revoke Current Session<br/>• Revoke Specific Remote Session<br/>• Session Lifetime Expiry"]
+        S_Impact["Session Impact:<br/>• Targeted Session: INVALIDATED<br/>• Other Concurrent Sessions: REMAIN VALID"]
+        S_Action --> S_Impact
+    end
+
+    subgraph SelectiveScope["2. Selective Invalidation (Preserve Current)"]
+        direction TB
+        M_Action["Action Triggers:<br/>• 'Log Out All Other Sessions'<br/>• Authenticated Password Change"]
+        M_Impact["Session Impact:<br/>• Current Session: REMAINS VALID<br/>• All Other Sessions: INVALIDATED"]
+        M_Action --> M_Impact
+    end
+
+    subgraph GlobalScope["3. Global Invalidation (All Sessions)"]
+        direction TB
+        G_Action["Action Triggers:<br/>• Password Recovery Reset (via OTP)<br/>• Account Suspension / Restriction"]
+        G_Impact["Session Impact:<br/>• Current Session: INVALIDATED<br/>• All Other Sessions: INVALIDATED<br/>• Re-login required across all devices"]
+        G_Action --> G_Impact
+    end
+
+    classDef action fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a;
+    classDef singleBox fill:#bfdbfe,stroke:#2563eb,stroke-width:1.5px,color:#1e40af,font-weight:bold;
+    classDef selectBox fill:#a7f3d0,stroke:#059669,stroke-width:1.5px,color:#065f46,font-weight:bold;
+    classDef globalBox fill:#fca5a5,stroke:#dc2626,stroke-width:1.5px,color:#991b1b,font-weight:bold;
+
+    class S_Action,M_Action,G_Action action;
+    class S_Impact singleBox;
+    class M_Impact selectBox;
+    class G_Impact globalBox;
 ```
 
 ## 10. Main Behaviors

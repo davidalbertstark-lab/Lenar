@@ -43,70 +43,86 @@ Trust
 
 The security of Lenar relies on explicit trust boundaries. Clients (mobile, web) are strictly classified as **untrusted**.
 
-```mermaid
-flowchart TD
-    classDef untrusted fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef boundary fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold,stroke-dasharray: 5 5
-    classDef trusted fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
-    classDef external fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,font-style:italic
+### Diagram: System Trust Boundaries
+This diagram illustrates the explicit trust boundaries separating untrusted client environments, the authoritative Lenar core, and external third-party services.
 
-    U[USER / DEVICE]
-    UC[UNTRUSTED CLIENT]
-    
-    NB[NETWORK BOUNDARY]
-    
-    subgraph Core [CORE LENAR TRUST BOUNDARY]
+```mermaid
+flowchart LR
+    classDef untrusted fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b
+    classDef trusted fill:#dcfce7,stroke:#22c55e,stroke-width:2px,color:#166534
+    classDef external fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,stroke-dasharray: 4 4
+
+    subgraph UntrustedZone ["Untrusted Client Zone"]
         direction TB
-        API[LENAR API]
-        AuthN[AUTHENTICATION]
-        AuthZ[AUTHORIZATION]
-        DO[DOMAIN OPERATIONS]
-        AD[AUTHORITATIVE DATA]
-        
-        API --> AuthN
-        AuthN --> AuthZ
-        AuthZ --> DO
-        DO --> AD
+        User["User / Physical Device"]
+        ClientApp["Client Application\n(Mobile & Web)"]
+        User --> ClientApp
     end
-    
-    Ext[EXTERNAL PROVIDERS]
-    
-    U --> UC
-    UC --> NB
-    NB --> Core
-    
-    Core -.-> Ext
-    
-    class U,UC untrusted;
-    class NB boundary;
-    class API,AuthN,AuthZ,DO,AD trusted;
-    class Ext external;
+
+    subgraph CoreBoundary ["Core Lenar Trust Boundary (Authoritative)"]
+        direction TB
+        Gateway["Secure API Gateway"]
+        Services["Domain Services & Auth"]
+        DataStore[("Authoritative Data")]
+        Gateway --> Services
+        Services --> DataStore
+    end
+
+    subgraph ExtZone ["External Boundary"]
+        direction TB
+        ExtServices["Third-Party Providers\n(Push, Telemetry, Storage)"]
+    end
+
+    ClientApp -->|"Encrypted Network Boundary (TLS)"| Gateway
+    Services -.->|"Strict Data Minimization"| ExtServices
+
+    class User,ClientApp untrusted;
+    class Gateway,Services,DataStore trusted;
+    class ExtServices external;
 ```
 
 Every interaction must proceed through a systemic verification path.
 
-```mermaid
-flowchart TD
-    classDef main fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+### Diagram: Request Verification Pipeline
+This pipeline illustrates the mandatory, sequential verification gates every client request must pass before reading or modifying authoritative data.
 
-    U[USER / DEVICE]
-    UC[UNTRUSTED CLIENT]
-    API[SECURE API]
-    AuthN[AUTHENTICATION]
-    AuthZ[AUTHORIZATION]
-    DR[DOMAIN RULES]
-    AD[AUTHORITATIVE DATA]
-    AM[AUDIT / MONITORING]
-    
-    U --> UC
-    UC --> API
-    API --> AuthN
-    AuthN --> AuthZ
-    AuthZ --> DR
-    DR --> AD
-    AD --> AM
-    
-    class U,UC,API,AuthN,AuthZ,DR,AD,AM main;
+```mermaid
+flowchart LR
+    classDef client fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b
+    classDef gate fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af
+    classDef execute fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534
+    classDef audit fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#334155
+
+    subgraph Stage1 ["1. Client Request"]
+        Client["Untrusted Client\n(Mobile / Web)"]
+    end
+
+    subgraph Stage2 ["2. Verification Gates"]
+        direction TB
+        AuthN["Authentication\n(Verify Identity)"]
+        AuthZ["Authorization\n(RBAC + Scope + Context)"]
+        AuthN --> AuthZ
+    end
+
+    subgraph Stage3 ["3. Execution & Storage"]
+        direction TB
+        Domain["Domain Rules\n(Validate Invariants)"]
+        DataStore[("Authoritative Data\n(Commit State)")]
+        Domain --> DataStore
+    end
+
+    subgraph Stage4 ["4. Accountability"]
+        Audit["Audit & Monitoring\n(Immutable Log)"]
+    end
+
+    Client -->|"Encrypted Request"| AuthN
+    AuthZ -->|"Authorized Intent"| Domain
+    DataStore -->|"State Change Event"| Audit
+
+    class Client client;
+    class AuthN,AuthZ gate;
+    class Domain,DataStore execute;
+    class Audit audit;
 ```
 
 ---
@@ -161,37 +177,35 @@ Holding a role is insufficient for authorization without matching scope and reso
 
 Creator Assignment dictates what a user is authorized to manage, while Membership simply represents participation or belonging. Governance manages Creator Roles, Assignments, Revocation, and Transfer.
 
+### Diagram: Authorization Decision Model
+This model illustrates how the authorization engine evaluates the combination of identity, role, scope, and context against a target resource operation to yield an allow or deny decision.
+
 ```mermaid
 flowchart TD
-    classDef input fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef policy fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
-    classDef allow fill:#10b981,color:#fff,stroke:#047857,stroke-width:2px,font-weight:bold
-    classDef deny fill:#ef4444,color:#fff,stroke:#b91c1c,stroke-width:2px,font-weight:bold
-    classDef generic fill:#e2e8f0,stroke:#cbd5e1,stroke-width:1px,color:#475569,font-style:italic
+    classDef condition fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef target fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#334155
+    classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef allow fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534,font-weight:bold
+    classDef deny fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
 
-    I[IDENTITY]
-    R[RBAC / ROLE]
-    S[SCOPE]
-    C[CONTEXT]
-    
-    Res[GENERIC RESOURCE]
-    A[REQUESTED OPERATION]
-    
-    AP{AUTHORIZATION POLICY}
-    
-    I & R & S & C & Res & A --> AP
-    
-    AP --> AL[ALLOW]
-    AP --> DN[DENY]
-    
-    class I,R,S,C input;
-    class Res,A generic;
-    class AP policy;
-    class AL allow;
-    class DN deny;
-    
-    %% Note to emphasize role alone is insufficient
-    R -. "Not sufficient alone" .-> AP
+    subgraph Formula ["Authorization Formula: Role + Scope + Context"]
+        direction TB
+        Role["1. RBAC Role\n(Base Permission)"]:::condition
+        Scope["2. Scope Boundary\n(Community / University Scope)"]:::condition
+        Context["3. Runtime Context\n(Account Status & Enrollment)"]:::condition
+        Role --> Scope --> Context
+    end
+
+    subgraph Operation ["Target Request"]
+        direction TB
+        Target["Resource & Requested Action\n(e.g., Community Notice / Edit)"]:::target
+    end
+
+    Context --> Authz{"Authorization Engine\n(Policy Evaluation)"}:::decision
+    Target --> Authz
+
+    Authz -->|"All 3 factors match target resource"| Allow["ALLOW: Operation Permitted"]:::allow
+    Authz -->|"Role lacks scope or context invalid"| Deny["DENY: Fail-Safe Rejection"]:::deny
 ```
 
 ---
@@ -224,30 +238,22 @@ These systemic streams are conceptually separated:
 
 When security incidents or widespread failures occur, Lenar operations follow a structured response lifecycle.
 
-```mermaid
-flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+### Diagram: Incident Response State Lifecycle
+This state diagram defines the formal lifecycle states of an operational or security incident, from initial detection through containment, remediation, and final resolution.
 
-    D[Detect]
-    T[Triage]
-    C[Contain]
-    I[Investigate]
-    Rem[Remediate]
-    Rec[Recover]
-    V[Validate]
-    Doc[Document]
-    L[Learn]
-    
-    D --> T
-    T --> C
-    C --> I
-    I --> Rem
-    Rem --> Rec
-    Rec --> V
-    V --> Doc
-    Doc --> L
-    
-    class D,T,C,I,Rem,Rec,V,Doc,L step;
+```mermaid
+stateDiagram-v2
+    direction TB
+    [*] --> Detected : Anomaly or Security Alert Triggered
+    Detected --> Triaged : Assess Severity & Blast Radius
+    Triaged --> Contained : Isolate Affected Systems
+    Contained --> Investigating : Root Cause & Impact Analysis
+    Investigating --> Remediating : Deploy Security Fix / Patch
+    Remediating --> Recovered : Restore Operational Services
+    Recovered --> Validated : Verify System Integrity & Health
+    Validated --> Documented : Log Timeline & Regulatory Audit
+    Documented --> Resolved : Complete Post-Mortem & Learnings
+    Resolved --> [*]
 ```
 
 ---

@@ -91,46 +91,39 @@ This specification defines the detailed behavioral contract for Lenar's onboardi
 
 ## 9. State Model
 
+### Onboarding Lifecycle State Machine
+*Visualizes the account onboarding lifecycle states and transitions from registration through review to active access.*
+
 ```mermaid
-flowchart TD
-    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef locked fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
-    classDef error fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef success fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
-    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef authority fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
+stateDiagram-v2
+    [*] --> Registration
+    Registration --> Verification: Submit Credentials
+    Verification --> ProfileCompletion: Email Verified
+    ProfileCompletion --> PendingReview: Submit Profile Claims
 
-    Start([Start]) --> Reg[Registration]
-    Reg --> Verif[Email Verification]
-    
-    Verif -->|Success| PC[Profile Completion]
-    
-    PC --> Sub[Profile Submission]
-    
-    Sub --> PR[Pending Review]
-    
-    PR -->|Locked| Rev{Review<br/>Decision}
-    
-    Admin[Admin<br/>University-level] -.->|Authorized Approval/Rejection| Rev
-    Leader[Leader<br/>Department-level] -.->|Authorized Approval/Rejection| Rev
+    note right of PendingReview
+        Locked to user edits
+        Persists across sessions
+    end note
 
-    Rev -->|Reject| Rej[Rejected]
-    Rej -->|Recoverable| PC
-    
-    Rev -->|Approve| App[Approved]
-    
-    App --> Enr[Enrollment Established]
-    Enr --> AC[Academic Context]
-    AC --> BC[Base Community]
-    BC --> Mem[Membership]
-    
-    Mem --> Act[Active]
-    
-    class Reg,Verif,PC,Sub process;
-    class PR locked;
-    class Rej error;
-    class App,Enr,AC,BC,Mem,Act success;
-    class Admin,Leader authority;
+    PendingReview --> Rejected: Review Rejected (Leader / Admin)
+    Rejected --> ProfileCompletion: Correct & Resubmit
+
+    PendingReview --> Approved: Review Approved (Leader / Admin)
+    Approved --> Active: Post-Approval Setup Complete
+    Active --> [*]
+```
+
+### Post-Approval Provisioning Pipeline
+*Visualizes the sequential dependency chain required upon approval before granting active platform access.*
+
+```mermaid
+flowchart LR
+    Approved([Review Approved]) --> Enr[1. Establish Enrollment]
+    Enr --> AC[2. Establish Academic Context]
+    AC --> BC[3. Resolve Base Community]
+    BC --> Mem[4. Create Membership]
+    Mem --> Active([Active Platform Access])
 ```
 
 ## 10. Main Behaviors

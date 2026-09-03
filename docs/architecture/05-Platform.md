@@ -69,36 +69,29 @@ PWA
 → browser-first experience with installable capabilities
 ```
 
+### [Shared Product Semantics vs. Platform-Appropriate Experience]
+
 ```mermaid
 flowchart TD
-    classDef layer fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef item fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef shared fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d
+    classDef platform fill:#fffbeb,stroke:#d97706,stroke-width:2px,color:#78350f
+    classDef item fill:#ffffff,stroke:#94a3b8,stroke-width:1px,color:#0f172a
 
-    subgraph Shared [SHARED LAYER]
-        direction LR
-        S1[Semantics]
-        S2[Terminology]
-        S3[Identity]
-        S4[Permissions]
-        S5[Data Meaning]
-        S6[Core Workflows]
+    subgraph SharedLayer ["Shared Product Layer (Consistent Across All Platforms)"]
+        direction TB
+        S1["Domain Semantics & Consistent Terminology"]:::item
+        S2["Identity, Account Model & Permissions"]:::item
+        S3["Authoritative Data Meaning & Workflows"]:::item
     end
 
-    subgraph PlatformSpecific [PLATFORM-SPECIFIC LAYER]
-        direction LR
-        P1[Navigation]
-        P2[UI Layout]
-        P3[System APIs]
-        P4[Permissions Mechanics]
-        P5[Lifecycle]
-        P6[Distribution]
+    subgraph PlatformLayer ["Platform-Specific Layer (Adapted to Device Context)"]
+        direction TB
+        P1["Interaction Mode (Mouse/Keyboard vs. Touch)"]:::item
+        P2["Navigation & UI Layout (Responsive vs. Native Shell)"]:::item
+        P3["Device APIs, Lifecycle & Distribution Channels"]:::item
     end
-    
-    Shared --> PlatformSpecific
-    
-    style Shared fill:#f0fdf4,stroke:#16a34a,stroke-width:2px
-    style PlatformSpecific fill:#fffbeb,stroke:#d97706,stroke-width:2px
-    class S1,S2,S3,S4,S5,S6,P1,P2,P3,P4,P5,P6 item;
+
+    SharedLayer -->|"Informs and governs"| PlatformLayer
 ```
 
 ---
@@ -107,49 +100,29 @@ flowchart TD
 
 Lenar branches into dedicated platforms to best serve the user's immediate context. 
 
+### [Platform Map and Experience Roles]
+
 ```mermaid
 flowchart TD
-    classDef main fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
-    classDef branch fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
-    classDef leaf fill:#e2e8f0,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef props fill:#f1f5f9,stroke:#cbd5e1,stroke-width:1px,color:#1e293b,stroke-dasharray: 4 4
+    classDef core fill:#2563eb,stroke:#1e40af,stroke-width:2px,color:#ffffff,font-weight:bold
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
 
-    L[LENAR]
-    
-    W[WEB]
-    P[PWA]
-    M[MOBILE]
-    
-    A[ANDROID]
-    I[IOS]
-    
-    L --- W
-    L --- P
-    L --- M
-    
-    M --- A
-    M --- I
-    
-    subgraph S [Shared]
-        S1[Product Semantics<br/>Account / Identity<br/>Authorization<br/>API / Domain Contracts<br/>Data Meaning<br/>Core Product Behavior]
+    Core["Lenar Unified Core<br/>(Shared Domain Semantics & APIs)"]:::core
+
+    subgraph WebSurface ["Web Platform (React + TypeScript + Vite)"]
+        direction TB
+        Web["Web Portal<br/>(Broad Access, Management & Productivity)"]:::client
+        PWA["PWA<br/>(Lightweight Installable Experience)"]:::client
     end
-    
-    subgraph PS [Platform-Specific]
-        PS1[UI Interactions<br/>System Capabilities<br/>Permissions<br/>Lifecycle<br/>Distribution<br/>Device Behavior]
+
+    subgraph MobileSurface ["Mobile Platform (Flutter + Dart)"]
+        direction TB
+        Android["Android Client<br/>(Primary Student Experience)"]:::client
+        IOS["iOS Client<br/>(Mobile Student Experience)"]:::client
     end
-    
-    L -.-> S
-    A -.-> PS
-    I -.-> PS
-    W -.-> PS
-    P -.-> PS
-    
-    class L main;
-    class W,P,M branch;
-    class A,I leaf;
-    class S1,PS1 props;
-    style S fill:none,stroke:#10b981,stroke-width:2px
-    style PS fill:none,stroke:#f59e0b,stroke-width:2px
+
+    Core -->|"Web Client Shell"| WebSurface
+    Core -->|"Native Mobile App"| MobileSurface
 ```
 
 ---
@@ -168,36 +141,24 @@ It is important to emphasize that framework choices are driven by product requir
 
 The lifecycle of the application varies significantly by platform. For example, mobile app lifecycles (App Store distribution, strict updates) differ mechanically from Browser/PWA lifecycles (continuous deployment, immediate updates).
 
-```mermaid
-flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef note fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic,stroke-dasharray: 4 4
+### [Platform Application Lifecycle States]
 
-    I[Install]
-    FL[First Launch]
-    A[Authentication / Setup]
-    NU[Normal Usage]
-    U[Update]
-    M[Migration if required]
-    FV[Future Versions]
-    Un[Uninstall]
-    
-    I --> FL
-    FL --> A
-    A --> NU
-    NU --> U
-    U --> M
-    M --> FV
-    FV --> Un
-    
-    N[Note: Mobile app vs Browser/PWA lifecycles naturally differ in mechanics]
-    
-    I -.-> N
-    U -.-> N
-    Un -.-> N
-    
-    class I,FL,A,NU,U,M,FV,Un step;
-    class N note;
+```mermaid
+stateDiagram-v2
+    [*] --> Installed : App Store download or Web visit
+    Installed --> Initializing : First launch & bootstrapping
+    Initializing --> ActiveSession : Setup & authentication complete
+
+    state ActiveSession {
+        [*] --> Running
+        Running --> Updating : Store release or Web deploy
+        Updating --> Migrating : Local schema / cache migration
+        Migrating --> Running : Migration complete
+    }
+
+    ActiveSession --> Initializing : Session reset / Re-authentication
+    ActiveSession --> Terminated : App uninstall or storage clear
+    Terminated --> [*]
 ```
 
 ---
@@ -206,20 +167,27 @@ flowchart TD
 
 When introducing new features or capabilities, the decision of how to implement them on a platform is guided by a structured evaluation of product needs against platform reality.
 
+### [Platform Capability Decision Pipeline]
+
 ```mermaid
 flowchart TD
-    classDef origin fill:#f1f5f9,stroke:#475569,stroke-width:2px,font-weight:bold,color:#0f172a
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef decision fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef decision fill:#2563eb,stroke:#1e40af,stroke-width:2px,color:#ffffff,font-weight:bold
+    classDef outcome fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#14532d
 
-    UN[User Need]
-    R[Requirement]
-    PC[Platform Capability]
-    SP[Security / Privacy]
-    P[Performance]
-    MC[Maintenance Cost]
-    PD[Platform Decision]
+    UN["1. User Need & Desired Outcome"]:::step
+    R["2. Product Requirement & Semantics"]:::step
+    PC["3. Platform Capability & Constraints"]:::step
+    SP["4. Security, Privacy & Server Authority"]:::step
+    P["5. Performance & Device Budget"]:::step
+    MC["6. Maintenance Cost & Code Boundaries"]:::step
     
+    PD{"Platform Decision"}:::decision
+    
+    O1["Shared Implementation<br/>(Unified Web & Mobile)"]:::outcome
+    O2["Platform-Specific Adaptation<br/>(Form-factor specialized UX/API)"]:::outcome
+    O3["Graceful Fallback<br/>(Degraded mode if unsupported)"]:::outcome
+
     UN --> R
     R --> PC
     PC --> SP
@@ -227,9 +195,9 @@ flowchart TD
     P --> MC
     MC --> PD
     
-    class UN origin;
-    class R,PC,SP,P,MC step;
-    class PD decision;
+    PD -->|"Standard capability"| O1
+    PD -->|"Divergent form-factor"| O2
+    PD -->|"Unsupported on surface"| O3
 ```
 
 ---

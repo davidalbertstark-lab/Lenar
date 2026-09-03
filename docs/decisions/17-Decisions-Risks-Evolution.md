@@ -46,33 +46,46 @@ ADRs should be created for choices that materially affect:
 
 **Do NOT create ADRs for every tiny coding decision.** ADRs are conceptually stored under `docs/adr/`. 
 
+### Architecture Decision Record (ADR) Lifecycle
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef decision fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef phase fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef core fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef decision fill:#dcfce3,stroke:#16a34a,stroke-width:2px,color:#166534,font-weight:bold
     classDef review fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
 
-    Q[Question]
-    O[Options]
-    E[Evidence]
-    T[Trade-offs]
-    D[Decision]
-    C[Consequences]
-    RC[Review Condition]
-    REC[Reconsideration when evidence changes]
+    subgraph Phase1 ["1. Problem Evaluation & Evidence"]
+        direction TB
+        Q["Architectural Question<br/>Core Problem Framing"]:::core
+        O["Viable Options<br/>Alternatives Considered"]:::phase
+        E["Empirical Evidence<br/>Production Data & Benchmarks"]:::phase
+        T["Trade-off Analysis<br/>Costs, Limits & Reversibility"]:::phase
 
-    Q --> O
-    O --> E
-    E --> T
-    T --> D
-    D --> C
-    C --> RC
-    RC --> REC
-    REC -.-> Q
+        Q -->|"Explore"| O
+        O -->|"Evaluate"| E
+        E -->|"Weigh"| T
+    end
 
-    class Q,O,E,T,C,RC step;
-    class D decision;
-    class REC review;
+    subgraph Phase2 ["2. ADR Commitment & Impact"]
+        direction TB
+        D["Formal Decision<br/>Documented in ADR"]:::decision
+        C["Consequences<br/>Architectural Debt & Constraints"]:::phase
+
+        D -->|"Documents"| C
+    end
+
+    subgraph Phase3 ["3. Review Triggers & Evolution"]
+        direction TB
+        RC["Review Conditions<br/>Explicit Invalidation Triggers"]:::phase
+        REC["Reconsideration Trigger<br/>New Production Evidence"]:::review
+
+        RC -->|"Monitors for"| REC
+    end
+
+    T -->|"Selects path"| D
+    C -->|"Defines guardrails"| RC
+    REC -.->|"Invalidates assumptions"| Q
 ```
 
 ---
@@ -135,29 +148,36 @@ Current State → Observed Problem → Evidence → Smallest Effective Change �
 **Risk ≠ Issue.** An issue is a problem occurring now; a risk is a future possibility.
 `Risk = Probability × Impact`
 
+#### Risk Management Lifecycle
+
 ```mermaid
 flowchart TD
     classDef risk fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
     classDef monitor fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
 
-    R[Risk]
-    U[Understand]
-    A[Assess]
-    Mit[Mitigate]
-    Mon[Monitor]
-    Re[Reassess]
+    subgraph Assessment ["1. Identification & Assessment"]
+        direction TB
+        R["Risk Identification<br/>Potential Future Failure Mode"]:::risk
+        U["Understand Context<br/>Root Causes & Exposure Triggers"]:::step
+        A["Assess Severity<br/>Calculate: Probability × Impact"]:::step
 
-    R --> U
-    U --> A
-    A --> Mit
-    Mit --> Mon
-    Mon --> Re
-    Re -.-> R
+        R -->|"Analyze root cause"| U
+        U -->|"Score exposure"| A
+    end
 
-    class R risk;
-    class U,A,Mit step;
-    class Mon,Re monitor;
+    subgraph Treatment ["2. Treatment & Governance"]
+        direction TB
+        Mit["Mitigate & Control<br/>Preventive Architectural Countermeasures"]:::step
+        Mon["Continuous Monitoring<br/>Track Leading Indicators & Telemetry"]:::monitor
+        Re["Periodic Reassessment<br/>Evaluate Residual Risk & Effectiveness"]:::monitor
+
+        Mit -->|"Observe in production"| Mon
+        Mon -->|"Review telemetry"| Re
+    end
+
+    A -->|"Define controls"| Mit
+    Re -.->|"Residual or new risk detected"| R
 ```
 
 ### 6.2 Technical Debt
@@ -171,86 +191,87 @@ All recorded technical debt should have a reason, documented impact, risk, assig
 
 Major decisions rarely exist in isolation; they influence the entire system topology.
 
+### Architectural Decision Dependency Flow
+
 ```mermaid
 flowchart TD
-    classDef main flow fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef cross fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,font-weight:bold
+    classDef core fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef cross fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#334155
+    classDef delivery fill:#f0fdf4,stroke:#22c55e,stroke-width:1.5px,color:#166534
 
-    PR[Product Requirements]
-    Arch[Architecture]
-    Tech[Technology]
-    Imp[Implementation]
-    Test[Testing]
-    Ops[Operations]
+    subgraph CrossCutting ["Cross-Cutting Architectural Guardrails"]
+        direction TB
+        Sec["Security & Governance<br/>Server-Side Authz, Legal & Privacy"]:::cross
+        Data["Data & Resilience<br/>Authority, Local SQLite & Offline Sync"]:::cross
+        Obs["Platform & Observability<br/>Cloudflare R2, OpenTelemetry & Infra"]:::cross
+    end
 
-    PR --> Arch
-    Arch --> Tech
-    Tech --> Imp
-    Imp --> Test
-    Test --> Ops
+    subgraph Cascade ["Primary Decision Cascade"]
+        direction TB
+        PR["Product Requirements<br/>Canonical Scope & User Needs"]:::core
+        Arch["System Architecture<br/>Modular Monolith & Explicit Boundaries"]:::core
+        Tech["Technology Choices<br/>FastAPI, Flutter, React, PostgreSQL"]:::core
 
-    Sec[Security]
-    Sec <--> Arch
-    Arch <--> Tech
+        PR -->|"Shapes"| Arch
+        Arch -->|"Selects"| Tech
+    end
 
-    OS[Offline/Sync]
-    Data[Data]
-    Mob[Mobile]
-    OS <--> Data
-    Data <--> Arch
-    Arch <--> Mob
+    subgraph Delivery ["Delivery & Verification"]
+        direction TB
+        Imp["Implementation<br/>Modular Monolith Codebase"]:::delivery
+        Test["Testing & Quality<br/>Contract, Sync & Regression Tests"]:::delivery
+        Ops["Operations & Runtime<br/>Production Deployment & Health"]:::delivery
 
-    LP[Legal/Privacy]
-    An[Analytics]
-    Infra[Infrastructure]
-    LP <--> Data
-    Data <--> An
-    An <--> Infra
+        Imp -->|"Validated by"| Test
+        Test -->|"Released to"| Ops
+    end
 
-    class PR,Arch,Tech,Imp,Test,Ops main;
-    class Sec,OS,Data,Mob,LP,An,Infra cross;
+    Sec <-->|"Constrains"| Arch
+    Data <-->|"Contracts with"| Arch
+    Obs <-->|"Instruments"| Tech
+    Tech -->|"Executes via"| Imp
 ```
 
 Consequently, a significant architectural or technological change has a massive impact surface that must be explicitly reviewed across disciplines.
 
+### Cross-Disciplinary Review Surface for Significant Changes
+
 ```mermaid
-flowchart LR
-    classDef center fill:#fee2e2,stroke:#ef4444,stroke-width:3px,color:#991b1b,font-weight:bold
-    classDef node fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+flowchart TD
+    classDef change fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef product fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef tech fill:#f8fafc,stroke:#475569,stroke-width:1px,color:#0f172a
+    classDef ops fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e
 
-    SC((SIGNIFICANT<br/>CHANGE))
+    SC["Proposed Significant Change<br/><b>Core Architecture or Technology Modification</b>"]:::change
 
-    subgraph Impacts
+    subgraph ProductReview ["1. Product & Business Review"]
         direction TB
-        P[Product]
-        U[UX]
-        Pl[Platform]
-        D[Data]
-        S[Security]
-        OS[Offline / Sync]
-        A[Architecture]
-        T[Technology]
-        Te[Testing]
-        An[Analytics]
-        O[Operations]
-        LB[Legal / Business]
+        P["Product Requirements & Scope"]:::product
+        UX["User Experience & Flows"]:::product
+        LB["Legal, Privacy & Business Constraints"]:::product
+        P --- UX --- LB
     end
 
-    SC --- P
-    SC --- U
-    SC --- Pl
-    SC --- D
-    SC --- S
-    SC --- OS
-    SC --- A
-    SC --- T
-    SC --- Te
-    SC --- An
-    SC --- O
-    SC --- LB
+    subgraph TechReview ["2. Architecture & Data Review"]
+        direction TB
+        Arch["System Architecture & Boundaries"]:::tech
+        Tech["Technology Stack & Dependencies"]:::tech
+        Sync["Data Authority & Offline / Sync Protocol"]:::tech
+        Arch --- Tech --- Sync
+    end
 
-    class SC center;
-    class P,U,Pl,D,S,OS,A,T,Te,An,O,LB node;
+    subgraph OpsReview ["3. Assurance & Operations Review"]
+        direction TB
+        Sec["Security & Server-Side Authorization"]:::ops
+        Test["Testing & Quality Verification"]:::ops
+        Ops["Infrastructure, Telemetry & SRE"]:::ops
+        Sec --- Test --- Ops
+    end
+
+    SC -->|"Evaluates product scope"| P
+    SC -->|"Evaluates boundaries & sync"| Arch
+    SC -->|"Evaluates security & runtime"| Sec
 ```
 
 ---

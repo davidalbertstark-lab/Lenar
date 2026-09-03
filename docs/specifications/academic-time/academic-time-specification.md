@@ -70,53 +70,65 @@ This specification does **not** cover:
 7. **Distinct from Enrollment:** Academic Time provides the temporal framework; Enrollment uses it to form a user's Current Academic Context.
 
 ## 9. State Model
+
+### Academic Period Lifecycle
+*Authoritative state transitions of an academic period from staging to active and historical preservation.*
+
+```mermaid
+stateDiagram-v2
+    [*] --> Configured: Admin stages future period
+    Configured --> CurrentEffective: Authoritative calendar transition point
+    CurrentEffective --> Historical: Successor period becomes effective
+    Historical --> [*]: Preserved read-only
+
+    note right of Configured
+        Staged Future Period
+        Configured ≠ Current Effective
+    end note
+
+    note right of CurrentEffective
+        Active Authoritative Period
+        Supplies Current Academic Context
+    end note
+
+    note right of Historical
+        Concluded Past Period
+        Historical truth preserved
+    end note
+```
+
+### Academic Time Hierarchy and Domain Boundaries
+*Structural hierarchy of university academic time and its strict separation from adjacent domains.*
+
 ```mermaid
 flowchart TD
-    classDef domain fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef past fill:#f1f5f9,stroke:#cbd5e1,stroke-width:1px,color:#64748b,font-style:italic
-    classDef current fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef future fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,stroke-dasharray: 5 5
-    classDef explicit fill:#fef2f2,stroke:#f87171,stroke-width:2px,color:#b91c1c,font-weight:bold
-    classDef sub fill:#e0e7ff,stroke:#4f46e5,stroke-width:1px,color:#312e81
+    classDef time fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef consumer fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
+    classDef boundary fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,stroke-dasharray: 4 4
 
-    U[University]
-    
-    Model[University-specific <br/> Academic Time Model]
-    
-    Past[Past Periods <br/> historical]
-    Curr[Current Effective Period <br/> authoritative]
-    Fut[Future Configured Periods <br/> staging]
-    
-    U --> Model
-    Model --- Past
-    Model --- Curr
-    Model --- Fut
-    
-    Session[Academic Session]
-    Term[Semester / Term <br/> where applicable]
-    
-    Curr -.->|Example Structure| Session
-    Session -.-> Term
-    
-    class U,Model domain;
-    class Past past;
-    class Curr current;
-    class Fut future;
-    class Session,Term sub;
+    subgraph AcademicTimeDomain["Academic Time Domain (University-Relative)"]
+        Univ["University"] --> Model["Academic Time Model"]
+        Model --> Session["Academic Session<br/>(e.g., 2025/2026)"]
+        Session --> Term["Semester / Term<br/>(where applicable)"]
+    end
 
-    N1[Configured Future Period ≠ Current Effective Period]
-    N2[Academic Time ≠ Level]
-    N3[Academic Time ≠ Enrollment]
-    N4[Academic Time ≠ Community]
-    
-    Fut -.-> N1
-    Curr -.-> N1
-    
-    Model -.-> N2
-    Model -.-> N3
-    Model -.-> N4
-    
-    class N1,N2,N3,N4 explicit;
+    subgraph DownstreamConsumption["Downstream Temporal Context"]
+        Term -->|"Supplies active period to"| CAC["Current Academic Context<br/>(Enrollment Domain)"]
+    end
+
+    subgraph IndependentDomains["Independent Domains (Decoupled)"]
+        Lvl["Level Domain<br/>(No auto-promotion on time change)"]
+        Gov["Governance Domain<br/>(No auto-revocation on time change)"]
+        Comm["Community Domain<br/>(Separate membership lifecycle)"]
+    end
+
+    Model -.->|"Distinct from"| Lvl
+    Model -.->|"Distinct from"| Gov
+    Model -.->|"Distinct from"| Comm
+
+    class Univ,Model,Session,Term time;
+    class CAC consumer;
+    class Lvl,Gov,Comm boundary;
 ```
 
 ## 10. Main Behaviors

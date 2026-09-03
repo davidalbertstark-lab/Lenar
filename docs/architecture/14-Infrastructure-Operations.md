@@ -25,50 +25,40 @@ Lenar prefers **managed infrastructure** where it meaningfully reduces operation
 
 Lenar's infrastructure logically separates clients, core data processing, and supporting external services.
 
+### System Topology & Service Boundaries
+
 ```mermaid
 flowchart TD
-    classDef actor fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
-    classDef boundary fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,stroke-dasharray: 4 4
-    classDef app fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef data fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534
-    classDef supporting fill:#fffbeb,stroke:#d97706,stroke-width:1px,color:#92400e
+    subgraph Clients["Clients"]
+        direction LR
+        WEB["Web Client"]
+        PWA["PWA Client"]
+        MOB["Mobile App"]
+    end
 
-    U[Users]
-    N[Internet / Network]
-    
-    subgraph Clients
-        W[Web]
-        P[PWA]
-        M[Mobile]
+    subgraph Core["Core Application & Storage"]
+        API["FastAPI Backend"]
+        WORKER["Background Worker"]
+        DB[("PostgreSQL Database")]
+        R2[("Cloudflare R2 Storage")]
+
+        API -->|Read / Write| DB
+        API -->|File Uploads| R2
+        API -->|Enqueue Jobs| WORKER
+        WORKER -->|Process Tasks| DB
     end
-    
-    API[Lenar Application/API]
-    
-    subgraph Core Data & Work
-        DB[(PostgreSQL)]
-        OS[Object Storage]
-        BW[Background Work]
+
+    subgraph Services["Supporting Services"]
+        direction TB
+        AUTH["Auth & Sessions (JWT)"]
+        PUSH["Push Notifications (FCM)"]
+        OBS["Observability (Sentry / PostHog)"]
     end
-    
-    subgraph Supporting Services
-        Auth[Authentication]
-        Push[Push Notifications]
-        An[Analytics]
-        Ob[Observability]
-    end
-    
-    U --> N
-    N --> Clients
-    Clients --> API
-    
-    API --> Core_Data_&_Work
-    API -.-> Supporting_Services
-    
-    class U actor;
-    class N,Clients boundary;
-    class W,P,M,API app;
-    class DB,OS,BW data;
-    class Auth,Push,An,Ob supporting;
+
+    Clients -->|HTTPS / REST API| API
+    API -.->|Verify Credentials| AUTH
+    API -.->|Dispatch Alerts| PUSH
+    API -.->|Metrics & Traces| OBS
 ```
 
 ---
@@ -77,47 +67,45 @@ flowchart TD
 
 Environments are rigorously separated. We do not use production data casually in development.
 
+### Environment Isolation Architecture
+
 ```mermaid
 flowchart LR
-    classDef dev fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#334155,font-weight:bold
-    classDef stg fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
-    classDef prod fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef attr fill:#fff,stroke:#cbd5e1,stroke-width:1px,color:#0f172a
-
-    subgraph D[Development]
+    subgraph DEV["Development"]
         direction TB
-        D_Data[Data]
-        D_Creds[Credentials]
-        D_Conf[Configuration]
-        D_Dep[Deployment Targets]
-        D_Obs[Observability Context]
+        DEV_APP["Local / Feature Instances"]
+        DEV_DATA["Mock / Seed Data"]
+        DEV_SEC["Local Secrets & .env"]
+        DEV_OBS["Local Tracing & Debug"]
+        DEV_APP --- DEV_DATA
+        DEV_APP --- DEV_SEC
+        DEV_APP --- DEV_OBS
     end
 
-    subgraph S[Staging]
+    subgraph STG["Staging"]
         direction TB
-        S_Data[Data]
-        S_Creds[Credentials]
-        S_Conf[Configuration]
-        S_Dep[Deployment Targets]
-        S_Obs[Observability Context]
+        STG_APP["Pre-Release Staging Cluster"]
+        STG_DATA["Synthetic / Sanitized Data"]
+        STG_SEC["Staging Secrets"]
+        STG_OBS["Staging Sentry & PostHog"]
+        STG_APP --- STG_DATA
+        STG_APP --- STG_SEC
+        STG_APP --- STG_OBS
     end
 
-    subgraph P[Production]
+    subgraph PRD["Production"]
         direction TB
-        P_Data[Data]
-        P_Creds[Credentials]
-        P_Conf[Configuration]
-        P_Dep[Deployment Targets]
-        P_Obs[Observability Context]
+        PRD_APP["Live Production Workloads"]
+        PRD_DATA["Authoritative PostgreSQL & R2"]
+        PRD_SEC["Production Vault Secrets"]
+        PRD_OBS["Live Alerts & OTel"]
+        PRD_APP --- PRD_DATA
+        PRD_APP --- PRD_SEC
+        PRD_APP --- PRD_OBS
     end
 
-    D ~~~ S
-    S ~~~ P
-
-    class D dev;
-    class S stg;
-    class P prod;
-    class D_Data,D_Creds,D_Conf,D_Dep,D_Obs,S_Data,S_Creds,S_Conf,S_Dep,S_Obs,P_Data,P_Creds,P_Conf,P_Dep,P_Obs attr;
+    DEV ==>|Code Promotion Only| STG
+    STG ==>|Validated Artifact Only| PRD
 ```
 
 Each environment isolates its:
@@ -133,39 +121,42 @@ Each environment isolates its:
 ### 3.1 Deployment Flow
 Changes move through a strict validation path before reaching production.
 
+#### Deployment & Recovery Pipeline
+
 ```mermaid
-flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef prod fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
-    classDef rollback fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+flowchart LR
+    subgraph Build["1. Build & CI"]
+        direction TB
+        PR["Pull Request"]
+        CI["Automated Checks (Lint, Test, Typecheck)"]
+        ART["Docker Image Artifact"]
+        PR --> CI --> ART
+    end
 
-    C[Code]
-    PR[Pull Request]
-    CI[CI Checks]
-    BA[Build Artifact]
-    S[Staging]
-    V[Validation]
-    P[Production]
-    ST[Smoke Test]
-    M[Monitoring]
-    
-    RR[Rollback / Recovery Path]
+    subgraph Staging["2. Staging Gate"]
+        direction TB
+        S_DEP["Deploy to Staging"]
+        S_TEST["Integration & Migration Validation"]
+        S_DEP --> S_TEST
+    end
 
-    C --> PR
-    PR --> CI
-    CI --> BA
-    BA --> S
-    S --> V
-    V --> P
-    P --> ST
-    ST --> M
-    
-    P -.->|If Failure| RR
-    RR -.->|Restore| P
-    
-    class C,PR,CI,BA,S,V,ST,M step;
-    class P prod;
-    class RR rollback;
+    subgraph Prod["3. Production Release"]
+        direction TB
+        P_DEP["Deploy to Production"]
+        P_MON["Smoke Tests & Live Monitoring"]
+        P_DEP --> P_MON
+    end
+
+    subgraph Fallback["4. Failure Handling"]
+        direction TB
+        RB["Stateless Rollback (Container Revert)"]
+        RC["State Recovery (Database Restore)"]
+    end
+
+    ART --> S_DEP
+    S_TEST -->|Passed| P_DEP
+    P_MON -.->|Application Failure| RB
+    P_MON -.->|Data / Migration Failure| RC
 ```
 
 ### 3.2 Rollback vs. Recovery
@@ -210,47 +201,36 @@ A running process (liveness) is not necessarily a service that is ready to accep
 ### 5.2 Recovery Model
 Incident response follows a structured path. We explicitly distinguish routine operational recovery from Major Disaster Recovery (which involves catastrophic loss requiring infrastructure restoration or rebuilding).
 
+#### Incident Response & Disaster Recovery Pathways
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef start fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef endstep fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
-    classDef branch fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef branch2 fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
-
-    F[Failure]
-    D[Detect]
-    A[Assess]
-    C[Contain]
-    
-    subgraph Pathways [Recovery Paths]
-        direction LR
-        NOR[Normal Operational Recovery]
-        MDR[Major Disaster Recovery]
+    subgraph Phase1["1. Detection & Containment"]
+        direction TB
+        DET["Failure Detected (Alert or Anomaly)"]
+        ASS["Assess Severity & Blast Radius"]
+        CON["Contain Incident & Mitigate Harm"]
+        DET --> ASS --> CON
     end
-    
-    V[Validate]
-    R[Resume]
-    LI[Learn / Improve]
 
-    F --> D
-    D --> A
-    A --> C
-    
-    C --> NOR
-    C --> MDR
-    
-    NOR --> V
-    MDR --> V
-    
-    V --> R
-    R --> LI
+    subgraph Phase2["2. Recovery Strategy"]
+        direction LR
+        NOR["Normal Operational Recovery (Restart, Rollback, Reschedule)"]
+        MDR["Major Disaster Recovery (Restore from Backup, Rebuild Infra)"]
+    end
 
-    class F start;
-    class D,A,C,V step;
-    class R,LI endstep;
-    class NOR branch;
-    class MDR branch2;
+    subgraph Phase3["3. Restoration & Review"]
+        direction TB
+        VAL["Validate Health & Data Integrity"]
+        RES["Resume Production Traffic"]
+        LRN["Post-Incident Review & Learning"]
+        VAL --> RES --> LRN
+    end
+
+    CON -->|Routine Process Failure| NOR
+    CON -->|Catastrophic State Loss| MDR
+    NOR --> VAL
+    MDR --> VAL
 ```
 
 ### 5.3 Business Continuity

@@ -83,79 +83,76 @@ It outlines the responsibilities and boundaries of Community creation, lifecycle
 
 ## 9. State Models and Diagrams
 
-### Community Model
+### Community Structural Model
+*Structural relationships linking institutional academic context, first-class communities, membership relationships, and users.*
+
 ```mermaid
 flowchart TD
-    classDef domain fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
     classDef organization fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
     classDef community fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
     classDef relationship fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
-    classDef user fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef user fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#1e293b,font-weight:bold
 
-    subgraph Types of Community
-        Comm[Community] --> BC[Base Community]
-        Comm --> OC[Other Community]
+    subgraph OrgDomain["Organization Domain (Institutional Context)"]
+        Context["Academic Context<br/>(University + Department + Level)"]
     end
 
-    subgraph Organization Domain
-        Univ[University] --> AuthCtx[Authoritative Academic Context]
-        AuthCtx --> DeptLvl[Department + Level]
+    subgraph CommDomain["Community Domain (Participation Boundary)"]
+        BaseComm["Base Community<br/>(Authoritative · 1 per Context)"]
+        OtherComm["Other Community<br/>(Interest, Club, Project)"]
     end
 
-    subgraph Community Domain
-        BaseComm[Base Community]
-        OtherComm[Other Community]
+    subgraph MemDomain["Membership Domain (First-Class Relationship)"]
+        BaseMem["Base Membership<br/>(Automatic · Exactly 1 · Mandatory)"]
+        OtherMem["Other Membership<br/>(Optional · 0..N Coexisting)"]
     end
 
-    subgraph Membership Relationship
-        BaseMem[Base Membership]
-        OtherMem[Other Community Membership]
-    end
+    UserNode(["User (Active Student)"])
 
-    UserNode([User])
-
-    DeptLvl -.->|Associated with| BaseComm
+    Context -.->|Associates with (1:1)| BaseComm
     BaseComm -->|Requires| BaseMem
-    BaseMem --> UserNode
+    OtherComm -->|Enables| OtherMem
 
-    OtherComm -.->|May have| OtherMem
+    BaseMem --> UserNode
     OtherMem --> UserNode
 
-    class Comm,BC,OC,BaseComm,OtherComm community;
-    class Univ,AuthCtx,DeptLvl organization;
-    class BaseMem,OtherMem relationship;
-    class UserNode user;
+    class Context organization
+    class BaseComm,OtherComm community
+    class BaseMem,OtherMem relationship
+    class UserNode user
 ```
 
-### Membership Lifecycle
-```mermaid
-flowchart TD
-    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef endstate fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef coexist fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+### Base Membership Lifecycle
+*Authoritative state transitions governing user Base Community Membership from enrollment to conclusion.*
 
-    subgraph Base Membership Lifecycle
-        ActEnr[Active Enrollment] --> CurCtx[Current Academic Context]
-        CurCtx --> BCIdent[Base Community Identified]
-        BCIdent --> BMEst[Base Membership Established]
-        BMEst --> CurBM[Current Base Membership]
-        
-        CurCtxChange[Academic Context Changes] --> CurBMChange[Current Base Membership Changes]
-        CurBM -.-> CurBMChange
-        
-        EnrEnds[Enrollment Ends] --> NoBM[Base Membership No Longer Current]
-        CurBM -.-> NoBM
-    end
-    
-    subgraph Coexisting Memberships
-        CurBM -.->|Coexists with| OtherM[Other Community Memberships]
-    end
-    
-    class ActEnr,CurCtx,BCIdent,BMEst,CurCtxChange,EnrEnds process;
-    class CurBM,CurBMChange state;
-    class NoBM endstate;
-    class OtherM coexist;
+```mermaid
+stateDiagram-v2
+    direction TB
+
+    [*] --> PendingCommunity: Base Community Missing
+    [*] --> CurrentMembership: Base Community Available
+
+    PendingCommunity --> CurrentMembership: Admin Creates Community (Auto-Match)
+
+    CurrentMembership --> CurrentMembership: Academic Progression (Context Change)
+    CurrentMembership --> EndedMembership: Enrollment Ends (Graduation / Withdrawal)
+
+    EndedMembership --> [*]
+
+    note right of PendingCommunity
+        Enrollment is valid, but user
+        is blocked from Active status
+    end note
+
+    note right of CurrentMembership
+        Exactly 1 active Base Community
+        Automatic; cannot voluntarily leave
+    end note
+
+    note right of EndedMembership
+        Enrollment concluded; no current
+        active Base Community relationship
+    end note
 ```
 
 ## 10. Main Behaviors

@@ -20,36 +20,39 @@ Speed + Quality + Security + Consistency + Traceability + Recoverability
 
 The development lifecycle connects requirements to observed production behavior, creating a continuous feedback loop.
 
+### Continuous Development Lifecycle & Feedback Loop
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef action fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef output fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef phase fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef step fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef feedback fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold
 
-    R[Requirement]
-    D[Design]
-    I[Implement]
-    T[Test]
-    Rev[Review]
-    Int[Integrate]
-    Rel[Release]
-    O[Observe]
-    Imp[Improve]
+    subgraph Phase1 ["1. Specification & Architecture (Source of Truth)"]
+        direction LR
+        REQ["Requirement"] --> DES["Architecture & System Design"]
+    end
 
-    R --> D
-    D --> I
-    I --> T
-    T --> Rev
-    Rev --> Int
-    Int --> Rel
-    Rel --> O
-    O --> Imp
+    subgraph Phase2 ["2. Engineering & Quality Verification"]
+        direction LR
+        IMP["Implementation"] --> TST["Automated Testing"]
+        TST --> REV["Code Review"]
+    end
 
-    Imp -.-> R
-    Imp -.-> D
+    subgraph Phase3 ["3. Continuous Delivery & Production Operations"]
+        direction LR
+        INT["Integration (CI)"] --> REL["Production Release (CD)"]
+        REL --> OBS["Observability & Telemetry"]
+    end
 
-    class R,D,I,T,Rev,Int step;
-    class Rel,O,Imp action;
+    DES --> IMP
+    REV --> INT
+    OBS --> IMPR["Continuous Improvement"]:::feedback
+    IMPR -.->|"Discrepancy / Architecture Update"| DES
+    IMPR -.->|"New Requirements"| REQ
+
+    class Phase1,Phase2,Phase3 phase;
+    class REQ,DES,IMP,TST,REV,INT,REL,OBS step;
 ```
 
 ### 1.1 The Source of Truth
@@ -64,36 +67,23 @@ If implementation reveals a contradiction or flaw in the architecture, you must 
 
 Not every change requires identical process depth. A minor typo fix does not require the same scrutiny as a core database migration.
 
+### Change Risk Evaluation Model
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef factor fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
-    classDef risk fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef outcome fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef neutral fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef vector fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef low fill:#dcfce3,stroke:#22c55e,stroke-width:1.5px,color:#166534
+    classDef high fill:#fee2e2,stroke:#ef4444,stroke-width:1.5px,color:#991b1b
+    classDef action fill:#fff,stroke:#cbd5e1,stroke-width:1px,color:#334155
 
-    C[Change]
-    
-    subgraph Vectors [Risk Vectors]
-        direction LR
-        S[Scope]
-        SI[Security Impact]
-        DI[Data Impact]
-        Comp[Compatibility]
-        MC[Migration Complexity]
-        Rev[Reversibility]
-    end
+    CHANGE["Proposed Change"]:::neutral --> EVAL{"Evaluate Risk Vectors<br/>• Scope & Blast Radius<br/>• Security & Auth Impact<br/>• Data & Schema Impact<br/>• Client Compatibility<br/>• Reversibility"}:::vector
 
-    R[Risk]
-    RVR[Required Validation / Review]
+    EVAL -->|"Low Vector Impact"| LOW["Low-Risk Change<br/>(Typo, UI tweak, minor bugfix)"]:::low
+    EVAL -->|"High Vector Impact"| HIGH["Significant-Risk Change<br/>(DB migration, sync protocol, auth)"]:::high
 
-    C --> Vectors
-    Vectors --> R
-    R --> RVR
-
-    class C step;
-    class S,SI,DI,Comp,MC,Rev factor;
-    class R risk;
-    class RVR outcome;
+    LOW --> REV_LOW["Standard Path<br/>• Automated CI checks<br/>• Single peer code review"]:::action
+    HIGH --> REV_HIGH["Rigorous Path<br/>• Multi-party architectural review<br/>• Staging validation & migration proof<br/>• Explicit evidence required"]:::action
 ```
 
 - **Small Changes:** Typo, small UI fix, isolated bug fix, minor refactor.
@@ -119,38 +109,42 @@ Code review is not merely about formatting and syntax. A high-quality review mus
 
 Lenar utilizes a structured Continuous Integration and Continuous Deployment pipeline to validate code before it reaches users.
 
+### CI/CD Validation Pipeline
+
 ```mermaid
 flowchart TD
-    classDef trigger fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,font-weight:bold
-    classDef check fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef env fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
-    classDef prod fill:#dcfce3,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold
+    classDef stage fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef step fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef prod fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
 
-    PR[Pull Request]
-    B[Build]
-    LF[Lint / Format]
-    TC[Type Checks]
-    T[Tests]
-    SC[Security Checks]
-    A[Artifact]
-    S[Staging]
-    V[Validation]
-    P[Production]
+    PR["Pull Request / Trigger"]:::stage --> CI
 
-    PR --> B
-    B --> LF
-    LF --> TC
-    TC --> T
-    T --> SC
-    SC --> A
-    A --> S
-    S --> V
-    V --> P
+    subgraph CI ["1. Continuous Integration (Automated Gates)"]
+        direction LR
+        STATIC["Static Analysis<br/>(Lint, Format, Types)"]
+        TESTS["Automated Tests<br/>(Unit, Integration, Security)"]
+        BUILD["Artifact Build<br/>(Immutable Packages & Images)"]
+        
+        STATIC --> TESTS --> BUILD
+    end
 
-    class PR trigger;
-    class B,LF,TC,T,SC,A check;
-    class S,V env;
-    class P prod;
+    CI --> STAGE
+
+    subgraph STAGE ["2. Staging Deployment & Validation"]
+        direction LR
+        S_DEP["Deploy to Staging"] --> S_VAL["Smoke & Schema Validation"]
+    end
+
+    STAGE -->|"Validation Passed"| PROD
+
+    subgraph PROD ["3. Production Release & Monitoring"]
+        direction LR
+        P_DEP["Production Rollout"] --> P_OBS["Health Checks & Telemetry"]
+    end
+
+    class STATIC,TESTS,BUILD,S_DEP,S_VAL,P_DEP step;
+    class P_OBS prod;
+    class CI,STAGE,PROD stage;
 ```
 
 *(Note: The exact CI providers and deployment platforms are implemented in code, but they strictly follow this conceptual validation funnel).*
@@ -183,41 +177,46 @@ Because of client compatibility, migrations should conceptually follow an **expa
 
 ## 7. Release & Recovery
 
+Production deployments require rapid post-release verification and explicit mitigation strategies tailored to the type of failure.
+
+### Release Verification and Recovery Strategy
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef issue fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef recovery fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef normal fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef step fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef alert fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef decision fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef action fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#92400e
+    classDef resolved fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
 
-    C[Change]
-    V[Validate]
-    B[Build]
-    S[Stage]
-    R[Release]
-    ST[Smoke Test]
-    M[Monitor]
+    subgraph NormalOps ["1. Release & Verification"]
+        direction LR
+        REL["Production Release"] --> SMOKE["Smoke Tests"]
+        SMOKE --> MON["Production Monitoring"]
+    end
 
-    P[Problem]
-    RM[Rollback / Mitigate]
-    V2[Validate Recovery]
+    SMOKE -.->|"Failure"| INC["Production Anomaly / Issue"]:::alert
+    MON -.->|"Telemetry Alert"| INC
 
-    C --> V
-    V --> B
-    B --> S
-    S --> R
-    R --> ST
-    ST --> M
+    subgraph RecoveryPath ["2. Incident Recovery (Rollback ≠ Recovery)"]
+        direction TB
+        DEC{"Select Recovery Strategy"}:::decision
+        
+        DEC -->|"Decoupled Feature"| FF["Feature Flag Off<br/>(Instant disable)"]:::action
+        DEC -->|"Stateless Service"| RB["Version Rollback<br/>(Revert deployment container)"]:::action
+        DEC -->|"DB Schema or Mobile"| RF["Roll-Forward Hotfix<br/>(Traceable emergency patch)"]:::action
+    end
 
-    M -.->|If detected| P
-    ST -.->|If detected| P
-    
-    P --> RM
-    RM --> V2
-    V2 --> M
+    INC --> DEC
+    FF --> VAL["Validate Recovery"]:::resolved
+    RB --> VAL
+    RF --> VAL
+    VAL --> MON
 
-    class C,V,B,S,R,ST,M step;
-    class P issue;
-    class RM,V2 recovery;
+    class NormalOps normal;
+    class REL,SMOKE step;
+    class MON resolved;
 ```
 
 ### 7.1 Rollback vs. Recovery

@@ -99,71 +99,107 @@ This document establishes the Governance boundaries without defining the detaile
 ## 9. State Models and Diagrams
 
 ### Governance Model
+
+#### Governance Assignment Structure
+# [Governance Assignment Structure]
+A Governance Assignment explicitly binds an individual User to an authority Role within a specific Authority Context.
+
 ```mermaid
 flowchart TD
+    classDef entity fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef prop fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+
+    GA["Governance Assignment<br/>(First-Class Entity)"]:::entity
+
+    GA --> User["User<br/>(WHO holds authority)"]:::prop
+    GA --> Role["Role<br/>(WHAT title: Super Admin, Admin, Leader, Subordinate)"]:::prop
+    GA --> Context["Authority Context<br/>(WHERE applied: Platform, University, Base Community)"]:::prop
+```
+
+#### Governance Delegation Hierarchy
+# [Governance Delegation Hierarchy]
+Authority is delegated downward from Platform to University to Base Community scopes without self-escalation.
+
+```mermaid
+flowchart TD
+    classDef bootstrap fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
     classDef platform fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
     classDef admin fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
     classDef leader fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
-    classDef sub fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#475569,font-weight:bold
-    classDef assignment fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
+    classDef sub fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#475569
 
-    subgraph Governance Delegation
-        SA[SUPER ADMIN<br/>Platform-wide]
-        
-        SA -->|Assigns Admin| AdminX[ADMIN<br/>University X Context]
-        
-        AdminX -->|Creates| BC[BASE COMMUNITY<br/>University + Department + Level]
-        AdminX -->|Assigns Leader| Ldr[LEADER]
-        
-        BC -.->|Context of| Ldr
-        
-        Ldr -->|Assigns within Context| SubLdr[SUB-LEADER]
-        Ldr -->|Assigns within Context| Mgr[MANAGER]
-        Ldr -->|Assigns within Context| Wrt[WRITER]
+    subgraph PlatformScope["Platform Scope"]
+        SA["Super Admin"]:::platform
     end
 
-    subgraph Assignment Concept
-        Usr([User]) --> GovAssn[Governance Assignment]
-        GovAssn --> Role[Role]
-        GovAssn --> AuthCtx[Authority Context]
+    subgraph UniversityScope["University Scope"]
+        Admin["Admin"]:::admin
     end
 
-    class SA platform;
-    class AdminX admin;
-    class Ldr leader;
-    class SubLdr,Mgr,Wrt sub;
-    class GovAssn,Role,AuthCtx assignment;
+    subgraph CommunityScope["Base Community Scope"]
+        direction TB
+        Leader["Leader (Class Leader)"]:::leader
+        subgraph Subordinates["Subordinate Roles"]
+            SubLeader["Sub-Leader"]:::sub
+            Manager["Manager"]:::sub
+            Writer["Writer"]:::sub
+        end
+    end
+
+    Boot(["Platform Bootstrap"]):::bootstrap -->|"Initializes"| SA
+    SA -->|"Assigns Admin (University-scoped)"| Admin
+    Admin -->|"Assigns Leader (Base Community-scoped)"| Leader
+    Leader -->|"Assigns"| SubLeader
+    Leader -->|"Assigns"| Manager
+    Leader -->|"Assigns"| Writer
 ```
 
 ### Governance Assignment Lifecycle
+
+# [Governance Assignment Lifecycle]
+A Governance Assignment transitions from Active to Ended upon explicit revocation, role transfer, or context retirement.
+
+```mermaid
+stateDiagram-v2
+    [*] --> Active: Role Assigned
+
+    Active --> Ended: Explicit Revocation (by superior authority)
+    Active --> Ended: Role Transferred (old assignment ends)
+    Active --> Ended: Context Retired (community ceases to exist)
+
+    Ended --> [*]
+```
+
+### Governance Independence Principles
+
+# [Governance Independence and Non-Cascading Rules]
+Governance assignments remain active during normal academic progression and do not cascade when superior roles are revoked.
+
 ```mermaid
 flowchart TD
-    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef endstate fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef note fill:#fef08a,stroke:#ca8a04,stroke-width:1px,stroke-dasharray: 5 5,color:#854d0e
+    classDef trigger fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef active fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
+    classDef neutral fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
 
-    subgraph Assignment Lifecycle
-        NA[Not Assigned] -->|Assigned| AA[Active Assignment]
-        
-        AA -->|Remains Active| AA
-        
-        AA -->|Transfer| Trans[Transfer Process]
-        Trans -->|Old Assignment| End[Ended]
-        Trans -->|New Assignment| AA
-        
-        AA -->|Revocation| End
-    end
-    
-    subgraph Non-Cascading Independence
-        LdrEnd[Leader Assignment Revoked] -.->|Does NOT revoke| SubAssn[Sub-Leader / Manager / Writer Assignments remain active]
-        AcadProg[Normal Academic Progression] -.->|Does NOT revoke| GovAssn[Governance Assignment remains active]
+    subgraph NonCascading["Non-Cascading Revocation Principle"]
+        direction TB
+        Superior["Superior Role Revoked<br/>(Admin or Leader)"]:::trigger
+        Subordinates["Subordinate Assignments<br/>(Leader, Sub-Leader, Manager, Writer)"]:::neutral
+        SubRemain["Subordinates Remain Active<br/>(Require independent revocation)"]:::active
+
+        Superior -.->|"Does NOT cascade to"| Subordinates
+        Subordinates --> SubRemain
     end
 
-    class NA,AA state;
-    class End endstate;
-    class Trans process;
-    class SubAssn,GovAssn note;
+    subgraph AcademicProgression["Academic Progression Independence"]
+        direction TB
+        Progression["Academic Context Changes<br/>(e.g., Progression from 300L to 400L)"]:::neutral
+        GovAssignment["Governance Assignment<br/>(Active Role in Community)"]:::neutral
+        GovRemain["Assignment Remains Active<br/>(Independent of progression)"]:::active
+
+        Progression -.->|"Does NOT revoke"| GovAssignment
+        GovAssignment --> GovRemain
+    end
 ```
 
 ## 10. Main Behaviors

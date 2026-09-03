@@ -26,22 +26,29 @@ The central domain idea is:
 
 The initial domain context is **FUTA** and a **BSc university environment**, while the architecture should avoid hard-coding assumptions that would make future institutional expansion unnecessarily difficult.
 
-```mermaid
-flowchart TD
-    classDef actor fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
-    classDef platform fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+### Core Platform Interaction Model
+Lenar acts as a structured digital bridge between institutional stakeholders and undergraduate students, unifying scattered notices, services, and opportunities into a single verified experience.
 
-    S((Students))
-    U((Institutional Actors))
-    
-    L[Lenar Platform]
-    
-    U -- Provides Info & Services --> L
-    L -- Delivers Coherent Experience --> S
-    S -- Engages & Reports --> L
-    
-    class S,U actor;
-    class L platform;
+```mermaid
+flowchart LR
+    subgraph Providers["Campus Stakeholders"]
+        direction TB
+        Actors["Institutional Actors<br/>(Administration, Faculties, Student Leaders)"]
+    end
+
+    subgraph Platform["Lenar Digital Layer"]
+        direction TB
+        Core["Structured Life Model<br/>(Identity, Scoping, Authority, Freshness)"]
+    end
+
+    subgraph Consumers["Student Body"]
+        direction TB
+        Students["Undergraduate Students<br/>(BSc University Community)"]
+    end
+
+    Actors -->|"Publish notices, services & opportunities"| Core
+    Core -->|"Deliver coherent, verified experience"| Students
+    Students -->|"Report issues, submit profiles & engage"| Core
 ```
 
 ---
@@ -94,31 +101,34 @@ Lenar must therefore model information as more than text. Where meaningful, info
 
 Lenar operates within a structured university environment. However, this structure acts primarily as a contextual hierarchy, not an absolute authorization model.
 
+### University Organizational Context Hierarchy
+The organizational hierarchy establishes contextual boundaries (University, Faculty, Department, and Level) to scope information and notifications without acting as a rigid authorization gate.
+
 ```mermaid
 flowchart TD
-    classDef domain fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#1e293b,font-weight:bold
-    classDef firstclass fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    subgraph Hierarchy["Institutional Structural Hierarchy"]
+        direction TB
+        Univ["University<br/>(Institutional Root)"]
+        Fac["Faculty / School<br/>(Academic Division)"]
+        Dept["Department<br/>(Academic Program)"]
+        Level["Level<br/>(First-Class Academic Standing)"]
 
-    Org[Organization]
-    U[University]
-    F[Faculty]
-    D[Department]
-    L[Level]
-    
-    Org --- U
-    Org --- F
-    Org --- D
-    Org --- L
-    
-    U -->|contains| F
-    F -->|contains| D
-    
-    %% Level is first-class, relations are institution specific
-    U -.->|may contain| L
-    D -.->|may contain| L
-    
-    class Org domain;
-    class U,F,D,L firstclass;
+        Univ -->|"Contains"| Fac
+        Fac -->|"Contains"| Dept
+        Dept -.->|"Forms class cohort with"| Level
+        Univ -.->|"Applies institution-wide to"| Level
+    end
+
+    subgraph ScopeOutput["Contextual Applications"]
+        direction TB
+        Content["Content & Notice Scoping"]
+        Notif["Notification Routing"]
+        Comm["Base Community Mapping"]
+    end
+
+    Dept -->|"Scopes"| Content
+    Level -->|"Filters"| Notif
+    Dept & Level -->|"Resolves"| Comm
 ```
 
 This hierarchy helps Lenar organize content, route notifications, and determine relevance. It ensures that students see information scoped to their specific faculty, department, or level.
@@ -147,106 +157,116 @@ The currently established roles are:
 
 Lenar does not rely on simple role-based access control (RBAC). A user's ability to perform an action is determined by a combination of their identity, their assigned role, the scope of that role, the specific resource, and the action requested.
 
-```mermaid
-flowchart TD
-    classDef input fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef decision fill:#3b82f6,color:#fff,stroke:#1d4ed8,stroke-width:2px,font-weight:bold
-    classDef allow fill:#10b981,color:#fff,stroke:#047857,stroke-width:2px,font-weight:bold
-    classDef deny fill:#ef4444,color:#fff,stroke:#b91c1c,stroke-width:2px,font-weight:bold
-    classDef generic fill:#e2e8f0,stroke:#cbd5e1,stroke-width:1px,color:#475569,font-style:italic
+### Contextual Authorization Evaluation Model
+Authorization requires evaluating identity, role, scope, context, resource, and action together; a role alone never grants permission without a valid matching scope.
 
-    I[Identity]
-    R[Role / Assignment]
-    S[Scope]
-    C[Context]
-    
-    Res[Generic Resource]
-    A[Requested Operation]
-    
-    Dec{Authorization<br/>Decision}
-    
-    I & R & S & C & Res & A --> Dec
-    
-    Dec --> AL[Allow]
-    Dec --> DN[Deny]
-    
-    class I,R,S,C input;
-    class Res,A generic;
-    class Dec decision;
-    class AL allow;
-    class DN deny;
-    
-    %% Emphasize role alone is not enough
-    R -. "Insufficient Alone" .-> Dec
+```mermaid
+flowchart LR
+    subgraph Context["Actor & Authority Context"]
+        direction TB
+        ID["User Identity<br/>(Authenticated Actor)"]
+        ROLE["Assigned Role<br/>(Role ≠ Full Authority)"]
+        SCOPE["Authority Scope<br/>(Faculty, Dept, Community)"]
+        CTX["Session Context<br/>(Active Standing & Time)"]
+    end
+
+    subgraph Operation["Requested Action & Target"]
+        direction TB
+        RES["Target Resource<br/>(Notice, Member, Setting)"]
+        ACT["Operation Type<br/>(Read, Publish, Approve, Delete)"]
+    end
+
+    subgraph Engine["Authorization Engine"]
+        EVAL{"Multi-Factor Policy Check<br/>(Default Deny)"}
+    end
+
+    subgraph Outcomes["Policy Decision"]
+        ALLOW["ALLOW<br/>(Action Permitted)"]
+        DENY["DENY<br/>(Access Blocked)"]
+    end
+
+    Context --> EVAL
+    Operation --> EVAL
+
+    EVAL -->|"Role + Scope + Context valid"| ALLOW
+    EVAL -->|"Missing scope, revoked role, or mismatch"| DENY
 ```
 
 ---
 
 ## 4. Major Domain Concepts
 
-To function as a cohesive digital layer, Lenar models several distinct domains. 
+To function as a cohesive digital layer, Lenar models several distinct domains. These domains are logically divided into two tiers:
+1. **Foundational Domains**: Authoritative domains that govern user identity, academic hierarchy, enrollment context, and administrative authority.
+2. **Functional Domains**: Operational domains that deliver scoped content, services, issue reporting, and opportunities to students.
+
+### Diagram A: Foundational Domain Relationships
+Authoritative domains establish verified user identity, institutional academic structure, community membership, and administrative governance.
 
 ```mermaid
 flowchart TD
-    classDef domain fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#1e293b,font-weight:bold
+    subgraph IdentityOnb["Identity & Onboarding"]
+        direction TB
+        Reg["Registration & Verification"] --> Prof["Academic Profile Submission"]
+        Prof --> Review{"Governance Review"}
+    end
 
-    Reg[Registration]
-    UserId[User Identity]
-    AcadProf[Academic Profile]
-    AcadId[Academic Identity]
-    
-    Org[Organization]
-    AcadTime[Academic Time]
-    
-    Enroll[Enrollment]
-    Acad[Academic Context]
-    Comm[Community]
-    Mem[Membership]
-    Gov[Governance]
-    
-    Content[Content]
-    Campus[Campus Services]
-    Opp[Opportunities]
-    Notif[Notifications]
-    Search[Search]
-    Admin[Admin Control Plane]
-    Sync[Synchronization]
-    
-    Reg --- UserId
-    UserId --- AcadProf
-    AcadProf --- AcadId
-    AcadId --- Enroll
-    
-    Enroll --- Acad
-    AcadTime --- Acad
-    Org --- Acad
-    
-    Acad --- Comm
-    Comm --- Mem
-    
-    Gov --- Comm
-    
-    Org --- Content
-    Org --- Campus
-    Org --- Opp
-    
-    Content --- Notif
-    Campus --- Notif
-    Opp --- Notif
-    
-    Search -.- Content
-    Search -.- Campus
-    Search -.- Opp
-    
-    Admin -.- Org
-    Admin -.- AcadTime
-    Admin -.- Gov
-    
-    Sync -.- Content
-    Sync -.- Campus
-    Sync -.- Notif
-    
-    class Reg,UserId,AcadProf,AcadId,Org,AcadTime,Enroll,Acad,Comm,Mem,Gov,Content,Campus,Opp,Notif,Search,Admin,Sync domain;
+    subgraph Institution["Institutional Context"]
+        direction TB
+        Org["Organization Model<br/>(University, Faculty, Department)"]
+        Time["Academic Time<br/>(Session & Semester)"]
+    end
+
+    subgraph AcademicPlacement["Academic Attachment & Community"]
+        direction TB
+        Enroll["Authoritative Enrollment"]
+        Acad["Academic Context<br/>(Level & Cohort)"]
+        Comm["Base Community & Membership"]
+        Gov["Governance Authority<br/>(Role & Scope Assignment)"]
+
+        Enroll --> Acad
+        Acad --> Comm
+        Gov -.->|"Governs"| Comm
+    end
+
+    Review -->|"Approval establishes"| Enroll
+    Org -->|"Structures"| Enroll
+    Time -->|"Anchors"| Enroll
+```
+
+### Diagram B: Functional Services & Delivery Architecture
+Functional domains deliver scoped content, services, and opportunities to students, supported by discovery engines and offline synchronization.
+
+```mermaid
+flowchart TD
+    subgraph ControlPlane["Administrative Control"]
+        direction TB
+        Admin["Admin Control Plane<br/>(System State & Configuration)"]
+    end
+
+    subgraph ServiceDomains["Student-Facing Services"]
+        direction TB
+        Content["Content & Notices<br/>(Announcements, Documents)"]
+        Issues["Campus Services & Issues<br/>(Problem Reporting & Tracking)"]
+        Opp["Opportunities<br/>(Events, Jobs, Programs)"]
+    end
+
+    subgraph DiscoveryChannels["Discovery & Delivery"]
+        direction TB
+        Search["Search Engine<br/>(Contextual Discoverability)"]
+        Notif["Notification System<br/>(Targeted Multi-Channel Updates)"]
+    end
+
+    subgraph Resilience["Client Resilience"]
+        direction TB
+        Sync["Synchronization<br/>(Offline Cache & Reconciliation)"]
+    end
+
+    Admin -->|"Configures state & access"| ServiceDomains
+    Content & Issues & Opp -->|"Indexed by"| Search
+    Content & Issues & Opp -->|"Dispatches updates via"| Notif
+    Content -.->|"Cached offline via"| Sync
+    Notif -.->|"Queued offline via"| Sync
 ```
 
 ### 4.1 Foundational Domains

@@ -50,60 +50,48 @@ Cost
 
 The stack is composed of grouped responsibility layers to ensure cohesive development across environments.
 
+### Diagram: Technology Stack Overview by Layer
+This diagram shows the primary technologies selected for each layer of the Lenar system and how they relate across the client, backend, persistence, and operational tiers.
+
 ```mermaid
-flowchart TD
-    classDef group fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef item fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
-
-    subgraph Web[Web]
+flowchart TB
+    subgraph Clients["1. Client Tier"]
         direction LR
-        W1[React + TypeScript + Vite]
+        Web["Web Application<br/><b>React · TypeScript · Vite</b>"]
+        Mobile["Mobile Application<br/><b>Flutter · Dart</b>"]
     end
 
-    subgraph Mobile[Mobile]
+    subgraph Backend["2. Backend Application Tier"]
         direction LR
-        M1[Flutter + Dart]
+        API["API & Routing<br/><b>FastAPI · Python</b>"]
+        Validation["Schema Validation<br/><b>Pydantic</b>"]
+        ORM["Data Access & Migrations<br/><b>SQLAlchemy 2.x · Alembic</b>"]
+        API --> Validation --> ORM
     end
 
-    subgraph Backend[Backend]
+    subgraph Persistence["3. Data & Storage Tier"]
         direction LR
-        B1[FastAPI + Python]
-        B2[Pydantic]
-        B3[SQLAlchemy]
-        B4[Alembic]
+        Postgres[("Authoritative Database<br/><b>PostgreSQL</b>")]
+        SQLite[("Local Offline Storage<br/><b>SQLite</b>")]
+        R2[("Object Storage<br/><b>Cloudflare R2</b>")]
     end
 
-    subgraph Data[Data]
+    subgraph Operations["4. Platform Services & Delivery Tier"]
         direction LR
-        D1[PostgreSQL]
-        D2[SQLite local persistence]
+        Auth["Identity & Auth<br/><b>Lenar JWT</b>"]
+        Push["Push Messaging<br/><b>FCM</b>"]
+        Obs["Observability<br/><b>PostHog · Sentry · OpenTelemetry</b>"]
+        Delivery["Delivery & Packaging<br/><b>GitHub Actions · Docker</b>"]
     end
 
-    subgraph Supporting[Supporting]
-        direction LR
-        S1[Lenar JWT Auth]
-        S2[Cloudflare R2]
-        S3[FCM]
-        S4[PostHog]
-        S5[Sentry]
-        S6[OpenTelemetry]
-    end
-
-    subgraph Delivery[Delivery]
-        direction LR
-        Del1[GitHub Actions]
-        Del2[Docker]
-        Del3[Managed Infrastructure]
-    end
-
-    Web ~~~ Mobile
-    Mobile ~~~ Backend
-    Backend ~~~ Data
-    Data ~~~ Supporting
-    Supporting ~~~ Delivery
-
-    class Web,Mobile,Backend,Data,Supporting,Delivery group;
-    class W1,M1,B1,B2,B3,B4,D1,D2,S1,S2,S3,S4,S5,S6,Del1,Del2,Del3 item;
+    Web -->|HTTPS / REST| API
+    Mobile -->|HTTPS / REST| API
+    Mobile -.->|Offline Cache & Sync| SQLite
+    ORM -->|Relational Queries| Postgres
+    API -->|Protected File Access| R2
+    API -->|Token Issuance & Verification| Auth
+    API -->|Background Alerts| Push
+    Backend -.->|Metrics & Tracing| Obs
 ```
 
 ---
@@ -112,77 +100,64 @@ flowchart TD
 
 Technologies in Lenar have strict responsibility boundaries. A single tool must not silently become responsible for unrelated concerns. 
 
+### Diagram A: Core Application & Data Stack Boundaries
+This diagram maps user-facing and backend product capabilities directly to their authoritative technology choices.
+
 ```mermaid
 flowchart LR
-    classDef cap fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e
-    classDef bound fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,stroke-dasharray: 4 4
-    classDef tech fill:#dcfce3,stroke:#22c55e,stroke-width:1px,color:#166534,font-weight:bold
-
-    subgraph Capability [Product Capability]
-        C1[Web UI]
-        C2[Mobile UI]
-        C3[API]
-        C4[Schema validation]
-        C5[Database access]
-        C6[Migrations]
-        C7[Authoritative data]
-        C8[Authentication]
-        C9[Storage]
-        C10[Push]
-        C11[Analytics]
-        C12[Errors]
-        C13[Telemetry]
+    subgraph UI["User Interface Boundaries"]
+        direction TB
+        C_Web["Web Experience"] --> T_Web["React + TypeScript + Vite"]
+        C_Mob["Mobile Experience"] --> T_Mob["Flutter + Dart"]
     end
 
-    subgraph Boundary [Implementation Boundary]
-        B1(( ))
-        B2(( ))
-        B3(( ))
-        B4(( ))
-        B5(( ))
-        B6(( ))
-        B7(( ))
-        B8(( ))
-        B9(( ))
-        B10(( ))
-        B11(( ))
-        B12(( ))
-        B13(( ))
+    subgraph App["Backend Boundaries"]
+        direction TB
+        C_API["HTTP / REST API"] --> T_API["FastAPI"]
+        C_Val["Schema Validation"] --> T_Val["Pydantic"]
+        C_ORM["Data Access"] --> T_ORM["SQLAlchemy 2.x"]
+        C_Mig["Schema Migrations"] --> T_Mig["Alembic"]
     end
 
-    subgraph Technology [Technology]
-        T1[React]
-        T2[Flutter]
-        T3[FastAPI]
-        T4[Pydantic]
-        T5[SQLAlchemy]
-        T6[Alembic]
-        T7[PostgreSQL]
-        T8[Lenar JWT Auth]
-        T9[R2]
-        T10[FCM]
-        T11[PostHog]
-        T12[Sentry]
-        T13[OpenTelemetry]
+    subgraph Data["Persistence Boundaries"]
+        direction TB
+        C_DB["Authoritative Relational Data"] --> T_DB[("PostgreSQL")]
+        C_Loc["Mobile Offline & Cache"] --> T_Loc[("SQLite")]
     end
 
-    C1 --- B1 --- T1
-    C2 --- B2 --- T2
-    C3 --- B3 --- T3
-    C4 --- B4 --- T4
-    C5 --- B5 --- T5
-    C6 --- B6 --- T6
-    C7 --- B7 --- T7
-    C8 --- B8 --- T8
-    C9 --- B9 --- T9
-    C10 --- B10 --- T10
-    C11 --- B11 --- T11
-    C12 --- B12 --- T12
-    C13 --- B13 --- T13
+    UI --> App
+    App --> Data
+```
 
-    class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13 cap;
-    class B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13 bound;
-    class T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13 tech;
+### Diagram B: Platform Services & Operational Boundaries
+This diagram maps identity, external cloud services, observability, and release capabilities to their dedicated platform tools.
+
+```mermaid
+flowchart LR
+    subgraph Security["Identity & Security"]
+        direction TB
+        C_Auth["Identity & Sessions"] --> T_Auth["Lenar JWT Auth"]
+        C_Perm["Domain Authorization"] --> T_Perm["Server-Side Authority"]
+    end
+
+    subgraph Cloud["External Services"]
+        direction TB
+        C_Stor["Object & Media Storage"] --> T_R2["Cloudflare R2"]
+        C_Push["Push Notification Delivery"] --> T_FCM["FCM"]
+    end
+
+    subgraph Observability["Observability (Isolated)"]
+        direction TB
+        C_An["Product Analytics"] --> T_PH["PostHog"]
+        C_Err["Error Monitoring"] --> T_Sen["Sentry"]
+        C_Tel["System Telemetry"] --> T_OTel["OpenTelemetry"]
+    end
+
+    subgraph Operations["Release & Packaging"]
+        direction TB
+        C_CI["CI/CD Automation"] --> T_GHA["GitHub Actions"]
+        C_Cont["Reproducible Packaging"] --> T_Doc["Docker"]
+    end
 ```
 
 ### Current Core Boundaries
@@ -210,26 +185,22 @@ flowchart LR
 
 A technology implements product responsibilities; it does not redefine product or domain authority. 
 
+### Diagram: Hierarchy of Domain Authority vs. Implementation
+This diagram illustrates how domain authority strictly flows down to technology and infrastructure, ensuring external tools never redefine business rules.
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef note fill:none,stroke:none,font-style:italic,color:#334155
+    PD["<b>1. Product / Domain Authority</b><br/>Defines business models, governance rules, and core capabilities"]
+    AB["<b>2. Application Boundary</b><br/>Enforces invariants, domain policies, and access controls"]
+    T["<b>3. Technology Implementation</b><br/>Executes features via selected frameworks, libraries, and protocols"]
+    IP["<b>4. Infrastructure & Providers</b><br/>Supplies compute runtime, database hosting, storage, and networks"]
 
-    PD[Product / Domain]
-    AB[Application Boundary]
-    T[Technology]
-    IP[Infrastructure / Provider]
-    
-    PD --> AB
-    AB --> T
-    T --> IP
-    
-    N["Technology implements product responsibilities.<br/>Technology does not redefine product/domain authority."]
-    
-    IP ~~~ N
-    
-    class PD,AB,T,IP step;
-    class N note;
+    PD -->|"establishes requirements for"| AB
+    AB -->|"implemented with"| T
+    T -->|"hosted & supported by"| IP
+
+    rule["<b>Guiding Law:</b><br/>Technology implements product responsibilities.<br/>Technology and external providers do not redefine domain authority."]
+    IP -.- rule
 ```
 
 We explicitly separate related but distinct responsibilities:
@@ -275,33 +246,24 @@ None of these tools are permitted to become a structural dependency for core, au
 
 Technology choices are lifecycle-managed rather than permanent by default.
 
-```mermaid
-flowchart LR
-    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef reeval fill:#fef08a,stroke:#ca8a04,stroke-width:1px,color:#854d0e,font-style:italic
+### Diagram: Technology Lifecycle State Machine
+This state model defines the formal lifecycle phases and transitions for any technology dependency introduced into Lenar.
 
-    P[Proposed]
-    E[Evaluated]
-    S[Selected]
-    I[Implemented]
-    M[Maintained]
-    D[Deprecated]
-    R[Replaced]
-    
-    P --> E
-    E --> S
-    S --> I
-    I --> M
-    M --> D
-    D --> R
-    
-    ERC[Evidence / Requirement Change]
-    
-    M -.-> ERC
-    ERC -.-> E
-    
-    class P,E,S,I,M,D,R state;
-    class ERC reeval;
+```mermaid
+stateDiagram-v2
+    [*] --> Proposed: Identify Problem / Need
+    Proposed --> Evaluated: Formal Justification
+    Evaluated --> Rejected: Existing Stack Sufficient
+    Evaluated --> Selected: Architecture Approval
+    Rejected --> [*]
+
+    Selected --> Implemented: Codebase Integration
+    Implemented --> Maintained: Production Adoption
+
+    Maintained --> Evaluated: Requirement or Evidence Change
+    Maintained --> Deprecated: Superseded / End of Life
+    Deprecated --> Replaced: Migration Complete
+    Replaced --> [*]
 ```
 
 **The core rule:** If the existing stack can safely and adequately satisfy a requirement, prefer using it over introducing another dependency.

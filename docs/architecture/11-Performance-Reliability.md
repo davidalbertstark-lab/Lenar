@@ -52,38 +52,36 @@ Performance cannot be treated as a single metric. Lenar evaluates performance ac
 ### 2.1 End-to-End Performance Focus
 Optimization must reflect the true user experience, evaluating the complete journey through the stack.
 
+#### End-to-End Latency Path Across the Stack
+
 ```mermaid
 flowchart TD
-    classDef actor fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
     classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
     classDef network fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,stroke-dasharray: 4 4
-    classDef server fill:#dcfce3,stroke:#22c55e,stroke-width:1px,color:#166534
+    classDef server fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#166534
+    classDef terminal fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
 
-    U[USER]
-    UI[UI]
-    CP[CLIENT PROCESSING]
-    NW[NETWORK]
-    API[API]
-    APP[APPLICATION]
-    DB[DATABASE / STORAGE]
-    EXT[EXTERNAL PROVIDER WHERE REQUIRED]
-    RES[RESPONSE]
-    U2[USER]
+    subgraph ClientTier["Client Tier (Device)"]
+        U(["User Action / Input"]):::terminal --> UI["UI Event Handling"]:::client
+        UI --> CP["Client Processing & Local State"]:::client
+    end
 
-    U --> UI
-    UI --> CP
-    CP --> NW
-    NW --> API
-    API --> APP
-    APP --> DB
-    DB --> EXT
-    EXT --> RES
-    RES --> U2
+    subgraph NetworkTier["Network Layer"]
+        CP --> NW["Network Request Transit<br/><i>(Latency, Flakiness, Bandwidth)</i>"]:::network
+    end
 
-    class U,U2 actor;
-    class UI,CP client;
-    class NW network;
-    class API,APP,DB,EXT,RES server;
+    subgraph ServerTier["Backend Tier (Server)"]
+        NW --> API["API Routing & Authorization"]:::server
+        API --> APP["Application Domain Logic"]:::server
+        APP --> DB[("Authoritative Database & Storage")]:::server
+        APP -.->|Secondary| EXT["External Providers"]:::server
+    end
+
+    subgraph ReturnTier["Response & Perception"]
+        DB --> RES["Response Serialization & Downlink"]:::network
+        EXT -.-> RES
+        RES --> RENDER["Client Render & Visual Feedback"]:::terminal
+    end
 ```
 
 ---
@@ -100,27 +98,31 @@ Reliability is significantly broader than uptime. A system can be reachable but 
 - **Failure Handling:** The system degrades gracefully when components break.
 - **Observability:** Operators can accurately determine system health.
 
+#### Core Dimensions of System Reliability
+
 ```mermaid
 flowchart TD
     classDef root fill:#1e293b,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
-    classDef property fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef pillar fill:#f1f5f9,stroke:#475569,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef integrity fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef resilience fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#166534
+    classDef visibility fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e
 
-    RS[RELIABLE SYSTEM]
-    
-    C[Correct]
-    A[Available]
-    D[Durable]
-    R[Recoverable]
-    O[Observable]
-    
-    RS --- C
-    RS --- A
-    RS --- D
-    RS --- R
-    RS --- O
-    
-    class RS root;
-    class C,A,D,R,O property;
+    RS["<b>Reliable System</b><br/><i>Performance & Trust Beyond Simple Uptime</i>"]:::root
+
+    RS --> P1["<b>Data & Domain Integrity</b>"]:::pillar
+    RS --> P2["<b>Operational Resilience</b>"]:::pillar
+    RS --> P3["<b>Operational Visibility</b>"]:::pillar
+
+    P1 --> C["<b>Correctness</b><br/>Domain & authorization rules enforced"]:::integrity
+    P1 --> CS["<b>Consistency</b><br/>Logical sequence of state maintained"]:::integrity
+    P1 --> D["<b>Durability</b><br/>Committed data safely preserved"]:::integrity
+
+    P2 --> A["<b>Availability</b><br/>Reachable & responsive to requests"]:::resilience
+    P2 --> FH["<b>Failure Handling</b><br/>Graceful degradation on dependency failure"]:::resilience
+    P2 --> REC["<b>Recoverability</b><br/>Rapid restoration after outage"]:::resilience
+
+    P3 --> O["<b>Observability</b><br/>Actionable telemetry to assess system health"]:::visibility
 ```
 
 > [!WARNING]
@@ -161,54 +163,54 @@ The reliability model dictates that failures in secondary systems must be isolat
 ### 7.1 Optimization
 Optimization must follow a strictly evidence-driven loop.
 
+#### Evidence-Driven Optimization Workflow
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef loop fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef action fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef terminal fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534,font-weight:bold
 
-    O[Observe]
-    M[Measure]
-    IB[Identify Bottleneck]
-    EI[Estimate Impact]
-    CSEO[Choose Simplest Effective Optimization]
-    MA[Measure Again]
-    
-    O --> M
-    M --> IB
-    IB --> EI
-    EI --> CSEO
-    CSEO --> MA
-    MA -->|Compare vs Baseline| M
-    
-    class O,M,IB,EI,CSEO step;
-    class MA loop;
+    Start(["Performance Goal / Degradation Detected"]):::terminal --> Obs["<b>1. Observe</b><br/>Monitor real-world symptoms & telemetry"]:::step
+    Obs --> Measure["<b>2. Measure Baseline</b><br/>Profile latency, CPU, queries & network"]:::action
+    Measure --> Bottleneck["<b>3. Identify Bottleneck</b><br/>Pinpoint the true constraint"]:::step
+    Bottleneck --> Impact["<b>4. Estimate Impact</b><br/>Weigh projected gain against complexity"]:::step
+    Impact --> Optimize["<b>5. Apply Simplest Fix</b><br/>Minimal effective change <i>(e.g., index, cache, pagination)</i>"]:::action
+    Optimize --> Remeasure["<b>6. Measure Again</b><br/>Collect post-change metrics under load"]:::action
+
+    Remeasure --> Eval{"Target Met &<br/>Correctness Preserved?"}:::decision
+
+    Eval -->|No: Insufficient gain| Measure
+    Eval -->|Yes: Evidence verified| Complete(["Deploy & Document Baseline"]):::terminal
 ```
 
 ### 7.2 Scaling
 Do not introduce microservices, Kubernetes, message brokers, or specialized search engines merely because they could theoretically improve scale.
 
+#### Evidence-Based Scaling Decision Process
+
 ```mermaid
 flowchart TD
-    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef decision fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef input fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef action fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef outcome fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534,font-weight:bold
+    classDef reject fill:#fef2f2,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
 
-    D[Demand]
-    MB[Measured Bottleneck]
-    CSL[Current Solution Limit]
-    CS[Candidate Solution]
-    CC[Cost / Complexity]
-    EB[Expected Benefit]
-    Dec[Decision]
+    Demand["<b>1. Increased Demand</b><br/>Workload, throughput, or user growth"]:::input --> Measure["<b>2. Measure Bottleneck</b><br/>Telemetry confirms physical limit"]:::input
     
-    D --> MB
-    MB --> CSL
-    CSL --> CS
-    CS --> CC
-    CC --> EB
-    EB --> Dec
+    Measure --> LimitCheck{"Can Current Stack<br/>Handle with Tuning?"}:::decision
     
-    class D,MB,CSL,CS,CC,EB state;
-    class Dec decision;
+    LimitCheck -->|Yes: Tuning viable| Tune["<b>Optimize In-Place</b><br/>Tune queries, add indexes, or configure pooling"]:::action
+    
+    LimitCheck -->|No: Physical ceiling reached| Candidate["<b>3. Formulate Candidate Solution</b><br/>Identify simplest architectural step"]:::action
+    
+    Candidate --> Tradeoff{"Does Benefit Outweigh<br/>Added Complexity & Cost?"}:::decision
+    
+    Tradeoff -->|No: Premature complexity| Reject["<b>Reject / Defer Expansion</b><br/>Avoid microservices, brokers, or K8s without evidence"]:::reject
+    
+    Tradeoff -->|Yes: Justified by evidence| Adopt["<b>Adopt Simplest Scale Step</b><br/>Implement minimal viable scaling tier"]:::outcome
 ```
 
 ---

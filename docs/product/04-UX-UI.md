@@ -65,70 +65,50 @@ Simple user experience
 
 The UX is built around a sequential journey of interaction.
 
-```mermaid
-flowchart TD
-    classDef mainStep fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
-    classDef subStep fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-style:italic
+*(Sequential interaction journey guiding users from discovery through action to feedback and return)*
 
-    D[DISCOVER] --> U[UNDERSTAND]
-    U --> DE[DECIDE]
-    DE --> A[ACT]
-    A --> C[CONFIRM]
-    C --> T[TRACK / RETURN]
-    
-    Rel[Relevant Information] -.-> D
-    Rel -.-> U
-    
-    App[Appropriate Action] -.-> DE
-    App -.-> A
-    
-    Feed[Clear Feedback] -.-> C
-    Feed -.-> T
-    
-    class D,U,DE,A,C,T mainStep;
-    class Rel,App,Feed subStep;
+```mermaid
+flowchart LR
+    subgraph P1["1. Relevant Information"]
+        direction LR
+        D["Discover<br/>(Find what matters)"] --> U["Understand<br/>(Context & relevance)"]
+    end
+
+    subgraph P2["2. Appropriate Action"]
+        direction LR
+        DEC["Decide<br/>(Evaluate options)"] --> A["Act<br/>(Execute action)"]
+    end
+
+    subgraph P3["3. Clear Feedback"]
+        direction LR
+        C["Confirm<br/>(Immediate status)"] --> T["Track / Return<br/>(Follow-up & return)"]
+    end
+
+    U --> DEC
+    A --> C
 ```
+
 
 ### 2.1 The Onboarding Journey
 
 The user onboarding journey follows a precise progression of distinct product states that must be accurately reflected in the user experience:
 
+*(User onboarding state lifecycle from initial registration through review to active access)*
+
 ```mermaid
-flowchart TD
-    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
-    classDef authority fill:#e2e8f0,stroke:#64748b,stroke-width:1px,color:#334155,font-style:italic
-    classDef endstate fill:#10b981,color:#fff,stroke:#047857,stroke-width:2px,font-weight:bold
+stateDiagram-v2
+    [*] --> Registered: Register Identity
+    Registered --> Verified: Confirm Email
+    Verified --> ProfileComplete: Enter Academic Claims
+    ProfileComplete --> PendingReview: Submit for Review
 
-    P[PERSON] --> Reg[Registration]
-    Reg --> EV[Email Verification]
-    EV --> PC[Academic Profile Completion]
-    PC --> PS[Profile Submission]
-    
-    PS --> PR[Pending Review]
-    
-    PR --> Rev{Review Decision}
-    
-    AuthAdmin[Admin <br/> university-level authority] -.-> Rev
-    AuthLeader[Leader <br/> Base Community context] -.-> Rev
-    
-    Rev -->|Rejected| Rj[Rejected]
-    Rj --> PC
-    
-    Rev -->|Approved| App[Approved]
-    
-    App --> En[Enrollment Established]
-    En --> AC[Academic Context]
-    AC --> BC[Base Community]
-    BC --> Mem[Membership]
-    Mem --> AA[Active Access]
+    PendingReview --> Rejected: Review Decision: Rejected
+    Rejected --> ProfileComplete: Correct & Resubmit
 
-    class P,Reg,EV,PC,PS process;
-    class PR,Rj,App state;
-    class Rev decision;
-    class AuthAdmin,AuthLeader authority;
-    class En,AC,BC,Mem,AA endstate;
+    PendingReview --> Approved: Review Decision: Approved (Leader / Admin)
+    Approved --> Enrolled: Establish Academic Context
+    Enrolled --> ActiveAccess: Assign Base Community Membership
+    ActiveAccess --> [*]
 ```
 
 1. **Registration:** User provides initial identity information (e.g., email/password).
@@ -151,35 +131,32 @@ These product onboarding states (Verified, Profile Complete, Submitted, Pending 
 
 The information architecture structures the major user-facing areas of Lenar.
 
+*(Information architecture structural map organizing core navigation, personal utilities, and admin spaces)*
+
 ```mermaid
 flowchart TD
-    classDef root fill:#1e293b,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
-    classDef section fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef roleDep fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold,stroke-dasharray: 5 5
+    Root["Lenar Application UI"]
 
-    Root[Lenar UI]
-    
-    H[Home / Overview]
-    IA[Information & Announcements]
-    S[Search]
-    CS[Campus Services / Issues]
-    O[Opportunities]
-    N[Notifications]
-    P[Profile / Personal Context]
-    Admin[Administration]
-    
-    Root --- H
-    Root --- IA
-    Root --- S
-    Root --- CS
-    Root --- O
-    Root --- N
-    Root --- P
-    Root -.- Admin
-    
-    class Root root;
-    class H,IA,S,CS,O,N,P section;
-    class Admin roleDep;
+    subgraph Core["Core Navigation"]
+        H["Home / Overview<br/>(Daily summary & priorities)"]
+        IA["Announcements & Info<br/>(Verified university notices)"]
+        CS["Campus Services & Issues<br/>(Reporting & tracking)"]
+        OP["Opportunities<br/>(Academic & career listings)"]
+    end
+
+    subgraph Utility["Personal & Utilities"]
+        S["Global Search<br/>(Cross-domain discovery)"]
+        N["Notifications<br/>(Actionable alerts)"]
+        P["Profile & Context<br/>(Academic identity & level)"]
+    end
+
+    subgraph Restricted["Role-Restricted"]
+        Admin["Administration<br/>(Leaders & Admins only)"]
+    end
+
+    Root --> Core
+    Root --> Utility
+    Root -.->|Role-based access| Restricted
 ```
 
 *(Note: Administration is role-dependent and not universally available to all users).*
@@ -190,35 +167,27 @@ flowchart TD
 
 The interface must accurately communicate system state at all times. 
 
+*(Component interface lifecycle and data state transitions from initialization to confirmation)*
+
 ```mermaid
-flowchart TD
-    classDef root fill:#334155,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
-    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
-    classDef pending fill:#fef08a,stroke:#ca8a04,stroke-width:1px,color:#854d0e
-    classDef offline fill:#e2e8f0,stroke:#64748b,stroke-width:1px,color:#334155,stroke-dasharray: 4 4
-    classDef error fill:#fee2e2,stroke:#ef4444,stroke-width:1px,color:#991b1b
-    classDef success fill:#dcfce3,stroke:#22c55e,stroke-width:1px,color:#166534
-
-    title[INTERACTIVE EXPERIENCE<br/>Not all states apply to every component]
-    style title fill:none,stroke:none,font-weight:bold,font-size:14px
-
-    IE[Component / View]
+stateDiagram-v2
+    [*] --> Loading: Fetch / Initialize
     
-    IE --- N[Normal]
-    IE --- L[Loading]
-    IE --- S[Success]
-    IE --- E[Empty]
-    IE --- Err[Error]
-    IE --- O[Offline]
-    IE --- P[Pending]
-    IE --- D[Disabled]
+    Loading --> Normal: Data Available
+    Loading --> Empty: Zero Records Found
+    Loading --> Offline: Cached / Disconnected
+    Loading --> Error: Load Failed
+
+    Normal --> Pending: User Action (Local Save)
+    Empty --> Pending: User Action (Local Save)
     
-    class IE root;
-    class N,L,E,D state;
-    class S success;
-    class Err error;
-    class O offline;
-    class P pending;
+    Pending --> Success: Server Confirmed
+    Pending --> Error: Action / Sync Failed
+    Pending --> Conflict: Version Conflict Detected
+
+    Success --> Normal: Resume Normal View
+    Error --> Loading: Retry
+    Conflict --> Normal: Resolve Conflict
 ```
 
 ### 4.1 Important State Distinctions
@@ -271,30 +240,27 @@ Do not require Web, PWA, Android, and iOS to have identical layouts. Do not crea
 
 UX is derived from product needs, not isolated visual design. 
 
-```mermaid
-flowchart TD
-    classDef origin fill:#f1f5f9,stroke:#475569,stroke-width:2px,font-weight:bold,color:#0f172a
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef target fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,font-weight:bold,color:#1e40af
+*(UX traceability chain deriving interface screens and interactions from underlying product needs)*
 
-    UN[User Need]
-    R[Requirement]
-    J[Journey]
-    F[Flow]
-    S[Screen]
-    I[Interaction]
-    FB[Feedback]
-    
-    UN --> R
+```mermaid
+flowchart LR
+    subgraph Strategy["1. Product Intent"]
+        direction LR
+        UN["User Need<br/>(Real student problem)"] --> R["Requirement<br/>(System capability)"]
+    end
+
+    subgraph Architecture["2. Experience Architecture"]
+        direction LR
+        J["Journey<br/>(End-to-end path)"] --> F["Flow<br/>(Specific task sequence)"]
+    end
+
+    subgraph Interface["3. Interface Execution"]
+        direction LR
+        S["Screen<br/>(Visual layout)"] --> I["Interaction<br/>(User action)"] --> FB["Feedback<br/>(System response)"]
+    end
+
     R --> J
-    J --> F
     F --> S
-    S --> I
-    I --> FB
-    
-    class UN origin;
-    class R,J,F,S,I step;
-    class FB target;
 ```
 
 ### 7.1 Documentation Boundaries

@@ -42,36 +42,28 @@ What decision could this information improve?
 
 Lenar cleanly separates the measurement of product behavior from the measurement of application and infrastructure health.
 
+### [Measurement Domain Separation]
+
 ```mermaid
 flowchart LR
-    classDef layer fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef source fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
     classDef signal fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
-    classDef system fill:#dcfce3,stroke:#22c55e,stroke-width:1px,color:#166534,font-weight:bold
+    classDef system fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
 
-    P[PRODUCT]
-    APP[APPLICATION]
-    INFRA[INFRASTRUCTURE]
+    subgraph ProductDomain ["1. Product Domain"]
+        direction LR
+        P["User & Feature Activity"]:::source --> PE["Product Events<br/>(Outcomes & Funnels)"]:::signal --> PA["Product Analytics<br/>(PostHog)"]:::system
+    end
 
-    PE[Product Events]
-    LMTE[Logs / Metrics / Traces / Errors]
-    HRS[Health / Resource Signals]
+    subgraph AppDomain ["2. Application Domain"]
+        direction LR
+        APP["FastAPI Monolith & Services"]:::source --> LMTE["Logs, Metrics, Traces & Errors"]:::signal --> OB["Observability<br/>(OpenTelemetry & Sentry)"]:::system
+    end
 
-    PA[Product Analytics]
-    OB[Observability]
-    OM[Operational Monitoring]
-
-    P --> PE
-    PE --> PA
-
-    APP --> LMTE
-    LMTE --> OB
-
-    INFRA --> HRS
-    HRS --> OM
-
-    class P,APP,INFRA layer;
-    class PE,LMTE,HRS signal;
-    class PA,OB,OM system;
+    subgraph InfraDomain ["3. Infrastructure Domain"]
+        direction LR
+        INFRA["Hosting & Database Systems"]:::source --> HRS["Health & Resource Signals<br/>(CPU, Memory, Connections)"]:::signal --> OM["Operational Monitoring"]:::system
+    end
 ```
 
 ---
@@ -95,26 +87,37 @@ Analytics may later measure meaningful onboarding outcomes such as: registration
 ### 3.3 Analytics Flow and Failure
 Analytics explicitly do not modify the authoritative state of the product. 
 
+### [Analytics Flow and Failure Isolation]
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef note fill:none,stroke:none,font-style:italic,color:#334155
+    classDef user fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold
+    classDef auth fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
+    classDef analytics fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef boundary fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#475569
 
-    UA[User Action]
-    PE[Product Event]
-    A[Analytics]
-    I[Insight]
-    PD[Product Decision]
+    UA["User Action<br/>(e.g., Submit Issue)"]:::user
 
-    UA --> PE
-    PE --> A
-    A --> I
-    I --> PD
-    
-    N["Analytics explicitly DOES NOT modify authoritative product state"]
-    A ~~~ N
+    subgraph AuthoritativePath ["Authoritative Execution (Guaranteed Core Flow)"]
+        direction TB
+        APP["FastAPI Application Logic"]:::auth --> DB[("Authoritative Database State")]:::auth
+    end
 
-    class UA,PE,A,I,PD step;
+    subgraph AnalyticsPath ["Telemetry Pipeline (Non-Blocking & Asynchronous)"]
+        direction TB
+        PE["Product Event<br/>(Fire-and-Forget Emission)"]:::analytics --> PH["PostHog Analytics"]:::analytics
+        PH --> INS["Insights & Product Decisions"]:::analytics
+    end
+
+    UA ==>|Synchronous Mutation| APP
+    UA -.->|Asynchronous Event| PE
+
+    subgraph IsolationPrinciple ["Decoupled Failure Boundary"]
+        direction TB
+        ISO["Analytics failure never blocks or corrupts authoritative state.<br/>If PostHog is unavailable, the user action still succeeds."]:::boundary
+    end
+
+    AnalyticsPath ~~~ IsolationPrinciple
 ```
 
 **Analytics failure must never be a dependency for core product correctness.** 
@@ -128,22 +131,41 @@ Lenar uses **Sentry** for error monitoring and **OpenTelemetry** for application
 
 Observability focuses on system behavior and diagnostic detection. Similar to analytics, observability failure reduces visibility but must not corrupt or block the authoritative product state.
 
+### [Observability Lifecycle and Diagnostic Flow]
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef runtime fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef telemetry fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef platform fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold
+    classDef action fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
 
-    SB[System Behavior]
-    LMTE[Logs / Metrics / Traces / Errors]
-    OB[Observability]
-    DD[Detection / Diagnosis]
-    OA[Operational Action]
+    subgraph RuntimeExecution ["1. Runtime Execution"]
+        APP["Application & Infrastructure Runtime<br/>(FastAPI Monolith, Database, Background Workers)"]:::runtime
+    end
 
-    SB --> LMTE
-    LMTE --> OB
-    OB --> DD
+    subgraph TelemetryCapture ["2. Telemetry Capture"]
+        direction LR
+        OTEL["OpenTelemetry<br/>(Metrics, Distributed Traces, Logs)"]:::telemetry
+        SENTRY["Sentry<br/>(Exceptions & Error Context)"]:::telemetry
+    end
+
+    subgraph Analysis ["3. Detection & Diagnosis"]
+        direction TB
+        AGG["Signal Aggregation & Threshold Alerting"]:::platform
+        DD["Root Cause Analysis & Bottleneck Identification"]:::platform
+        AGG --> DD
+    end
+
+    subgraph Outcome ["4. Operational Resolution"]
+        OA["Operational Action<br/>(Mitigation, Code Fix, Scaling)"]:::action
+    end
+
+    APP -->|Emits Telemetry| OTEL
+    APP -->|Captures Exceptions| SENTRY
+    OTEL --> AGG
+    SENTRY --> AGG
     DD --> OA
-    
-    class SB,LMTE,OB,DD,OA step;
 ```
 
 ---
@@ -188,36 +210,38 @@ Operational metrics capture system dimensions such as request rate, latency, err
 
 During an incident, traces and correlation identifiers connect these technical signals back to actual user impact.
 
+### [Incident Signal Correlation and Recovery Flow]
+
 ```mermaid
 flowchart TD
-    classDef input fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155
-    classDef action fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
-    classDef understanding fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef signal fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef change fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e
+    classDef correlation fill:#ede9fe,stroke:#8b5cf6,stroke-width:1px,color:#5b21b6,font-weight:bold
+    classDef assess fill:#e0f2fe,stroke:#0284c7,stroke-width:2px,color:#0369a1,font-weight:bold
+    classDef recovery fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
 
-    subgraph Signals
-        D[Deployment]
-        L[Logs]
-        M[Metrics]
-        T[Traces]
-        E[Errors]
-        PI[Product Impact]
+    subgraph DiscoveredSignals ["1. Observed Signals"]
+        direction LR
+        SYS["System Telemetry<br/>(Logs, Metrics, Traces, Sentry Errors)"]:::signal
+        CHG["Change Events<br/>(Deployments, Migrations & Config Releases)"]:::change
     end
 
-    IU[Incident Understanding]
-    AR[Action / Recovery]
+    subgraph ContextEngine ["2. Correlation Context"]
+        CORR["Trace IDs & Request Correlation<br/>(Links technical anomalies directly to affected user workflows)"]:::correlation
+    end
 
-    D --> IU
-    L --> IU
-    M --> IU
-    T --> IU
-    E --> IU
-    PI --> IU
+    subgraph IncidentAssessment ["3. Incident Understanding"]
+        IU["Incident Understanding<br/>(Technical Root Cause & True Product Impact)"]:::assess
+    end
 
+    subgraph Recovery ["4. Operational Recovery"]
+        AR["Targeted Recovery Action<br/>(Rollback, Hotfix, Failover, or Rate-Limit)"]:::recovery
+    end
+
+    SYS --> CORR
+    CHG --> CORR
+    CORR --> IU
     IU --> AR
-
-    class D,L,M,T,E,PI input;
-    class IU understanding;
-    class AR action;
 ```
 
 ---
@@ -236,37 +260,38 @@ Dashboards are conceptually separated by their audience and purpose. An infrastr
 
 Product use and system health provide parallel paths toward the same goal: **Lenar Improvement.**
 
+### [Dual-Track Improvement Model: Product Experience and System Reliability]
+
 ```mermaid
 flowchart TD
     classDef product fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-weight:bold
     classDef system fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold
-    classDef goal fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef goal fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
 
-    PU[PRODUCT USE]
-    A[ANALYTICS]
-    PI[PRODUCT INSIGHT]
-    PA[PRODUCT ACTION]
+    subgraph ProductTrack ["Product Experience Track"]
+        direction TB
+        PU["Product Usage<br/>(Student Workflows & Features)"]:::product
+        PA["Product Analytics<br/>(PostHog Outcomes & Funnels)"]:::product
+        PI["Product Insights<br/>(Feature Utility & Abandonment)"]:::product
+        P_ACT["Product Action<br/>(UX Improvements & Hypothesis Iteration)"]:::product
 
-    SH[SYSTEM HEALTH]
-    O[OBSERVABILITY]
-    DD[DETECTION / DIAGNOSIS]
-    OA[OPERATIONAL ACTION]
+        PU --> PA --> PI --> P_ACT
+    end
 
-    LI[LENAR IMPROVEMENT]
+    subgraph SystemTrack ["System Reliability Track"]
+        direction TB
+        SH["System Health<br/>(Services, DB & Background Queues)"]:::system
+        OB["Observability<br/>(OpenTelemetry & Sentry Signals)"]:::system
+        DD["Detection & Diagnosis<br/>(Latency, Errors & Bottlenecks)"]:::system
+        S_ACT["Operational Action<br/>(Optimization, Bugfixes & Scaling)"]:::system
 
-    PU --> A
-    A --> PI
-    PI --> PA
-    PA --> LI
+        SH --> OB --> DD --> S_ACT
+    end
 
-    SH --> O
-    O --> DD
-    DD --> OA
-    OA --> LI
+    GOAL(["Continuous Lenar Improvement<br/>(Higher Student Value + Dependable System Operation)"]):::goal
 
-    class PU,A,PI,PA product;
-    class SH,O,DD,OA system;
-    class LI goal;
+    P_ACT ==> GOAL
+    S_ACT ==> GOAL
 ```
 
 ### 9.1 Experiments & Feature Flags

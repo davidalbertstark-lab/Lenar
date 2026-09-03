@@ -90,70 +90,83 @@ It explains what Enrollment means as a domain concept, without becoming the spec
 ## 9. State Models and Diagrams
 
 ### Academic Context Model
+*Structural boundaries showing how an Active Enrollment establishes a user's academic context by referencing institutional organization and academic time.*
+
 ```mermaid
 flowchart TD
-    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef route fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
-    classDef domain fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
-
-    subgraph University Context Model
-        Univ[University]
-        
-        Univ --> AuthOrg[Authoritative Organization]
-        AuthOrg --> Fac[Faculty]
-        AuthOrg --> Dept[Department]
-        AuthOrg --> Lvl[Level]
-        
-        Univ --> AuthTime[Authoritative Academic Time]
-        AuthTime --> AcadSess[Academic Session]
-        AuthTime --> Sem[Semester]
+    subgraph Attachment["User Academic Attachment"]
+        direction TB
+        Appr(["Onboarding Approval"]) -->|"Establishes"| Enr["Active Enrollment"]
+        Enr -->|"Establishes"| Ctx["Current Academic Context"]
+        Ctx -->|"Determines"| BaseComm(["Base Community"])
     end
 
-    subgraph User Attachment
-        Appr[Approved Academic Attachment] -->|Establishes| Enr[Enrollment]
-        
-        Enr -->|Establishes| CAC[Current Academic Context]
-        
-        CAC -.->|References| Univ
-        CAC -.->|References| AuthOrg
-        CAC -.->|References| Lvl
-        CAC -.->|References| AcadSess
-        CAC -.->|References| Sem
+    subgraph UnivModel["Authoritative University Model"]
+        direction TB
+        Univ["University Context (e.g., FUTA)"]
+
+        subgraph OrgStructure["Organization Structure"]
+            Fac["Faculty"] --> Dept["Department"]
+            Lvl["Level (First-Class Concept)"]
+        end
+
+        subgraph TimeFramework["Academic Time Framework"]
+            Sess["Academic Session"] --> Sem["Semester"]
+        end
+
+        Univ --> Fac
+        Univ --> Lvl
+        Univ --> Sess
     end
 
-    class Univ,AuthOrg,AuthTime domain;
-    class Appr process;
-    class Enr state;
-    class CAC route;
+    Ctx -.->|"Binds student to"| Dept
+    Ctx -.->|"Binds student to"| Lvl
+    Ctx -.->|"References current"| Sem
 ```
 
-### Enrollment Lifecycle
+### Enrollment Lifecycle State Machine
+*Lifecycle state machine governing an authoritative enrollment from initial establishment through normal progression to termination.*
+
+```mermaid
+stateDiagram-v2
+    [*] --> Active: Authorized Onboarding Approval
+
+    Active --> Active: Normal Academic Progression\n(Advance Level / Semester)
+    Active --> Ended: Genuine Attachment End\n(Graduation, Withdrawal, or University Transfer)
+
+    Ended --> [*]: Archived Historical Record\n(Terminal, Never Reactivated)
+
+    note right of Active
+        Single Active Enrollment:
+        User has at most one Active Enrollment.
+        Progression updates Current Context
+        while Active Enrollment continues.
+    end note
+
+    note right of Ended
+        Ended enrollments are immutable history.
+        A university change ends this attachment;
+        a new institution requires a new enrollment.
+    end note
+```
+
+### Academic Progression vs. University Change
+*Architectural comparison contrasting in-place context progression against a genuine university attachment change.*
+
 ```mermaid
 flowchart TD
-    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef endstate fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
-
-    subgraph Enrollment Lifecycle
-        Appr([Approval]) --> EnrEst[Enrollment Established]
-        EnrEst --> ActEnr[Active Enrollment]
-        
-        ActEnr -->|Normal Progression| Trans[Academic Context Transition]
-        Trans --> ActEnrNew[Active Enrollment + New Current Context]
-        ActEnrNew -.->|Continues| ActEnr
-        
-        ActEnr -->|Genuine Attachment End| End[Ended Enrollment]
+    subgraph ScenarioA["Scenario A: Normal Academic Progression"]
+        direction TB
+        ActiveA["Active Enrollment (Retained)"]
+        ContextA1["Current Context: 300L Semester 2"] -->|"Academic Time Advances"| ContextA2["Updated Context: 400L Semester 1"]
+        ActiveA -.->|"Maintains"| ContextA2
     end
 
-    subgraph University Change
-        UnivChg([University Change]) -->|End Old| EndOld[Ended Old Enrollment]
-        UnivChg -->|Establish New| EstNew[New Active Enrollment]
+    subgraph ScenarioB["Scenario B: University Change"]
+        direction TB
+        OldEnrollment["Current Enrollment (University A)"] -->|"Transitions to"| EndedEnrollment["Ended Enrollment (Historical)"]
+        NewApproval["New University Approval"] -->|"Establishes"| NewEnrollment["New Active Enrollment (University B)"]
     end
-    
-    class Appr,Trans,UnivChg process;
-    class EnrEst,ActEnr,ActEnrNew,EstNew state;
-    class End,EndOld endstate;
 ```
 
 ## 10. Main Behaviors

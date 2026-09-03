@@ -2,71 +2,107 @@
 
 This document outlines the standard path a user takes from first contact to normal platform access, alongside critical return behaviors.
 
+To ensure clarity and avoid visual overload, the journey is separated into two focused diagrams:
+1. **The Standard Onboarding Journey**: The chronological progression from initial registration to normal platform access.
+2. **Return & Resume Routing**: How login routing, status checkpoints, and session interruptions behave.
+
+### Diagram A: The Standard Onboarding Journey
+This diagram illustrates the chronological progression of a user from registration through verification, institutional review, and community placement to normal platform access.
+
 *(Reference Diagram:)*
 
 ```mermaid
 flowchart TD
-    classDef main fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef return fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,stroke-dasharray: 5 5
-    classDef exit fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b
-    classDef process fill:#e0e7ff,stroke:#4f46e5,stroke-width:1px,color:#312e81
+    classDef step fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef outcome fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#15803d,font-weight:bold
 
-    Reg[Registration]:::main
-    Verify[Email Verification]:::main
-    Auth[Automatic Authentication]:::main
-    Prof[Profile Completion]:::main
-    Sub[Submission]:::main
-    Pend[Pending Review]:::main
-    Appr[Approval]:::main
-    Acc[Account Active]:::main
-    Enr[Enrollment Established]:::main
-    Ctx[Academic Context]:::main
-    BaseC[Base Community Assigned]:::main
-    BaseM[Base Membership]:::main
-    Norm[Normal Platform Access]:::main
-    
-    Reg --> Verify
-    Verify --> Auth
+    subgraph Entry ["1. Entry & Authentication"]
+        direction TB
+        Reg["Registration<br/>(Account: Created)"]:::step
+        Verify["Email Verification<br/>(OTP / Link)"]:::step
+        Auth["Automatic Authentication<br/>(Session Issued)"]:::step
+
+        Reg --> Verify
+        Verify --> Auth
+    end
+
+    subgraph Onboard ["2. Academic Onboarding & Review"]
+        direction TB
+        Prof["Profile Completion<br/>(Personal & Academic Details)"]:::step
+        Sub["Profile Submission"]:::step
+        Pend["Pending Review<br/>(Awaiting Verification)"]:::step
+        Appr{"Institutional<br/>Approval?"}:::decision
+
+        Prof --> Sub
+        Sub --> Pend
+        Pend --> Appr
+        Appr -.->|Rejected / Corrections| Prof
+    end
+
+    subgraph Placement ["3. Institutional Placement & Access"]
+        direction TB
+        Acc["Account: Active"]:::step
+        Enr["Authoritative Enrollment"]:::step
+        Ctx["Current Academic Context<br/>(Enrollment + Org + Time)"]:::step
+        Comm["Base Community Assigned"]:::step
+        Mem["Base Membership Granted"]:::step
+        Access(((Normal Platform Access))):::outcome
+
+        Enr --> Ctx
+        Ctx --> Comm
+        Comm --> Mem
+        Mem --> Access
+        Acc --> Access
+    end
+
     Auth --> Prof
-    Prof --> Sub
-    Sub --> Pend
-    Pend --> Appr
-    Appr --> Acc
-    Acc --> Enr
-    Enr --> Ctx
-    Ctx --> BaseC
-    BaseC --> BaseM
-    BaseM --> Norm
-    
-    %% Branches / Returns
-    Unv[Unverified Return]:::return
-    Unv --> Verify
-    
-    Inc[Incomplete Return]:::return
-    Inc -->|Login| Prof
-    
-    PendRet[Pending Review Return]:::return
-    PendRet -->|Login| Pend
-    
-    Rej[Rejected / Correction]:::return
-    Pend -->|Rejection| Rej
-    Rej --> Prof
-    RejRet[Rejected Return]:::return
-    RejRet -->|Login| Prof
-    
-    Sess[Session Expiration]:::exit
-    Sess -->|Login| Auth
-    
-    Logout[Logout]:::exit
-    Logout -->|Login| Auth
-    
-    PassReq[Password Recovery]:::return
-    PassReq -->|OTP| PassNew[New Password]
-    PassNew -->|Invalidates all| Logout
-    
-    Susp[Suspension]:::exit
-    Acc -.-> Susp
-    Susp -.->|Login Denied| Logout
+    Appr -->|Approved: Trigger Active| Acc
+    Appr -->|Approved: Establish Record| Enr
+```
+
+### Diagram B: State-Aware Return and Resume Behavior
+This diagram illustrates how login attempts and lifecycle events route returning users to their exact state without resetting progress.
+
+*(Reference Diagram:)*
+
+```mermaid
+flowchart TD
+    classDef trigger fill:#f8fafc,stroke:#64748b,stroke-width:2px,font-weight:bold
+    classDef check fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef screen fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af
+    classDef success fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#15803d,font-weight:bold
+    classDef blocked fill:#fef2f2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+
+    subgraph Triggers ["1. Session & Lifecycle Triggers"]
+        direction TB
+        SessExp(["Session Expired / Logout"]):::trigger
+        PassRec(["Password Reset Completed"]):::trigger
+        SuspEvent(["Account Suspended"]):::trigger
+    end
+
+    subgraph Routing ["2. State-Aware Return Routing"]
+        direction TB
+        ReturnLogin(["User Returns & Logs In"]):::trigger
+        CheckState{"Check Persistent<br/>Account State"}:::check
+        ScreenVerify["Email Verification Screen<br/>(Prompt OTP)"]:::screen
+        ScreenProfile["Profile Completion Screen<br/>(Resume / Correct Data)"]:::screen
+        ScreenPending["Pending Review Status Screen<br/>(Access Blocked)"]:::blocked
+        ScreenAccess(((Normal Platform Access))):::success
+        ScreenSuspended["Suspension Notice<br/>(Login Denied)"]:::blocked
+
+        ReturnLogin --> CheckState
+        CheckState -->|Created & Unverified| ScreenVerify
+        CheckState -->|Incomplete or Rejected| ScreenProfile
+        CheckState -->|Pending Review| ScreenPending
+        CheckState -->|Active & Enrolled| ScreenAccess
+        CheckState -->|Suspended| ScreenSuspended
+    end
+
+    %% Trigger mappings
+    SessExp -->|Invalidates session<br/>Progress preserved| ReturnLogin
+    PassRec -->|Invalidates all sessions<br/>New credentials set| ReturnLogin
+    SuspEvent -->|Invalidates all sessions<br/>Account locked| ScreenSuspended
 ```
 
 ## 1. The Standard Journey

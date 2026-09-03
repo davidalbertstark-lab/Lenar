@@ -50,43 +50,36 @@ supported features adapt
 
 The mobile client maintains a clear separation between its internal local database, its queue of outbound operations, and the synchronization engine responsible for talking to the network.
 
+### [Client-Server Synchronization Architecture]
+
 ```mermaid
-flowchart TD
-    classDef boundary fill:#f1f5f9,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef component fill:#fff,stroke:#cbd5e1,stroke-width:1px,color:#334155
-    classDef flow fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-style:italic
+flowchart LR
+    classDef client fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#14532d
+    classDef server fill:#eff6ff,stroke:#2563eb,stroke-width:1px,color:#1e40af
+    classDef db fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#0f172a
 
-    subgraph Mobile[Mobile App]
-        LD[Local Data]
-        PO[Pending Operations / Outbox]
-        SE[Sync Engine]
-        LD --- SE
-        PO --- SE
+    subgraph Client ["Mobile Client"]
+        direction TB
+        Outbox["Outbox Queue<br/>(Pending Operations)"]:::client
+        SyncEngine["Sync Engine"]:::client
+        LocalDB[("Local Database<br/>(Cached Representation)")]:::db
+
+        Outbox -->|Supplies queued intent| SyncEngine
+        SyncEngine -->|Reconciles confirmed state| LocalDB
     end
 
-    NW((Network))
+    subgraph Server ["Lenar Server (Authoritative)"]
+        direction TB
+        API["API Layer<br/>(Validation & Authorization)"]:::server
+        Domain["Domain Logic"]:::server
+        AuthDB[("Authoritative Database<br/>(Source of Truth)")]:::db
 
-    subgraph Server[Lenar API]
-        VA[Validation / Authorization]
-        DL[Domain Logic]
-        AD[Authoritative Data]
-        VA --- DL
-        DL --- AD
+        API --> Domain
+        Domain --> AuthDB
     end
 
-    SE <--> NW
-    NW <--> VA
-
-    SC[Server Changes]
-    SyncFlow[synchronization]
-    LR[local representation]
-
-    SC --> SyncFlow
-    SyncFlow --> LR
-
-    class Mobile,Server boundary;
-    class LD,PO,SE,VA,DL,AD component;
-    class SC,SyncFlow,LR flow;
+    SyncEngine -->|Uploads pending operations| API
+    API -->|Delivers confirmations & server changes| SyncEngine
 ```
 
 ---
@@ -95,32 +88,32 @@ flowchart TD
 
 When a user performs an action offline, it must be safely durably preserved, then correctly synchronized.
 
+### [Offline Write and Synchronization Sequence]
+
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant MC as Mobile Client
-    participant LD as Local Database
-    participant OB as Outbox
-    participant NW as Network
-    participant S as FastAPI / Server
-    participant AD as Authoritative Data
+    actor User
+    participant UI as Mobile UI
+    participant Local as Local Storage & Outbox
+    participant Server as FastAPI Server
+    participant DB as Authoritative DB
 
-    U->>MC: User Action
-    MC->>LD: Local Durable Save (Locally Saved)
-    MC->>OB: Mark as Pending
-    Note over LD, OB: Operation is Pending,<br/>NOT Server Confirmed
+    Note over User,DB: Phase 1: Disconnected User Action (Durable Local Intent)
+    User->>UI: Performs action while offline
+    UI->>Local: Durably persist intent (State: PENDING)
+    Local-->>UI: Confirm local storage
+    UI-->>User: Display action as "Pending" (Local Save)
 
-    opt Connectivity Returns
-        OB->>NW: Sync Attempt
-        NW->>S: Transmit Operation
-        S->>S: Server Validation / Authorization
-        S->>AD: Authoritative Change
-        AD-->>S: Success
-        S-->>NW: Confirmation
-        NW-->>OB: Server Confirmed
-        OB->>LD: Local Reconciliation
-        LD-->>MC: State Updated
-        MC-->>U: Confirmed UI State
+    Note over User,DB: Phase 2: Online Synchronization (Authoritative Commit)
+    opt Connectivity Restored
+        Local->>Server: Transmit pending operation with idempotency key
+        Server->>Server: Re-evaluate Validation & Authorization
+        Server->>DB: Apply authoritative mutation
+        DB-->>Server: Mutation successful
+        Server-->>Local: Return Authoritative Confirmation
+        Local->>Local: Reconcile state (PENDING -> CONFIRMED)
+        Local-->>UI: Notify state update
+        UI-->>User: Display action as "Confirmed"
     end
 ```
 
@@ -143,38 +136,29 @@ These states must never be collapsed or confused in either the architecture or t
 
 Operations progress through a predictable lifecycle as they transition from local intent to authoritative server state.
 
+### [Operation Lifecycle State Model]
+
 ```mermaid
-flowchart TD
-    classDef main fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef endstate fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
-    classDef failstate fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef title fill:none,stroke:none,font-weight:bold,font-size:16px
+stateDiagram-v2
+    direction TB
 
-    Title[Generalized Operation Lifecycle]
-    style Title fill:none,stroke:none,color:#0f172a,font-weight:bold
+    [*] --> Created: User action performed
+    Created --> Pending: Durably persisted in Outbox
 
-    C[Created]
-    P[Pending]
-    S[Syncing]
-    Conf[Confirmed]
-    
-    TF[Temporary Failure]
-    CR[Conflict / Rejection]
-    NR[Needs Resolution / Terminal Failure]
+    Pending --> Syncing: Connectivity available / sync triggered
 
-    C --> P
-    P --> S
-    S --> Conf
-    
-    S --> TF
-    TF -->|Retry| P
-    
-    S --> CR
-    CR --> NR
+    Syncing --> Confirmed: Server validated & applied
+    Confirmed --> [*]
 
-    class C,P,S main;
-    class Conf endstate;
-    class TF,CR,NR failstate;
+    Syncing --> Pending: Transient error (retry with backoff)
+
+    Syncing --> Conflict: Concurrent modification detected
+    Conflict --> NeedsResolution: Requires domain rule / user action
+    NeedsResolution --> Pending: Conflict resolved with updated intent
+    NeedsResolution --> Rejected: Unresolvable / user discarded
+
+    Syncing --> Rejected: Authorization denied or validation failed
+    Rejected --> [*]
 ```
 
 ### 4.1 Idempotency
@@ -197,50 +181,52 @@ The server re-evaluates authorization when the operation reaches the authoritati
 ### 5.2 Conflict Handling
 Lenar does not rely on one universal conflict algorithm. Conflict strategy depends strictly on domain semantics. Potential strategies (e.g., server wins, merge, reject, user resolution) are applied only where justified by the specific domain rule.
 
+#### [Domain-Specific Conflict Resolution Flow]
+
 ```mermaid
 flowchart TD
-    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef input fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
     classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
     classDef action fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
-    classDef recovery fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#14532d,stroke-dasharray: 4 4
+    classDef success fill:#dcfce3,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
+    classDef reject fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
 
-    LO[Local Operation]
-    CSS[Current Server State]
-    
-    CM{Can Merge?}
-    
-    LO --> CM
-    CSS --> CM
-    
-    AR[Apply / Reconcile]
-    CM -->|Yes| AR
-    
-    C[Conflict]
-    CM -->|No| C
-    
-    DR[Domain Rule / User Resolution]
-    C --> DR
-    
-    FS[Final State]
-    DR --> FS
-    AR --> FS
+    subgraph Inputs ["Inputs"]
+        LO["Pending Local Operation"]:::input
+        AS["Current Authoritative Server State"]:::input
+    end
 
-    %% Recovery Path
-    DI[Detect inconsistency]
-    RBLR[rebuild/recover local representation]
-    OAS[obtain authoritative state]
-    RVPI[reconcile valid pending intent]
-    RS[resume synchronization]
+    Inputs --> Eval{"State Divergence / Conflict?"}:::decision
 
-    DI -.-> RBLR
-    RBLR -.-> OAS
-    OAS -.-> RVPI
-    RVPI -.-> RS
+    Eval -->|No Conflict| Apply["Apply Directly"]:::action
+    Eval -->|Conflict Detected| Strategy{"Domain Strategy"}:::decision
 
-    class LO,CSS,FS state;
-    class CM decision;
-    class AR,C,DR action;
-    class DI,RBLR,OAS,RVPI,RS recovery;
+    Strategy -->|Auto-Mergeable| Merge["Merge Changes Safely"]:::action
+    Strategy -->|Server Authoritative| Rej["Server Wins: Reject Local Intent"]:::reject
+    Strategy -->|Interactive| UserRes["Prompt User Resolution"]:::action
+
+    Apply --> Final["Authoritative Server State Updated"]:::success
+    Merge --> Final
+    UserRes --> Final
+```
+
+#### [Local State Inconsistency Recovery Flow]
+
+```mermaid
+flowchart LR
+    classDef step fill:#eff6ff,stroke:#2563eb,stroke-width:1px,color:#1e40af,font-weight:bold
+    classDef outcome fill:#dcfce3,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
+
+    S1["1. Detect Inconsistency<br/>(Hash / Revision Mismatch)"]:::step
+    S2["2. Rebuild Local Cache<br/>(Purge stale representations)"]:::step
+    S3["3. Fetch Authoritative State<br/>(Authoritative baseline)"]:::step
+    S4["4. Reconcile Outbox<br/>(Re-validate pending intent)"]:::step
+    S5["5. Resume Synchronization<br/>(Safe idempotent sync)"]:::outcome
+
+    S1 --> S2
+    S2 --> S3
+    S3 --> S4
+    S4 --> S5
 ```
 
 ---
@@ -274,42 +260,34 @@ The user interface should clearly distinguish: Offline, Saved locally, Pending, 
 
 The architecture must have a clear path from failure back toward a trusted state.
 
+### [Resilience and Recovery Model]
+
 ```mermaid
 flowchart TD
-    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef action fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef disruption fill:#fee2e2,stroke:#ef4444,stroke-width:1px,color:#991b1b
+    classDef principle fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef goal fill:#dcfce3,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
 
-    SN[Strong Network]
-    WN[Weak Network]
-    IN[Intermittent]
-    OFF[Offline]
-    RF[Request Failure]
-    AT[App Termination]
-    DR[Device Restart]
-    BF[Backend Failure]
-    REC[Recovery]
+    subgraph Disruptions ["Failure Conditions & Disruptions"]
+        direction LR
+        D1["Network Loss / Degradation<br/>(Offline, Weak, Intermittent)"]:::disruption
+        D2["Client Lifecycle Events<br/>(App Termination, Device Restart)"]:::disruption
+        D3["Backend / Request Outages<br/>(Timeouts, 5xx Server Errors)"]:::disruption
+    end
 
-    FS[Fail Safely]
-    PI[Preserve Intent]
-    RC[Recover]
-    CV[Converge]
+    subgraph Pipeline ["Core Resilience Pipeline"]
+        direction TB
+        P1["1. Fail Safely<br/>Isolate errors immediately without crashing or data loss"]:::principle
+        P2["2. Preserve Intent<br/>Durably retain unconfirmed operations in local Outbox"]:::principle
+        P3["3. Recover State<br/>Restore connectivity and fetch fresh authoritative baseline"]:::principle
+        P4["4. Converge<br/>Replay pending operations with idempotency to reach sync"]:::goal
 
-    SN --> WN
-    WN --> IN
-    IN --> OFF
-    OFF --> RF
-    RF --> AT
-    AT --> DR
-    DR --> BF
-    BF --> REC
+        P1 --> P2
+        P2 --> P3
+        P3 --> P4
+    end
 
-    REC -.-> FS
-    FS -.-> PI
-    PI -.-> RC
-    RC -.-> CV
-
-    class SN,WN,IN,OFF,RF,AT,DR,BF,REC state;
-    class FS,PI,RC,CV action;
+    Disruptions ==>|Handled by| Pipeline
 ```
 
 ### 7.1 Testing the Model

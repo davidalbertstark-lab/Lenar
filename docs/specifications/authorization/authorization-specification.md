@@ -87,86 +87,60 @@ It clearly separates Authorization ("May you do this?") from Authentication ("Wh
 
 ## 9. State Models and Diagrams
 
-### Authorization Decision Model
+### [Authorization Decision Model]
+*(How authority inputs are evaluated against target operations to produce a definitive ALLOW or DENY outcome, defaulting to DENY)*
+
 ```mermaid
 flowchart TD
-    classDef input fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-    classDef process fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef allow fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
-    classDef deny fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef failure fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
-
-    subgraph Inputs
+    subgraph Authority Factors
         Act[Authenticated Actor]
-        Role[Role]
-        Scope[Scope]
-        Ctx[Context]
+        Auth[Role + Scope + Context]
+    end
+
+    subgraph Operation Target
         Res[Resource]
-        Op[Operation]
+        Op[Action]
     end
 
-    Act --> Eval
-    Role --> Eval
-    Scope --> Eval
-    Ctx --> Eval
-    Res --> Eval
-    Op --> Eval
+    Eval{Policy Engine}
+    
+    Authority Factors --> Eval
+    Operation Target --> Eval
 
-    Eval[Authorization Policy Evaluation]
+    Eval -->|Policy Satisfied| Allow([ALLOW])
+    Eval -->|Default / Missing / Mismatch| Deny([DENY])
 
-    subgraph Outcomes
-        Eval -->|Policy Satisfied| Allow[ALLOW]
-        Eval -->|Policy Not Satisfied| Deny[DENY]
-    end
-
-    subgraph Deny Conditions
-        MissReq[Missing Required Authority/Context] --> Deny
-        ScopeMiss[Scope Mismatch] --> Deny
-        InvAuth[Invalid/Revoked Authority] --> Deny
-    end
-
-    class Act,Role,Scope,Ctx,Res,Op input;
-    class Eval process;
-    class Allow allow;
-    class Deny deny;
-    class MissReq,ScopeMiss,InvAuth failure;
+    style Eval fill:#fef08a,stroke:#ca8a04,stroke-width:2px
+    style Allow fill:#dcfce7,stroke:#22c55e,stroke-width:2px
+    style Deny fill:#fee2e2,stroke:#ef4444,stroke-width:2px
 ```
 
-### Authorization Context
+### [Authorization Evaluation Engine]
+*(The core authorization policy formula combining authority context with the requested operation)*
+
 ```mermaid
-flowchart TD
-    classDef context fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
-    classDef target fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#334155
-    classDef process fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef note fill:#fef08a,stroke:#ca8a04,stroke-width:1px,color:#854d0e,font-style:italic
-
-    subgraph Potential Contextual Sources
-        Gov[Governance Assignment]
-        Enr[Enrollment / Academic Context]
-        Mem[Community Membership]
-        Acc[Account Lifecycle State]
+flowchart LR
+    subgraph Authority Context Inputs
+        Gov[Governance Role & Scope]
+        Enr[Enrollment Context]
+        Mem[Community Memberships]
+        Acc[Account Status]
     end
 
-    subgraph Target Scope
+    subgraph Requested Operation
         Res[Target Resource]
-        Op[Requested Operation]
+        Action[Action Requested]
     end
 
-    Gov -.->|As applicable| Dec[Authorization Decision]
-    Enr -.->|As applicable| Dec
-    Mem -.->|As applicable| Dec
-    Acc -.->|As applicable| Dec
-    
-    Res --> Dec
-    Op --> Dec
+    Policy{Authorization Engine}
+    Result([ALLOW / DENY])
 
-    Note1[Note: Not every operation requires every contextual source.]
-    Note1 -.- Dec
+    Authority Context Inputs --> Policy
+    Requested Operation --> Policy
+    Policy --> Result
 
-    class Gov,Enr,Mem,Acc context;
-    class Res,Op target;
-    class Dec process;
-    class Note1 note;
+    style Policy fill:#fef08a,stroke:#ca8a04,stroke-width:2px
+    style Result fill:#eff6ff,stroke:#60a5fa,stroke-width:2px
 ```
 
 ## 10. Main Behaviors

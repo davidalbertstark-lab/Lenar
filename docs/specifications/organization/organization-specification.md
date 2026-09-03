@@ -71,44 +71,74 @@ This specification does **not** cover:
 10. **Organizational changes must preserve historical truth** and not silently rewrite past authoritative Enrollment or Governance contexts.
 
 ## 9. State Model
+
+### [Institutional Structure Hierarchy]
+The server-authoritative institutional structure rooted at the University level, defining valid organizational units without imposing a rigid universal hierarchy.
+
 ```mermaid
 flowchart TD
-    classDef domain fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef core fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef unit fill:#e0e7ff,stroke:#4f46e5,stroke-width:1px,color:#312e81
-    classDef separate fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold,stroke-dasharray: 5 5
+    classDef root fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef model fill:#f8fafc,stroke:#64748b,stroke-width:1.5px,color:#0f172a,font-weight:bold
+    classDef unit fill:#e0e7ff,stroke:#4338ca,stroke-width:1px,color:#312e81
 
-    U[University]
-    
-    Model[University-specific <br/> Organization Model]
-    
-    F[Faculty <br/> where applicable]
-    D[Department <br/> where applicable]
-    L[Level <br/> first-class, <br/> institutionally defined]
-    
-    U --> Model
-    Model --- F
-    Model --- D
-    Model --- L
-    
-    C[Community]
-    E[Enrollment]
-    
-    Model -.->|Provides valid context to| E
-    E -.->|Provides academic context to| C
-    
-    class U,Model domain;
-    class F,D,L unit;
-    class C,E separate;
+    Univ["University<br/>(Institutional Root)"]:::root
+    OrgModel["University-Specific<br/>Organization Model"]:::model
 
-    N1[Organization ≠ Community]
-    N2[Organization ≠ Enrollment]
-    
-    C -.-> N1
-    E -.-> N2
-    
-    style N1 fill:#fef2f2,stroke:#f87171,color:#b91c1c,font-style:italic
-    style N2 fill:#fef2f2,stroke:#f87171,color:#b91c1c,font-style:italic
+    subgraph Units["Authoritative Institutional Units"]
+        direction TB
+        Fac["Faculty<br/>(Where applicable)"]:::unit
+        Dept["Department<br/>(Academic unit)"]:::unit
+        Lvl["Level<br/>(First-class progression state)"]:::unit
+    end
+
+    Univ -->|Establishes| OrgModel
+    OrgModel -->|Configures| Fac
+    OrgModel -->|Configures| Dept
+    OrgModel -->|Configures| Lvl
+
+    Fac -.->|"Groups (where applicable)"| Dept
+```
+
+### [Organization Domain Boundaries & Context Flow]
+Unidirectional context provision from the authoritative Organization domain to downstream consumer domains, preserving strict domain independence.
+
+```mermaid
+flowchart TD
+    classDef org fill:#eff6ff,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef downstream fill:#f8fafc,stroke:#64748b,stroke-width:1px,color:#0f172a
+    classDef leaf fill:#f1f5f9,stroke:#94a3b8,stroke-width:1px,color:#334155
+
+    subgraph OrgDomain["Organization Domain (Server-Authoritative)"]
+        OrgModel["University Organization Model<br/>(University, Faculty, Department, Level)"]:::org
+    end
+
+    subgraph Downstream["Downstream Domains (Read-Only Context Consumers)"]
+        direction TB
+        Enr["Enrollment Domain<br/>(References units for student context;<br/>cannot mutate organization)"]:::downstream
+        Gov["Governance Domain<br/>(Scopes roles to units;<br/>does not own organization)"]:::downstream
+        Comm["Community Domain<br/>(Organizes members via academic context;<br/>not a structural org node)"]:::leaf
+    end
+
+    OrgModel -->|"Provides valid structural options"| Enr
+    OrgModel -->|"Provides administrative scope"| Gov
+    Enr -->|"Supplies academic context for Base Community"| Comm
+```
+
+### [Organizational Unit Lifecycle State Model]
+The lifecycle states and valid transitions of an organizational unit, preserving historical truth upon rename, restructuring, or retirement.
+
+```mermaid
+stateDiagram-v2
+    direction TB
+
+    [*] --> Active: Unit Created & Configured
+
+    Active --> Active: Unit Renamed (Identity & History Preserved)
+    Active --> Restructured: Structural Change (e.g., Split or Merge)
+    Active --> Retired: Unit Retired (Unavailable for New Use)
+
+    Restructured --> [*]: Historical Truth Preserved (New Units Established)
+    Retired --> [*]: Historical Records Preserved (Never Erased)
 ```
 
 ## 10. Main Behaviors

@@ -25,27 +25,30 @@ This fragmentation causes real problems:
 
 Lenar exists to reduce this fragmentation. It makes useful university information and services **discoverable, trustworthy, accessible, actionable, and resilient**.
 
+### Diagram: From Campus Fragmentation to a Coherent Experience
+*Lenar unifies fragmented campus communication channels into a single, reliable digital experience.*
+
 ```mermaid
 flowchart TD
-    classDef source fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px
-    classDef lenar fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
-    classDef outcome fill:#16a34a,color:#fff,stroke:#166534,stroke-width:2px,font-weight:bold,font-size:14px
+    classDef problem fill:#fef2f2,stroke:#ef4444,stroke-width:1px,color:#991b1b
+    classDef platform fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:15px
+    classDef outcome fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534,font-weight:bold
 
-    W[WhatsApp]
-    N[Notices]
-    D[Department groups]
-    S[Social media]
-    P[Portals]
-    M[Word of mouth]
-    Doc[Documents]
+    subgraph FragmentedSources ["Fragmented Campus Channels (The Problem)"]
+        direction TB
+        Ch1["Informal Channels<br/>(WhatsApp, word of mouth, social media)"]:::problem
+        Ch2["Physical Notices<br/>(Notice boards, paper circulars)"]:::problem
+        Ch3["Disconnected Systems<br/>(Disjointed portals, static documents)"]:::problem
+    end
 
-    W & N & D & S & P & M & Doc --> L[LENAR]
-    
-    L --> E[One coherent student experience]
-    
-    class W,N,D,S,P,M,Doc source;
-    class L lenar;
-    class E outcome;
+    Lenar["LENAR DIGITAL LAYER<br/>(Unified Platform)"]:::platform
+
+    Outcome["Coherent Student Experience<br/>(Discoverable • Trustworthy • Actionable • Resilient)"]:::outcome
+
+    Ch1 -->|Aggregates & Verifies| Lenar
+    Ch2 -->|Digitizes & Structures| Lenar
+    Ch3 -->|Unifies Access| Lenar
+    Lenar -->|Delivers| Outcome
 ```
 
 ---
@@ -73,29 +76,33 @@ Our mission emphasizes five pillars:
 
 Lenar is defined by six core qualities that separate it from a generic software tool. It must feel dependable enough to become a normal part of university life.
 
+### Diagram: The Six Core Qualities of Lenar
+*Lenar's identity balances student-centered experience with institutional trust and resilience.*
+
 ```mermaid
 flowchart TD
     classDef core fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
-    classDef quality fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
-    
-    L((LENAR))
-    
-    U[Useful]
-    T[Trustworthy]
-    S[Simple]
-    F[Fast]
-    R[Resilient]
-    Re[Respectful]
-    
-    L --- U
-    L --- T
-    L --- S
-    L --- F
-    L --- R
-    L --- Re
-    
-    class L core;
-    class U,T,S,F,R,Re quality;
+    classDef exp fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef integrity fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#166534
+
+    Lenar(["LENAR Product Identity"]):::core
+
+    subgraph Experience ["Student-Centered Experience"]
+        direction TB
+        S["Simple<br/>(Hides systemic complexity)"]:::exp
+        F["Fast<br/>(Responsive in all network conditions)"]:::exp
+        Re["Respectful<br/>(Low noise, minimal data collection)"]:::exp
+    end
+
+    subgraph Integrity ["System Integrity & Value"]
+        direction TB
+        U["Useful<br/>(Solves real campus problems)"]:::integrity
+        T["Trustworthy<br/>(Explicit authority and freshness)"]:::integrity
+        R["Resilient<br/>(Dependable even when offline)"]:::integrity
+    end
+
+    Lenar --> Experience
+    Lenar --> Integrity
 ```
 
 | Quality | Description |
@@ -114,18 +121,24 @@ flowchart TD
 ### The Trust Model
 Trust is central to Lenar. A visually attractive platform is useless if students cannot trust its content. Users must be able to distinguish between official announcements, verified information, user-generated content, and potentially stale data.
 
+### Diagram: The Information Trust Pipeline
+*How Lenar evaluates source, authority, and freshness to establish transparent user trust.*
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef final fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef outcome fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#166534,font-weight:bold
 
-    A[SOURCE] --> B[AUTHORITY]
-    B --> C[CONTENT]
-    C --> D[STATUS / FRESHNESS]
-    D --> E[USER UNDERSTANDING]
-    
-    class A,B,C,D step;
-    class E final;
+    A["1. Originating Source<br/>(e.g., University Management, Department, Student Exco)"]:::step
+    B["2. Verified Authority<br/>(Mandate tier: Official, Verified, or Community)"]:::step
+    C["3. Published Content<br/>(Announcements, schedules, campus resources)"]:::step
+    D["4. Status & Freshness<br/>(Lifecycle state: Active, Superseded, or Expired)"]:::step
+    E["5. User Confidence<br/>(Students act with trust knowing exact source and validity)"]:::outcome
+
+    A -->|Identifies publisher| B
+    B -->|Validates institutional mandate| C
+    C -->|Evaluates freshness and version| D
+    D -->|Renders clear trust indicators| E
 ```
 
 ### The Resilience Model

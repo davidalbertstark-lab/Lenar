@@ -38,46 +38,48 @@ This means:
 
 The conceptual module map logically groups related domains within the monolith:
 
+### Modular Monolith Logical Architecture
+Internal domain modules maintain explicit responsibilities and controlled dependencies within a single deployable backend backed by PostgreSQL.
+
 ```mermaid
 flowchart TD
-    classDef module fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-weight:bold
-    classDef monolith fill:#f8fafc,stroke:#475569,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef feature fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-weight:bold
+    classDef core fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#14532d,font-weight:bold
+    classDef support fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold
+    classDef db fill:#f8fafc,stroke:#475569,stroke-width:2px,color:#0f172a,font-weight:bold
 
-    subgraph MM [LENAR MODULAR MONOLITH]
+    subgraph Monolith ["FastAPI Modular Monolith (Single Deployment)"]
         direction TB
-        
-        subgraph Core
-            ID[Identity / Access]
-            Org[Organization]
-            AC[Academic Context]
-        end
-        
-        subgraph Features
-            C[Content]
-            CSI[Campus Services / Issues]
-            Opp[Opportunities]
-        end
-        
-        subgraph Supporting
-            Notif[Notifications]
-            Search[Search]
-            Sync[Synchronization]
-            Admin[Admin Control Plane]
-        end
-        
-        Core ~~~ Features
-        Features ~~~ Supporting
-    end
-    
-    %% Showing loose logical associations inside the monolith
-    ID -.-> Admin
-    Org -.-> AC
-    ID -.-> Sync
-    Features -.-> Search
-    Features -.-> Notif
 
-    class ID,Org,AC,C,CSI,Opp,Notif,Search,Sync,Admin module;
-    style MM fill:#f1f5f9,stroke:#334155,stroke-width:2px
+        subgraph Features ["Feature Modules"]
+            direction LR
+            Content["Academic Content"]:::feature
+            Services["Campus Services & Issues"]:::feature
+            Opp["Opportunities"]:::feature
+        end
+
+        subgraph Core ["Core Foundation Modules"]
+            direction LR
+            Identity["Identity & Access"]:::core
+            OrgTime["Organization & Academic Time"]:::core
+            Enrollment["Enrollment & Academic Context"]:::core
+        end
+
+        subgraph Platform ["Supporting Services & Governance"]
+            direction LR
+            Admin["Admin Control Plane"]:::support
+            Sync["Synchronization"]:::support
+            Search["Search"]:::support
+            Notif["Notifications"]:::support
+        end
+
+        Features -->|Rely on Core Context| Core
+        Admin -->|Governs System State| Core
+        Features -.->|Dispatch Events & Indexing| Platform
+    end
+
+    Core --> DB[("Authoritative Database<br/>(Shared PostgreSQL)")]:::db
+    Platform --> DB
 ```
 
 ### 1.1 The Admin Control Plane
@@ -96,54 +98,51 @@ The control plane also participates in determining and establishing the user's e
 
 The broader ecosystem encompasses users, clients, the central Lenar Application, core infrastructure, and necessary external providers.
 
+### System Context & Ecosystem Boundaries
+Lenar connects university stakeholders through multi-platform clients to a unified backend application supported by dedicated infrastructure and external services.
+
 ```mermaid
 flowchart TD
-    classDef people fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef lenar fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef coreInfra fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d
-    classDef ext fill:#fffbeb,stroke:#d97706,stroke-width:2px,color:#92400e,font-style:italic
+    classDef actor fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef server fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
+    classDef infra fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#0f172a
+    classDef ext fill:#fffbeb,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic
 
-    subgraph People
-        S[Students]
-        IA[Institutional Actors]
-        PA[Platform Administrators]
+    subgraph Users ["Users & Stakeholders"]
+        direction LR
+        Students["Students"]:::actor
+        Staff["Institutional Actors"]:::actor
+        Admins["Platform Administrators"]:::actor
     end
 
-    subgraph Lenar System
-        W[Web]
-        PWA[PWA]
-        M[Mobile]
-        API[Lenar API / Application]
-        
-        W --> API
-        PWA --> API
-        M --> API
+    subgraph Clients ["Client Applications"]
+        direction LR
+        Mobile["Mobile Application<br/>(Flutter: Android / iOS)"]:::client
+        Web["Web & PWA<br/>(React / TypeScript)"]:::client
     end
-    
-    subgraph Core Infrastructure
-        DB[(PostgreSQL)]
-        OS[Object Storage]
-        AuthN[Authentication]
-        BP[Background Processing]
+
+    subgraph Backend ["Lenar Core Application"]
+        API["Lenar API & Modular Monolith<br/>(FastAPI Backend)"]:::server
     end
-    
-    subgraph External / Supporting
-        PN[Push Notification Provider]
-        An[Analytics]
-        EM[Error Monitoring / Observability]
+
+    subgraph CoreInfra ["Authoritative Core Infrastructure"]
+        direction LR
+        DB[("PostgreSQL Database<br/>(Authoritative State)")]:::infra
+        Storage["Object Storage<br/>(Media & Documents)"]:::infra
+        Workers["Background Workers<br/>(Async Jobs)"]:::infra
     end
-    
-    S --> Lenar_System
-    IA --> Lenar_System
-    PA --> Lenar_System
-    
-    API --> Core_Infrastructure
-    API -.-> External_Supporting
-    
-    class S,IA,PA people;
-    class W,PWA,M,API lenar;
-    class DB,OS,AuthN,BP coreInfra;
-    class PN,An,EM ext;
+
+    subgraph External ["External Services (Behind Integration Boundaries)"]
+        direction LR
+        Push["Push Notifications<br/>(FCM / APNs)"]:::ext
+        Telemetry["Observability & Analytics<br/>(Monitoring / Sentry)"]:::ext
+    end
+
+    Users --> Clients
+    Clients -->|HTTPS REST API| API
+    API -->|Authoritative Transactions| CoreInfra
+    API -.->|Isolated Provider Calls| External
 ```
 
 ---
@@ -152,25 +151,25 @@ flowchart TD
 
 To preserve maintainability, Lenar enforces a strict dependency direction across its layers.
 
+### Layered Architecture & Dependency Direction
+System layers enforce a strict downward request flow while isolating core domain business rules from UI, frameworks, and storage drivers.
+
 ```mermaid
 flowchart TD
-    classDef layer fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
-    classDef title fill:none,stroke:none,font-size:14px,font-style:italic
+    classDef apiLayer fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef appLayer fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d,font-weight:bold
+    classDef domainLayer fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef infraLayer fill:#f8fafc,stroke:#64748b,stroke-width:2px,color:#0f172a,font-weight:bold
 
-    Title[Dependency Direction: Top to Bottom]
-    style Title fill:none,stroke:none
+    API["1. Presentation & API Layer<br/><b>FastAPI Routers • Schemas • HTTP Validation • Auth Extraction</b>"]:::apiLayer
+    APP["2. Application Layer<br/><b>Use Case Workflows • Orchestration • Transaction Boundaries • Event Dispatch</b>"]:::appLayer
+    DOMAIN["3. Domain Layer (Pure Business Logic)<br/><b>Entities • Invariants • State Machines • Business Rules</b>"]:::domainLayer
+    INFRA["4. Infrastructure & Data Layer<br/><b>PostgreSQL Repositories • Storage Adapters • External SDKs</b>"]:::infraLayer
 
-    CA[Client / API]
-    AL[Application Layer]
-    DL[Domain Layer]
-    DI[Data / Infrastructure]
-
-    Title --- CA
-    CA -->|Depends on| AL
-    AL -->|Depends on| DL
-    DL -->|Depends on| DI
-
-    class CA,AL,DL,DI layer;
+    API -->|Depends on & calls| APP
+    APP -->|Coordinates & enforces| DOMAIN
+    APP -->|Persists domain state via| INFRA
+    DOMAIN -.->|Pure domain: zero imports of| INFRA
 ```
 
 Domain logic must not depend directly on FastAPI request objects, Flutter UI states, PostgreSQL drivers, or specific provider SDKs.

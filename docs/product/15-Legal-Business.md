@@ -22,32 +22,32 @@ The central principle is:
 
 The objective is to avoid preventable problems caused by ignoring real-world constraints. Major product and integration decisions must account for more than just engineering feasibility.
 
+### Decision Evaluation Pipeline
+
 ```mermaid
 flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef review fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
-    classDef decision fill:#dcfce3,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold
+    subgraph Product ["1. Product Viability"]
+        direction LR
+        UV["User Value"] --> PF["Product Fit"]
+    end
 
-    UV[User Value]
-    PF[Product Fit]
-    LPR[Legal / Privacy Review]
-    SR[Security Review]
-    OC[Operational Cost]
-    TPT[Third-Party Terms]
-    S[Sustainability]
-    D((Decision))
+    subgraph Governance ["2. Risk & Governance"]
+        direction LR
+        LPR["Legal & Privacy Review"] --> SR["Security Review"]
+    end
 
-    UV --> PF
-    PF --> LPR
-    LPR --> SR
-    SR --> OC
-    OC --> TPT
-    TPT --> S
-    S --> D
+    subgraph Operations ["3. Operational Viability"]
+        direction LR
+        OC["Operational Cost & Terms"] --> ST["Long-Term Sustainability"]
+    end
 
-    class UV,PF,OC,TPT,S step;
-    class LPR,SR review;
-    class D decision;
+    Decision(["Informed Production Decision"]):::decision
+
+    Product --> Governance
+    Governance --> Operations
+    Operations --> Decision
+
+    classDef decision fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#15803d,font-weight:bold
 ```
 
 ---
@@ -71,36 +71,22 @@ Where these are required, they require explicit authority and agreement.
 
 Legal and privacy considerations must follow user data through its entire lifecycle.
 
+### Data Privacy Lifecycle & Governance Boundary
+
 ```mermaid
 flowchart TD
-    classDef data fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
-    classDef legal fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    subgraph Governance ["Legal & Institutional Compliance Boundary"]
+        C["1. Collection & Purpose (Data Minimization)"]
+        P["2. Lawful Processing (Transparency & Consent)"]
+        S["3. Secure Storage (Location & Security Rules)"]
+        T["4. Third-Party Sharing (DPAs & Export Limits)"]
+        R["5. Retention & Deletion (User Rights & Erasure)"]
 
-    UD[User Data]
-    P[Purpose]
-    PR[Processing]
-    S[Storage]
-    TP[Third Parties]
-    RD[Retention / Deletion]
+        C --> P --> S --> T --> R
+    end
 
-    ALIR[Applicable Legal / Institutional Requirements]
-
-    UD --> P
-    P --> PR
-    PR --> S
-    S --> TP
-    TP --> RD
-
-    ALIR -.-> P
-    ALIR -.-> PR
-    ALIR -.-> S
-    ALIR -.-> TP
-    ALIR -.-> RD
-
-    class UD data;
-    class P,PR,S,TP,RD step;
-    class ALIR legal;
+    classDef stage fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    class C,P,S,T,R stage
 ```
 
 Lenar's architecture must support fundamental privacy principles:
@@ -134,51 +120,36 @@ When deciding whether to build or buy a component, we evaluate: *cost, control, 
 
 For our chosen providers, we must ask strict conceptual questions before full production reliance:
 
+### Third-Party Dependency & Production Reliance Review Framework
+
 ```mermaid
-flowchart LR
-    classDef lenar fill:#0f172a,stroke:#cbd5e1,stroke-width:2px,color:#fff,font-weight:bold
-    classDef domain fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
-    classDef provider fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef questions fill:#fffbeb,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic
+flowchart TD
+    subgraph Platform ["Lenar Architectural Components"]
+        direction TB
+        subgraph FirstParty ["First-Party (Built In-House)"]
+            AUTH["Lenar JWT Auth (Authentication)"]
+        end
 
-    L[LENAR]
-    
-    A[Authentication]
-    S[Storage]
-    P[Push]
-    AN[Analytics]
-    EM[Error Monitoring]
-    T[Telemetry]
+        subgraph External ["Third-Party External Dependencies"]
+            direction TB
+            R2["Cloudflare R2 (Object Storage)"]
+            FCM["Firebase Cloud Messaging (Push Notifications)"]
+            PH["PostHog (Product Analytics)"]
+            SE["Sentry (Error Monitoring)"]
+            OT["OpenTelemetry (Distributed Tracing)"]
+        end
+    end
 
-    SA[Lenar JWT Auth]
-    R2[R2]
-    FCM[FCM]
-    PH[PostHog]
-    SE[Sentry]
-    OT[OpenTelemetry]
+    subgraph Review ["Production Reliance Review Checklist"]
+        direction TB
+        Q1["1. Terms of Service & DPA Compliance"]
+        Q2["2. Data Privacy & Retention Rules"]
+        Q3["3. Operational Cost & Usage Limits"]
+        Q4["4. Availability & SLA Guarantees"]
+        Q5["5. Vendor Lock-in & Exit Strategy"]
+    end
 
-    Q["Review Questions:<br/>Terms?<br/>Data?<br/>Cost?<br/>Availability?<br/>Exit?"]
-
-    L --> A & S & P & AN & EM & T
-
-    A --> SA
-    S --> R2
-    P --> FCM
-    AN --> PH
-    EM --> SE
-    T --> OT
-
-    SA -.-> Q
-    R2 -.-> Q
-    FCM -.-> Q
-    PH -.-> Q
-    SE -.-> Q
-    OT -.-> Q
-
-    class L lenar;
-    class A,S,P,AN,EM,T domain;
-    class SA,R2,FCM,PH,SE,OT provider;
-    class Q questions;
+    External ==>|"Mandatory Due Diligence Gate"| Review
 ```
 
 For providers like **Cloudflare R2, FCM, PostHog, Sentry,** and **OpenTelemetry** infrastructure, we must review their provider terms, data processing agreements, retention policies, pricing limits, and exportability.
@@ -200,41 +171,40 @@ Mobile distribution relies on third-party gatekeepers. We must anticipate constr
 
 Operational sustainability requires preparing for dependency failures that go beyond server crashes. 
 
+### Business Continuity & Dependency Resilience Flow
+
 ```mermaid
 flowchart TD
-    classDef dep fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
-    classDef failure fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
-    classDef impact fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
-    classDef recovery fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
-    classDef example fill:none,stroke:#94a3b8,stroke-width:1px,color:#475569,stroke-dasharray: 4 4
-
-    PD[Potential Dependency]
-    F[Failure]
-    I[Impact]
-    FR[Fallback / Recovery]
-    R[Resume]
-
-    subgraph Examples [Dependency Categories]
-        direction LR
-        E1[Provider]
-        E2[Credential]
-        E3[Key Person]
-        E4[Institutional Relationship]
-        E5[Infrastructure]
+    subgraph Categories ["1. Critical Dependency Risks"]
+        direction TB
+        D1["Key Person (Knowledge silos)"]
+        D2["Provider (Outages or hostile terms)"]
+        D3["Credentials (Lost root/domain access)"]
+        D4["Institutional (University policy changes)"]
+        D5["Infrastructure (Hosting & network failures)"]
     end
 
-    Examples -.-> PD
+    subgraph Impact ["2. Failure & Impact"]
+        direction TB
+        F1["Service Disruption"]
+        F2["Operational / Access Blockage"]
+    end
 
-    PD --> F
-    F --> I
-    I --> FR
-    FR --> R
+    subgraph Controls ["3. Continuity & Fallback Controls"]
+        direction TB
+        C1["Shared Access Vaults & Multi-Admin Roles"]
+        C2["Provider Redundancy & Data Portability"]
+        C3["Documented Standard Operating Procedures (SOPs)"]
+        C4["Formal Institutional Agreements"]
+    end
 
-    class PD dep;
-    class F failure;
-    class I impact;
-    class FR,R recovery;
-    class E1,E2,E3,E4,E5 example;
+    Outcome(["4. Restored & Resilient Operations"]):::restored
+
+    Categories -->|"Risk Trigger"| Impact
+    Impact -->|"Activates"| Controls
+    Controls -->|"Restores"| Outcome
+
+    classDef restored fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#15803d,font-weight:bold
 ```
 
 We must actively manage the risk of:

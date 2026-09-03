@@ -51,57 +51,56 @@ Deletion where appropriate
 
 The Lenar domain requires modeling several conceptual families of data that interact closely to create the student experience.
 
+*(Reference Diagram: Conceptual Information Model — Domain Families & Structural Boundaries)*
+
 ```mermaid
 flowchart TD
-    classDef root fill:#1e293b,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
-    classDef domain fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef domain fill:#eff6ff,stroke:#2563eb,stroke-width:1.5px,color:#1e40af,font-weight:bold
+    classDef entity fill:#ffffff,stroke:#64748b,stroke-width:1px,color:#0f172a
+    classDef ops fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
 
-    L[LENAR DATA & CONTENT]
-    
-    Reg[Registration / Verification]
-    UserId[User Identity]
-    AcadProf[Academic Profile Claims]
-    Enroll[Enrollment Attachment]
-    
-    Org[Organization]
-    AcadTime[Academic Time]
-    Acad[Academic Context]
-    
-    Comm[Community]
-    Mem[Membership]
-    Gov[Governance]
-    
-    Cont[Content]
-    CS[Campus Services]
-    Notif[Notifications]
-    Files[Files / Media]
-    Search[Search]
-    Sync[Synchronization]
-    Admin[Admin Control Plane / Audit]
-    
-    L --- Reg
-    L --- UserId
-    L --- AcadProf
-    L --- Enroll
-    
-    L --- Org
-    L --- AcadTime
-    L --- Acad
-    
-    L --- Comm
-    L --- Mem
-    L --- Gov
-    
-    L --- Cont
-    L --- CS
-    L --- Notif
-    L --- Files
-    L --- Search
-    L --- Sync
-    L --- Admin
-    
-    class L root;
-    class Reg,UserId,AcadProf,Enroll,Org,AcadTime,Acad,Comm,Mem,Gov,Cont,CS,Notif,Files,Search,Sync,Admin domain;
+    subgraph AcademicStructure ["1. Academic Foundation"]
+        direction TB
+        Org["Institutional Hierarchy<br/>(University / Faculty / Department / Level)"]:::entity
+        Time["Academic Time<br/>(Session / Semester)"]:::entity
+    end
+
+    subgraph IdentityDomain ["2. Identity & Academic Context"]
+        direction TB
+        User["User Identity & Verification"]:::entity
+        Profile["Academic Profile Claims"]:::entity
+        Enroll["Authoritative Enrollment"]:::domain
+        User --> Profile --> Enroll
+    end
+
+    subgraph CommunityDomain ["3. Community & Governance"]
+        direction TB
+        Comm["Community & Membership<br/>(Base Community auto-assigned)"]:::domain
+        Gov["Governance & Creator Roles<br/>(Publishing Authority)"]:::entity
+    end
+
+    subgraph ContentServices ["4. Content & Campus Services"]
+        direction TB
+        Content["Approved Content<br/>(Announcements, Opps, Events)"]:::entity
+        Services["Campus Services & Issues"]:::entity
+        Media["Attached Files & Media"]:::entity
+        Content --- Media
+        Services --- Media
+    end
+
+    subgraph PlatformOperations ["5. Cross-Cutting Platform Operations"]
+        direction LR
+        Search["Search Index"]:::ops
+        Sync["Offline Sync State"]:::ops
+        Audit["Audit & History"]:::ops
+    end
+
+    Org & Time -->|Establishes academic scope| Enroll
+    Enroll -->|Derives Base Membership| Comm
+    Gov -->|Grants publishing authority in| Comm
+    Comm -->|Scopes & hosts| Content
+    Comm -->|Scopes & hosts| Services
+    Content & Services -.->|Synchronized & Indexed| Search & Sync & Audit
 ```
 
 ### 2.1 Core Conceptual Entities
@@ -129,29 +128,37 @@ Lenar relies on the following core conceptual entities. *(Note: This is a domain
 
 A critical boundary in Lenar is the distinction between authoritative state and secondary representations. 
 
+*(Reference Diagram: Data Authority vs. Secondary Representations)*
+
 ```mermaid
 flowchart TD
-    classDef auth fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
-    classDef secondary fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef local fill:#e2e8f0,stroke:#475569,stroke-width:1px,color:#334155,font-style:italic
+    classDef auth fill:#1e3a8a,stroke:#1e40af,stroke-width:2px,color:#ffffff,font-weight:bold
+    classDef secondary fill:#f8fafc,stroke:#94a3b8,stroke-width:1.5px,color:#0f172a,font-weight:bold
+    classDef client fill:#f0fdf4,stroke:#16a34a,stroke-width:1.5px,color:#14532d,font-weight:bold
 
-    Auth[AUTHORITATIVE SERVER STATE]
-    
-    CC[CLIENT CACHE]
-    SI[SEARCH INDEX]
-    AT[ANALYTICS / TELEMETRY]
-    
-    LR[LOCAL REPRESENTATION]
-    
-    Auth --> CC
-    Auth --> SI
-    Auth --> AT
-    
-    CC --> LR
-    
-    class Auth auth;
-    class CC,SI,AT secondary;
-    class LR local;
+    subgraph ServerDomain ["Authoritative Boundary (Backend)"]
+        Auth["Authoritative Server State<br/>(PostgreSQL Canonical Truth)"]:::auth
+    end
+
+    subgraph Projections ["Secondary Derived Systems"]
+        direction TB
+        SI["Search Index<br/>(Accelerated Discovery Projection)"]:::secondary
+        AT["Analytics & Telemetry<br/>(System Usage Observability)"]:::secondary
+        Notif["Push Notifications<br/>(Transient Event Alerts)"]:::secondary
+    end
+
+    subgraph MobileClient ["Mobile Client Boundary"]
+        direction TB
+        Cache["Local Read Cache<br/>(Replicated Authoritative Data)"]:::secondary
+        Intent["Local Intent & Drafts<br/>(Pending Sync Mutations)"]:::client
+    end
+
+    Auth -->|Filtered Indexing| SI
+    Auth -->|Emits Events| AT
+    Auth -->|Dispatches Alerts| Notif
+
+    Auth -->|Replicates Down| Cache
+    Intent -->|Syncs Up When Online| Auth
 ```
 
 ### 3.1 Essential Distinctions
@@ -189,28 +196,35 @@ Information in Lenar is not static. Content transitions through states of visibi
 
 Content (such as Announcements or Opportunities) experiences a visibility and validation lifecycle.
 
-```mermaid
-flowchart TD
-    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef note fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic,stroke-dasharray: 4 4
+*(Reference Diagram: Content Visibility & Publishing Lifecycle)*
 
-    D[Draft]
-    R[Review]
-    P[Published]
-    A[Active / Updated]
-    E[Expired / Archived]
-    
-    D --> R
-    D --> P
-    R --> P
-    P --> A
-    A --> E
-    P --> E
-    
-    N[Note: Content types may use different subsets of these states.<br/>Not a universal state machine.]
-    
-    class D,R,P,A,E state;
-    class N note;
+```mermaid
+stateDiagram-v2
+    [*] --> Draft: Author creates content
+
+    Draft --> InReview: Submit for approval
+    Draft --> Published: Direct publish (authorized role)
+
+    InReview --> Published: Moderator approves
+    InReview --> Draft: Changes requested / Rejected
+
+    Published --> Updated: Content edited / revised
+    Updated --> Updated: Subsequent revisions
+
+    Published --> Archived: Validity expired / Deprecated
+    Updated --> Archived: Validity expired / Deprecated
+
+    Archived --> [*]
+
+    note right of Published
+        Active and discoverable in
+        targeted community feeds
+    end note
+
+    note right of Archived
+        Preserved in historical record;
+        hidden from active feeds
+    end note
 ```
 
 - **Publication State vs Content Validity:** A draft (publication state) is distinct from an expired notice (content validity).
@@ -220,31 +234,35 @@ flowchart TD
 
 At a systemic level, all records proceed through a generalized operational lifecycle.
 
-```mermaid
-flowchart TD
-    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
-    classDef note fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic,stroke-dasharray: 4 4
+*(Reference Diagram: Generalized Data Record Lifecycle)*
 
-    C[Create]
-    V[Validate]
-    AS[Authoritative Storage]
-    UD[Use / Discover]
-    U[Update]
-    AR[Archive / Retain]
-    DA[Delete / Anonymize where appropriate]
-    
-    C --> V
-    V --> AS
-    AS --> UD
-    UD --> U
-    U --> AS
-    UD --> AR
-    AR --> DA
-    
-    N[Note: Actual lifecycles vary by data type.]
-    
-    class C,V,AS,UD,U,AR,DA step;
-    class N note;
+```mermaid
+stateDiagram-v2
+    [*] --> Ingestion: Data submitted / collected
+
+    Ingestion --> AuthoritativeStore: Validation passed
+    Ingestion --> [*]: Validation failed (rejected)
+
+    AuthoritativeStore --> ActiveUse: Committed to database of record
+
+    ActiveUse --> AuthoritativeStore: Record updated / revision tracked
+    ActiveUse --> Archived: Retention policy triggered / Deactivated
+
+    Archived --> Anonymized: PII stripped for analytical retention
+    Archived --> Purged: Physical eradication (compliance expiry)
+
+    Anonymized --> [*]
+    Purged --> [*]
+
+    note right of ActiveUse
+        Available for queries, search
+        indexing, and client sync
+    end note
+
+    note right of Archived
+        Hidden from regular access;
+        retained for legal/audit compliance
+    end note
 ```
 
 ---
