@@ -99,10 +99,72 @@ This document establishes the Governance boundaries without defining the detaile
 ## 9. State Models and Diagrams
 
 ### Governance Model
-![Governance Model](diagrams/governance-model.svg)
+```mermaid
+flowchart TD
+    classDef platform fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef admin fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef leader fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
+    classDef sub fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#475569,font-weight:bold
+    classDef assignment fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
+
+    subgraph Governance Delegation
+        SA[SUPER ADMIN<br/>Platform-wide]
+        
+        SA -->|Assigns Admin| AdminX[ADMIN<br/>University X Context]
+        
+        AdminX -->|Creates| BC[BASE COMMUNITY<br/>University + Department + Level]
+        AdminX -->|Assigns Leader| Ldr[LEADER]
+        
+        BC -.->|Context of| Ldr
+        
+        Ldr -->|Assigns within Context| SubLdr[SUB-LEADER]
+        Ldr -->|Assigns within Context| Mgr[MANAGER]
+        Ldr -->|Assigns within Context| Wrt[WRITER]
+    end
+
+    subgraph Assignment Concept
+        Usr([User]) --> GovAssn[Governance Assignment]
+        GovAssn --> Role[Role]
+        GovAssn --> AuthCtx[Authority Context]
+    end
+
+    class SA platform;
+    class AdminX admin;
+    class Ldr leader;
+    class SubLdr,Mgr,Wrt sub;
+    class GovAssn,Role,AuthCtx assignment;
+```
 
 ### Governance Assignment Lifecycle
-![Governance Assignment Lifecycle](diagrams/governance-assignment-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef endstate fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef note fill:#fef08a,stroke:#ca8a04,stroke-width:1px,stroke-dasharray: 5 5,color:#854d0e
+
+    subgraph Assignment Lifecycle
+        NA[Not Assigned] -->|Assigned| AA[Active Assignment]
+        
+        AA -->|Remains Active| AA
+        
+        AA -->|Transfer| Trans[Transfer Process]
+        Trans -->|Old Assignment| End[Ended]
+        Trans -->|New Assignment| AA
+        
+        AA -->|Revocation| End
+    end
+    
+    subgraph Non-Cascading Independence
+        LdrEnd[Leader Assignment Revoked] -.->|Does NOT revoke| SubAssn[Sub-Leader / Manager / Writer Assignments remain active]
+        AcadProg[Normal Academic Progression] -.->|Does NOT revoke| GovAssn[Governance Assignment remains active]
+    end
+
+    class NA,AA state;
+    class End endstate;
+    class Trans process;
+    class SubAssn,GovAssn note;
+```
 
 ## 10. Main Behaviors
 

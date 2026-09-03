@@ -76,7 +76,32 @@ Ease of use
 
 Lenar groups its functionality into distinct, focused product areas. Each area serves a clear segment of the student experience while connecting to the same unified platform identity.
 
-![Product Area Map](../diagrams/product/product-area-map.svg)
+```mermaid
+flowchart TD
+    classDef center fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+    classDef area fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
+
+    L((LENAR))
+    
+    A[Information & Announcements]
+    B[Campus Services & Issues]
+    C[Opportunities]
+    D[Notifications]
+    E[Search & Discovery]
+    F[Student Context]
+    G[Admin Control Plane]
+    
+    L --- A
+    L --- B
+    L --- C
+    L --- D
+    L --- E
+    L --- F
+    L --- G
+    
+    class L center;
+    class A,B,C,D,E,F,G area;
+```
 
 ---
 
@@ -106,7 +131,59 @@ The current V1 scope restricts feature expansion to ensure a stable, dependable 
 
 Capabilities in Lenar do not exist in isolation. Many user-facing features rely on shared foundational models.
 
-![Feature Dependencies](../diagrams/product/feature-dependencies.svg)
+```mermaid
+flowchart TD
+    classDef default fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px,color:#334155
+    classDef foundation fill:#e2e8f0,stroke:#64748b,stroke-width:2px,font-weight:bold,color:#0f172a
+    classDef feature fill:#bfdbfe,stroke:#2563eb,stroke-width:1px,font-weight:bold,color:#1e40af
+
+    Auth[Authentication]
+    Prof[Academic Profile]
+    Rev[Review / Approval]
+    Enr[Enrollment]
+    Context[Student Context]
+    Comm[Base Community / Membership]
+    
+    Content[Content]
+    Search[Search]
+    Issue[Issue Reporting]
+    Opp[Opportunities]
+    Notif[Notifications]
+    Local[Local Persistence]
+    Offline[Offline Operations]
+    Sync[Synchronization]
+    Admin[Admin Control Plane]
+    
+    Auth --> Prof
+    Prof --> Rev
+    Rev --> Enr
+    Enr --> Context
+    Context --> Comm
+    
+    Auth --> Admin
+    
+    Comm --> Content
+    Comm --> Issue
+    Comm --> Opp
+    
+    Content --> Search
+    Issue --> Search
+    Opp --> Search
+    
+    Content --> Notif
+    Issue --> Notif
+    Opp --> Notif
+    
+    Local --> Offline
+    Offline --> Sync
+    
+    Sync -.-> Content
+    Sync -.-> Issue
+    Sync -.-> Opp
+    
+    class Auth,Prof,Rev,Enr,Context,Comm,Local,Offline,Sync,Admin foundation;
+    class Content,Search,Issue,Opp,Notif feature;
+```
 
 ---
 
@@ -116,7 +193,39 @@ Capabilities in Lenar do not exist in isolation. Many user-facing features rely 
 
 Lenar ensures every line of code traces back to a genuine user need. We do not invent features in isolation.
 
-![Requirement Traceability](../diagrams/product/requirement-traceability.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    P[Problem]
+    UN[User Need]
+    PR[Product Requirement]
+    F[Feature]
+    UC[Use Case]
+    UX[UX Flow]
+    S[Screen]
+    API[API / Domain]
+    D[Data]
+    Sec[Security]
+    OB[Offline Behavior]
+    T[Test]
+    A[Analytics]
+    
+    P --> UN
+    UN --> PR
+    PR --> F
+    F --> UC
+    UC --> UX
+    UX --> S
+    S --> API
+    API --> D
+    D --> Sec
+    Sec --> OB
+    OB --> T
+    T --> A
+    
+    class P,UN,PR,F,UC,UX,S,API,D,Sec,OB,T,A step;
+```
 
 *(Note: Not every feature requires a heavy artifact at every layer, but the logical traceability must remain intact).*
 
@@ -124,7 +233,23 @@ Lenar ensures every line of code traces back to a genuine user need. We do not i
 
 Every feature in Lenar must account for the reality of mobile usage, unpredictable networks, and missing data. Features should progressively adapt their state.
 
-![Generalized Feature State Model](../diagrams/product/feature-state-model.svg)
+```mermaid
+flowchart TD
+    classDef default fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef state fill:#e2e8f0,stroke:#64748b,stroke-width:1px,font-weight:bold
+
+    title[Generalized Product State Model<br/>Not a literal state machine for every feature]
+    style title fill:none,stroke:none,font-weight:bold,font-size:14px
+
+    E[Entry] --> L[Loading]
+    
+    L --> S[Success] --> C[Content / Action]
+    L --> Em[Empty] --> ES[Empty State]
+    L --> Er[Error] --> RE[Recoverable Error]
+    L --> O[Offline] --> OS[Offline / Pending State]
+    
+    class E,L,S,C,Em,ES,Er,RE,O,OS state;
+```
 
 ---
 

@@ -26,7 +26,23 @@ The central domain idea is:
 
 The initial domain context is **FUTA** and a **BSc university environment**, while the architecture should avoid hard-coding assumptions that would make future institutional expansion unnecessarily difficult.
 
-![People Around Lenar](../diagrams/domain/people-around-lenar.svg)
+```mermaid
+flowchart TD
+    classDef actor fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
+    classDef platform fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+
+    S((Students))
+    U((Institutional Actors))
+    
+    L[Lenar Platform]
+    
+    U -- Provides Info & Services --> L
+    L -- Delivers Coherent Experience --> S
+    S -- Engages & Reports --> L
+    
+    class S,U actor;
+    class L platform;
+```
 
 ---
 
@@ -78,7 +94,32 @@ Lenar must therefore model information as more than text. Where meaningful, info
 
 Lenar operates within a structured university environment. However, this structure acts primarily as a contextual hierarchy, not an absolute authorization model.
 
-![Organizational Context](../diagrams/domain/organizational-context.svg)
+```mermaid
+flowchart TD
+    classDef domain fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#1e293b,font-weight:bold
+    classDef firstclass fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+
+    Org[Organization]
+    U[University]
+    F[Faculty]
+    D[Department]
+    L[Level]
+    
+    Org --- U
+    Org --- F
+    Org --- D
+    Org --- L
+    
+    U -->|contains| F
+    F -->|contains| D
+    
+    %% Level is first-class, relations are institution specific
+    U -.->|may contain| L
+    D -.->|may contain| L
+    
+    class Org domain;
+    class U,F,D,L firstclass;
+```
 
 This hierarchy helps Lenar organize content, route notifications, and determine relevance. It ensures that students see information scoped to their specific faculty, department, or level.
 
@@ -106,7 +147,38 @@ The currently established roles are:
 
 Lenar does not rely on simple role-based access control (RBAC). A user's ability to perform an action is determined by a combination of their identity, their assigned role, the scope of that role, the specific resource, and the action requested.
 
-![Authorization Context](../diagrams/security/authorization-context.svg)
+```mermaid
+flowchart TD
+    classDef input fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef decision fill:#3b82f6,color:#fff,stroke:#1d4ed8,stroke-width:2px,font-weight:bold
+    classDef allow fill:#10b981,color:#fff,stroke:#047857,stroke-width:2px,font-weight:bold
+    classDef deny fill:#ef4444,color:#fff,stroke:#b91c1c,stroke-width:2px,font-weight:bold
+    classDef generic fill:#e2e8f0,stroke:#cbd5e1,stroke-width:1px,color:#475569,font-style:italic
+
+    I[Identity]
+    R[Role / Assignment]
+    S[Scope]
+    C[Context]
+    
+    Res[Generic Resource]
+    A[Requested Operation]
+    
+    Dec{Authorization<br/>Decision}
+    
+    I & R & S & C & Res & A --> Dec
+    
+    Dec --> AL[Allow]
+    Dec --> DN[Deny]
+    
+    class I,R,S,C input;
+    class Res,A generic;
+    class Dec decision;
+    class AL allow;
+    class DN deny;
+    
+    %% Emphasize role alone is not enough
+    R -. "Insufficient Alone" .-> Dec
+```
 
 ---
 
@@ -114,7 +186,68 @@ Lenar does not rely on simple role-based access control (RBAC). A user's ability
 
 To function as a cohesive digital layer, Lenar models several distinct domains. 
 
-![Domain Map](../diagrams/domain/domain-map.svg)
+```mermaid
+flowchart TD
+    classDef domain fill:#f1f5f9,stroke:#475569,stroke-width:1px,color:#1e293b,font-weight:bold
+
+    Reg[Registration]
+    UserId[User Identity]
+    AcadProf[Academic Profile]
+    AcadId[Academic Identity]
+    
+    Org[Organization]
+    AcadTime[Academic Time]
+    
+    Enroll[Enrollment]
+    Acad[Academic Context]
+    Comm[Community]
+    Mem[Membership]
+    Gov[Governance]
+    
+    Content[Content]
+    Campus[Campus Services]
+    Opp[Opportunities]
+    Notif[Notifications]
+    Search[Search]
+    Admin[Admin Control Plane]
+    Sync[Synchronization]
+    
+    Reg --- UserId
+    UserId --- AcadProf
+    AcadProf --- AcadId
+    AcadId --- Enroll
+    
+    Enroll --- Acad
+    AcadTime --- Acad
+    Org --- Acad
+    
+    Acad --- Comm
+    Comm --- Mem
+    
+    Gov --- Comm
+    
+    Org --- Content
+    Org --- Campus
+    Org --- Opp
+    
+    Content --- Notif
+    Campus --- Notif
+    Opp --- Notif
+    
+    Search -.- Content
+    Search -.- Campus
+    Search -.- Opp
+    
+    Admin -.- Org
+    Admin -.- AcadTime
+    Admin -.- Gov
+    
+    Sync -.- Content
+    Sync -.- Campus
+    Sync -.- Notif
+    
+    class Reg,UserId,AcadProf,AcadId,Org,AcadTime,Enroll,Acad,Comm,Mem,Gov,Content,Campus,Opp,Notif,Search,Admin,Sync domain;
+```
 
 ### 4.1 Foundational Domains
 

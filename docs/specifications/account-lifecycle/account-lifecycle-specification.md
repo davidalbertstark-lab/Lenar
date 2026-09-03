@@ -77,7 +77,43 @@ This specification does **not** cover:
 9. A **Closed** account cannot resume through ordinary Login.
 
 ## 9. State Model
-![Account Lifecycle Model](diagrams/account-lifecycle-model.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef terminal fill:#f87171,stroke:#dc2626,stroke-width:2px,color:#7f1d1d,font-weight:bold
+    classDef event fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef note fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-style:italic
+
+    Reg(Registration) --> Created
+    
+    Created --> Approval
+    Approval --> Active
+    
+    Active --> SuspendEvent
+    SuspendEvent --> Suspended
+    
+    Suspended --> RestoreEvent
+    RestoreEvent --> Active
+    
+    Active --> CloseEvent
+    Suspended --> CloseEvent
+    
+    CloseEvent --> Closed
+    
+    class Created,Active,Suspended state;
+    class Closed terminal;
+    class Reg,Approval,SuspendEvent,RestoreEvent,CloseEvent event;
+
+    N1[Email Verification ≠ Account Activation]
+    N2[Suspension → Authentication / Access Consequences]
+    N3[Closure → Terminal Account State]
+    
+    Created -.-> N1
+    Suspended -.-> N2
+    Closed -.-> N3
+    
+    class N1,N2,N3 note;
+```
 
 ## 10. Main Behaviors
 - **Account Creation:** Upon registration, the account is immediately placed into the `Created` state.

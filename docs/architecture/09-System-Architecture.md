@@ -38,7 +38,47 @@ This means:
 
 The conceptual module map logically groups related domains within the monolith:
 
-![Module Map](../diagrams/architecture/module-map.svg)
+```mermaid
+flowchart TD
+    classDef module fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-weight:bold
+    classDef monolith fill:#f8fafc,stroke:#475569,stroke-width:2px,color:#0f172a,font-weight:bold
+
+    subgraph MM [LENAR MODULAR MONOLITH]
+        direction TB
+        
+        subgraph Core
+            ID[Identity / Access]
+            Org[Organization]
+            AC[Academic Context]
+        end
+        
+        subgraph Features
+            C[Content]
+            CSI[Campus Services / Issues]
+            Opp[Opportunities]
+        end
+        
+        subgraph Supporting
+            Notif[Notifications]
+            Search[Search]
+            Sync[Synchronization]
+            Admin[Admin Control Plane]
+        end
+        
+        Core ~~~ Features
+        Features ~~~ Supporting
+    end
+    
+    %% Showing loose logical associations inside the monolith
+    ID -.-> Admin
+    Org -.-> AC
+    ID -.-> Sync
+    Features -.-> Search
+    Features -.-> Notif
+
+    class ID,Org,AC,C,CSI,Opp,Notif,Search,Sync,Admin module;
+    style MM fill:#f1f5f9,stroke:#334155,stroke-width:2px
+```
 
 ### 1.1 The Admin Control Plane
 An important architectural responsibility within this monolith is the **Admin Control Plane**. It is responsible for governing authoritative system state, particularly:
@@ -56,7 +96,55 @@ The control plane also participates in determining and establishing the user's e
 
 The broader ecosystem encompasses users, clients, the central Lenar Application, core infrastructure, and necessary external providers.
 
-![System Context](../diagrams/architecture/system-context.svg)
+```mermaid
+flowchart TD
+    classDef people fill:#f1f5f9,stroke:#64748b,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef lenar fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef coreInfra fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,color:#14532d
+    classDef ext fill:#fffbeb,stroke:#d97706,stroke-width:2px,color:#92400e,font-style:italic
+
+    subgraph People
+        S[Students]
+        IA[Institutional Actors]
+        PA[Platform Administrators]
+    end
+
+    subgraph Lenar System
+        W[Web]
+        PWA[PWA]
+        M[Mobile]
+        API[Lenar API / Application]
+        
+        W --> API
+        PWA --> API
+        M --> API
+    end
+    
+    subgraph Core Infrastructure
+        DB[(PostgreSQL)]
+        OS[Object Storage]
+        AuthN[Authentication]
+        BP[Background Processing]
+    end
+    
+    subgraph External / Supporting
+        PN[Push Notification Provider]
+        An[Analytics]
+        EM[Error Monitoring / Observability]
+    end
+    
+    S --> Lenar_System
+    IA --> Lenar_System
+    PA --> Lenar_System
+    
+    API --> Core_Infrastructure
+    API -.-> External_Supporting
+    
+    class S,IA,PA people;
+    class W,PWA,M,API lenar;
+    class DB,OS,AuthN,BP coreInfra;
+    class PN,An,EM ext;
+```
 
 ---
 
@@ -64,7 +152,26 @@ The broader ecosystem encompasses users, clients, the central Lenar Application,
 
 To preserve maintainability, Lenar enforces a strict dependency direction across its layers.
 
-![Backend Layer Architecture](../diagrams/architecture/backend-layer-architecture.svg)
+```mermaid
+flowchart TD
+    classDef layer fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef title fill:none,stroke:none,font-size:14px,font-style:italic
+
+    Title[Dependency Direction: Top to Bottom]
+    style Title fill:none,stroke:none
+
+    CA[Client / API]
+    AL[Application Layer]
+    DL[Domain Layer]
+    DI[Data / Infrastructure]
+
+    Title --- CA
+    CA -->|Depends on| AL
+    AL -->|Depends on| DL
+    DL -->|Depends on| DI
+
+    class CA,AL,DL,DI layer;
+```
 
 Domain logic must not depend directly on FastAPI request objects, Flutter UI states, PostgreSQL drivers, or specific provider SDKs.
 
@@ -72,7 +179,39 @@ Domain logic must not depend directly on FastAPI request objects, Flutter UI sta
 
 The API is the primary boundary between untrusted clients and server-side behavior. It is responsible for authentication, authorization, validation, and invoking application flows, ensuring that not all business logic is carelessly dumped into routes.
 
-![Request Data Flow](../diagrams/architecture/request-data-flow.svg)
+```mermaid
+flowchart TD
+    classDef actor fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef client fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef server fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+
+    U[User]
+    C[Client]
+    API[API]
+    AuthN[Authentication]
+    AuthZ[Authorization]
+    Val[Validation]
+    App[Application]
+    Dom[Domain]
+    Data[Data]
+    Res[Result]
+    
+    U --> C
+    C --> API
+    API --> AuthN
+    AuthN --> AuthZ
+    AuthZ --> Val
+    Val --> App
+    App --> Dom
+    Dom --> Data
+    Data --> Res
+    Res --> C
+    C --> U
+    
+    class U actor;
+    class C client;
+    class API,AuthN,AuthZ,Val,App,Dom,Data,Res server;
+```
 
 ---
 
@@ -94,7 +233,39 @@ A correct mental model of Lenar requires preserving these boundaries:
 
 Architectural resilience requires distinguishing between critical dependencies (which fail the core product) and optional/secondary dependencies (which degrade gracefully). 
 
-![Failure Boundaries](../diagrams/architecture/failure-boundaries.svg)
+```mermaid
+flowchart TD
+    classDef core fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef required fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef secondary fill:#fee2e2,stroke:#ef4444,stroke-width:1px,color:#991b1b,stroke-dasharray: 4 4
+    
+    CPS[Core Product State]
+    
+    DB[(Database)]
+    AuthN[Authentication]
+    OS[Object Storage]
+    
+    Notif[Notifications]
+    An[Analytics]
+    Search[Search]
+    
+    CPS --> DB
+    CPS --> AuthN
+    CPS --> OS
+    
+    CPS -.-> Notif
+    CPS -.-> An
+    CPS -.-> Search
+    
+    class CPS core;
+    class DB,AuthN,OS required;
+    class Notif,An,Search secondary;
+    
+    %% Note
+    N["Solid = Critical Dependency<br/>Dashed = Secondary/Optional Boundary<br/>(Failures here must not corrupt core state)"]
+    style N fill:none,stroke:none,font-style:italic,color:#334155
+    N ~~~ CPS
+```
 
 For example, primary authoritative data is a core dependency. Analytics, error monitoring, and notification delivery are secondary to a successful authoritative state change.
 

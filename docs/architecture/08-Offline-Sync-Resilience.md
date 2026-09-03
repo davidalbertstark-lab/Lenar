@@ -50,7 +50,44 @@ supported features adapt
 
 The mobile client maintains a clear separation between its internal local database, its queue of outbound operations, and the synchronization engine responsible for talking to the network.
 
-![Synchronization Architecture](../diagrams/offline-sync/synchronization-architecture.svg)
+```mermaid
+flowchart TD
+    classDef boundary fill:#f1f5f9,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef component fill:#fff,stroke:#cbd5e1,stroke-width:1px,color:#334155
+    classDef flow fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-style:italic
+
+    subgraph Mobile[Mobile App]
+        LD[Local Data]
+        PO[Pending Operations / Outbox]
+        SE[Sync Engine]
+        LD --- SE
+        PO --- SE
+    end
+
+    NW((Network))
+
+    subgraph Server[Lenar API]
+        VA[Validation / Authorization]
+        DL[Domain Logic]
+        AD[Authoritative Data]
+        VA --- DL
+        DL --- AD
+    end
+
+    SE <--> NW
+    NW <--> VA
+
+    SC[Server Changes]
+    SyncFlow[synchronization]
+    LR[local representation]
+
+    SC --> SyncFlow
+    SyncFlow --> LR
+
+    class Mobile,Server boundary;
+    class LD,PO,SE,VA,DL,AD component;
+    class SC,SyncFlow,LR flow;
+```
 
 ---
 
@@ -58,7 +95,34 @@ The mobile client maintains a clear separation between its internal local databa
 
 When a user performs an action offline, it must be safely durably preserved, then correctly synchronized.
 
-![Offline Write & Sync](../diagrams/offline-sync/offline-write-sync.svg)
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant MC as Mobile Client
+    participant LD as Local Database
+    participant OB as Outbox
+    participant NW as Network
+    participant S as FastAPI / Server
+    participant AD as Authoritative Data
+
+    U->>MC: User Action
+    MC->>LD: Local Durable Save (Locally Saved)
+    MC->>OB: Mark as Pending
+    Note over LD, OB: Operation is Pending,<br/>NOT Server Confirmed
+
+    opt Connectivity Returns
+        OB->>NW: Sync Attempt
+        NW->>S: Transmit Operation
+        S->>S: Server Validation / Authorization
+        S->>AD: Authoritative Change
+        AD-->>S: Success
+        S-->>NW: Confirmation
+        NW-->>OB: Server Confirmed
+        OB->>LD: Local Reconciliation
+        LD-->>MC: State Updated
+        MC-->>U: Confirmed UI State
+    end
+```
 
 ### 3.1 Critical Conceptual Distinctions
 
@@ -79,7 +143,39 @@ These states must never be collapsed or confused in either the architecture or t
 
 Operations progress through a predictable lifecycle as they transition from local intent to authoritative server state.
 
-![Operation Lifecycle](../diagrams/offline-sync/operation-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef main fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef endstate fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef failstate fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef title fill:none,stroke:none,font-weight:bold,font-size:16px
+
+    Title[Generalized Operation Lifecycle]
+    style Title fill:none,stroke:none,color:#0f172a,font-weight:bold
+
+    C[Created]
+    P[Pending]
+    S[Syncing]
+    Conf[Confirmed]
+    
+    TF[Temporary Failure]
+    CR[Conflict / Rejection]
+    NR[Needs Resolution / Terminal Failure]
+
+    C --> P
+    P --> S
+    S --> Conf
+    
+    S --> TF
+    TF -->|Retry| P
+    
+    S --> CR
+    CR --> NR
+
+    class C,P,S main;
+    class Conf endstate;
+    class TF,CR,NR failstate;
+```
 
 ### 4.1 Idempotency
 A single logical user operation must not accidentally become multiple authoritative effects because of:
@@ -101,7 +197,51 @@ The server re-evaluates authorization when the operation reaches the authoritati
 ### 5.2 Conflict Handling
 Lenar does not rely on one universal conflict algorithm. Conflict strategy depends strictly on domain semantics. Potential strategies (e.g., server wins, merge, reject, user resolution) are applied only where justified by the specific domain rule.
 
-![Conflict and Recovery](../diagrams/offline-sync/conflict-recovery.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef decision fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef action fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef recovery fill:#f0fdf4,stroke:#16a34a,stroke-width:1px,color:#14532d,stroke-dasharray: 4 4
+
+    LO[Local Operation]
+    CSS[Current Server State]
+    
+    CM{Can Merge?}
+    
+    LO --> CM
+    CSS --> CM
+    
+    AR[Apply / Reconcile]
+    CM -->|Yes| AR
+    
+    C[Conflict]
+    CM -->|No| C
+    
+    DR[Domain Rule / User Resolution]
+    C --> DR
+    
+    FS[Final State]
+    DR --> FS
+    AR --> FS
+
+    %% Recovery Path
+    DI[Detect inconsistency]
+    RBLR[rebuild/recover local representation]
+    OAS[obtain authoritative state]
+    RVPI[reconcile valid pending intent]
+    RS[resume synchronization]
+
+    DI -.-> RBLR
+    RBLR -.-> OAS
+    OAS -.-> RVPI
+    RVPI -.-> RS
+
+    class LO,CSS,FS state;
+    class CM decision;
+    class AR,C,DR action;
+    class DI,RBLR,OAS,RVPI,RS recovery;
+```
 
 ---
 
@@ -134,7 +274,43 @@ The user interface should clearly distinguish: Offline, Saved locally, Pending, 
 
 The architecture must have a clear path from failure back toward a trusted state.
 
-![Resilience Model](../diagrams/offline-sync/resilience-model.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef action fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+
+    SN[Strong Network]
+    WN[Weak Network]
+    IN[Intermittent]
+    OFF[Offline]
+    RF[Request Failure]
+    AT[App Termination]
+    DR[Device Restart]
+    BF[Backend Failure]
+    REC[Recovery]
+
+    FS[Fail Safely]
+    PI[Preserve Intent]
+    RC[Recover]
+    CV[Converge]
+
+    SN --> WN
+    WN --> IN
+    IN --> OFF
+    OFF --> RF
+    RF --> AT
+    AT --> DR
+    DR --> BF
+    BF --> REC
+
+    REC -.-> FS
+    FS -.-> PI
+    PI -.-> RC
+    RC -.-> CV
+
+    class SN,WN,IN,OFF,RF,AT,DR,BF,REC state;
+    class FS,PI,RC,CV action;
+```
 
 ### 7.1 Testing the Model
 The resilience model demands robust testing across critical scenarios, including:

@@ -46,7 +46,34 @@ ADRs should be created for choices that materially affect:
 
 **Do NOT create ADRs for every tiny coding decision.** ADRs are conceptually stored under `docs/adr/`. 
 
-![Decision Lifecycle](../diagrams/decisions/decision-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef decision fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef review fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+
+    Q[Question]
+    O[Options]
+    E[Evidence]
+    T[Trade-offs]
+    D[Decision]
+    C[Consequences]
+    RC[Review Condition]
+    REC[Reconsideration when evidence changes]
+
+    Q --> O
+    O --> E
+    E --> T
+    T --> D
+    D --> C
+    C --> RC
+    RC --> REC
+    REC -.-> Q
+
+    class Q,O,E,T,C,RC step;
+    class D decision;
+    class REC review;
+```
 
 ---
 
@@ -108,7 +135,30 @@ Current State → Observed Problem → Evidence → Smallest Effective Change �
 **Risk ≠ Issue.** An issue is a problem occurring now; a risk is a future possibility.
 `Risk = Probability × Impact`
 
-![Risk Lifecycle](../diagrams/decisions/risk-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef risk fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef monitor fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+
+    R[Risk]
+    U[Understand]
+    A[Assess]
+    Mit[Mitigate]
+    Mon[Monitor]
+    Re[Reassess]
+
+    R --> U
+    U --> A
+    A --> Mit
+    Mit --> Mon
+    Mon --> Re
+    Re -.-> R
+
+    class R risk;
+    class U,A,Mit step;
+    class Mon,Re monitor;
+```
 
 ### 6.2 Technical Debt
 We explicitly distinguish between **intentional debt** (taken deliberately to meet a deadline with a known cost) and **unintentional debt** (accrued through poor quality or misunderstanding).
@@ -121,11 +171,87 @@ All recorded technical debt should have a reason, documented impact, risk, assig
 
 Major decisions rarely exist in isolation; they influence the entire system topology.
 
-![Decision Dependency Graph](../diagrams/decisions/decision-dependency.svg)
+```mermaid
+flowchart TD
+    classDef main flow fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef cross fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,font-weight:bold
+
+    PR[Product Requirements]
+    Arch[Architecture]
+    Tech[Technology]
+    Imp[Implementation]
+    Test[Testing]
+    Ops[Operations]
+
+    PR --> Arch
+    Arch --> Tech
+    Tech --> Imp
+    Imp --> Test
+    Test --> Ops
+
+    Sec[Security]
+    Sec <--> Arch
+    Arch <--> Tech
+
+    OS[Offline/Sync]
+    Data[Data]
+    Mob[Mobile]
+    OS <--> Data
+    Data <--> Arch
+    Arch <--> Mob
+
+    LP[Legal/Privacy]
+    An[Analytics]
+    Infra[Infrastructure]
+    LP <--> Data
+    Data <--> An
+    An <--> Infra
+
+    class PR,Arch,Tech,Imp,Test,Ops main;
+    class Sec,OS,Data,Mob,LP,An,Infra cross;
+```
 
 Consequently, a significant architectural or technological change has a massive impact surface that must be explicitly reviewed across disciplines.
 
-![Change Impact Surface](../diagrams/decisions/change-impact-surface.svg)
+```mermaid
+flowchart LR
+    classDef center fill:#fee2e2,stroke:#ef4444,stroke-width:3px,color:#991b1b,font-weight:bold
+    classDef node fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    SC((SIGNIFICANT<br/>CHANGE))
+
+    subgraph Impacts
+        direction TB
+        P[Product]
+        U[UX]
+        Pl[Platform]
+        D[Data]
+        S[Security]
+        OS[Offline / Sync]
+        A[Architecture]
+        T[Technology]
+        Te[Testing]
+        An[Analytics]
+        O[Operations]
+        LB[Legal / Business]
+    end
+
+    SC --- P
+    SC --- U
+    SC --- Pl
+    SC --- D
+    SC --- S
+    SC --- OS
+    SC --- A
+    SC --- T
+    SC --- Te
+    SC --- An
+    SC --- O
+    SC --- LB
+
+    class SC center;
+    class P,U,Pl,D,S,OS,A,T,Te,An,O,LB node;
+```
 
 ---
 

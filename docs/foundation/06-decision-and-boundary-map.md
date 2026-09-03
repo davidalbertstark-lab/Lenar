@@ -2,7 +2,42 @@
 
 This map explicitly defines the responsibilities and boundaries of each domain.
 
-*(Reference Diagram: [Authority Boundary Map](diagrams/authority-boundary-map.svg))*
+*(Reference Diagram: ```mermaid
+flowchart TD
+    classDef client fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,stroke-dasharray: 5 5
+    classDef server fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef domain fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af
+    classDef note fill:#fef2f2,stroke:#f87171,stroke-width:1px,color:#b91c1c,font-style:italic
+
+    subgraph ClientLayer [Client]
+        Req[Requests / Form Submissions]
+        Cache[Offline Cache / UI State]
+        
+        N1[Client cannot manufacture authority]:::note
+        Req -.-> N1
+    end
+
+    subgraph ServerLayer [Server Authority]
+        Acc[Account Lifecycle]:::domain
+        Auth[Authentication]:::domain
+        Org[Organization]:::domain
+        Time[Academic Time]:::domain
+        Enr[Enrollment]:::domain
+        Comm[Community]:::domain
+        Gov[Governance]:::domain
+        Authz[Authorization]:::domain
+        ServerCore[Server Authority Core]
+        
+        Comm -.->|Membership ≠ Governance| Gov
+        Gov -.->|Governance ≠ Authorization| Authz
+    end
+    
+    Req -->|Evaluated by| Authz
+    Req -->|State mutations checked by| ServerCore
+    
+    class ClientLayer client;
+    class ServerLayer server;
+```)*
 
 ## Domain Responsibility Map
 

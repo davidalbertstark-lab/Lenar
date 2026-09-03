@@ -43,11 +43,71 @@ Trust
 
 The security of Lenar relies on explicit trust boundaries. Clients (mobile, web) are strictly classified as **untrusted**.
 
-![Lenar Trust Boundaries](../diagrams/security/trust-boundaries.svg)
+```mermaid
+flowchart TD
+    classDef untrusted fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef boundary fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold,stroke-dasharray: 5 5
+    classDef trusted fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef external fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,font-style:italic
+
+    U[USER / DEVICE]
+    UC[UNTRUSTED CLIENT]
+    
+    NB[NETWORK BOUNDARY]
+    
+    subgraph Core [CORE LENAR TRUST BOUNDARY]
+        direction TB
+        API[LENAR API]
+        AuthN[AUTHENTICATION]
+        AuthZ[AUTHORIZATION]
+        DO[DOMAIN OPERATIONS]
+        AD[AUTHORITATIVE DATA]
+        
+        API --> AuthN
+        AuthN --> AuthZ
+        AuthZ --> DO
+        DO --> AD
+    end
+    
+    Ext[EXTERNAL PROVIDERS]
+    
+    U --> UC
+    UC --> NB
+    NB --> Core
+    
+    Core -.-> Ext
+    
+    class U,UC untrusted;
+    class NB boundary;
+    class API,AuthN,AuthZ,DO,AD trusted;
+    class Ext external;
+```
 
 Every interaction must proceed through a systemic verification path.
 
-![Security Mental Model](../diagrams/security/security-mental-model.svg)
+```mermaid
+flowchart TD
+    classDef main fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    U[USER / DEVICE]
+    UC[UNTRUSTED CLIENT]
+    API[SECURE API]
+    AuthN[AUTHENTICATION]
+    AuthZ[AUTHORIZATION]
+    DR[DOMAIN RULES]
+    AD[AUTHORITATIVE DATA]
+    AM[AUDIT / MONITORING]
+    
+    U --> UC
+    UC --> API
+    API --> AuthN
+    AuthN --> AuthZ
+    AuthZ --> DR
+    DR --> AD
+    AD --> AM
+    
+    class U,UC,API,AuthN,AuthZ,DR,AD,AM main;
+```
 
 ---
 
@@ -101,7 +161,38 @@ Holding a role is insufficient for authorization without matching scope and reso
 
 Creator Assignment dictates what a user is authorized to manage, while Membership simply represents participation or belonging. Governance manages Creator Roles, Assignments, Revocation, and Transfer.
 
-![Authorization Model](../diagrams/security/authorization-model.svg)
+```mermaid
+flowchart TD
+    classDef input fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef policy fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef allow fill:#10b981,color:#fff,stroke:#047857,stroke-width:2px,font-weight:bold
+    classDef deny fill:#ef4444,color:#fff,stroke:#b91c1c,stroke-width:2px,font-weight:bold
+    classDef generic fill:#e2e8f0,stroke:#cbd5e1,stroke-width:1px,color:#475569,font-style:italic
+
+    I[IDENTITY]
+    R[RBAC / ROLE]
+    S[SCOPE]
+    C[CONTEXT]
+    
+    Res[GENERIC RESOURCE]
+    A[REQUESTED OPERATION]
+    
+    AP{AUTHORIZATION POLICY}
+    
+    I & R & S & C & Res & A --> AP
+    
+    AP --> AL[ALLOW]
+    AP --> DN[DENY]
+    
+    class I,R,S,C input;
+    class Res,A generic;
+    class AP policy;
+    class AL allow;
+    class DN deny;
+    
+    %% Note to emphasize role alone is insufficient
+    R -. "Not sufficient alone" .-> AP
+```
 
 ---
 
@@ -133,7 +224,31 @@ These systemic streams are conceptually separated:
 
 When security incidents or widespread failures occur, Lenar operations follow a structured response lifecycle.
 
-![Incident Response Lifecycle](../diagrams/security/incident-response.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    D[Detect]
+    T[Triage]
+    C[Contain]
+    I[Investigate]
+    Rem[Remediate]
+    Rec[Recover]
+    V[Validate]
+    Doc[Document]
+    L[Learn]
+    
+    D --> T
+    T --> C
+    C --> I
+    I --> Rem
+    Rem --> Rec
+    Rec --> V
+    V --> Doc
+    Doc --> L
+    
+    class D,T,C,I,Rem,Rec,V,Doc,L step;
+```
 
 ---
 

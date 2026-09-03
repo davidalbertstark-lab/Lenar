@@ -25,7 +25,28 @@ This fragmentation causes real problems:
 
 Lenar exists to reduce this fragmentation. It makes useful university information and services **discoverable, trustworthy, accessible, actionable, and resilient**.
 
-![The Problem Lenar Solves](../diagrams/system/problem-lenar.svg)
+```mermaid
+flowchart TD
+    classDef source fill:#f8fafc,stroke:#cbd5e1,stroke-width:1px
+    classDef lenar fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+    classDef outcome fill:#16a34a,color:#fff,stroke:#166534,stroke-width:2px,font-weight:bold,font-size:14px
+
+    W[WhatsApp]
+    N[Notices]
+    D[Department groups]
+    S[Social media]
+    P[Portals]
+    M[Word of mouth]
+    Doc[Documents]
+
+    W & N & D & S & P & M & Doc --> L[LENAR]
+    
+    L --> E[One coherent student experience]
+    
+    class W,N,D,S,P,M,Doc source;
+    class L lenar;
+    class E outcome;
+```
 
 ---
 
@@ -52,7 +73,30 @@ Our mission emphasizes five pillars:
 
 Lenar is defined by six core qualities that separate it from a generic software tool. It must feel dependable enough to become a normal part of university life.
 
-![Lenar Product Identity](../diagrams/system/product-identity.svg)
+```mermaid
+flowchart TD
+    classDef core fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold,font-size:16px
+    classDef quality fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
+    
+    L((LENAR))
+    
+    U[Useful]
+    T[Trustworthy]
+    S[Simple]
+    F[Fast]
+    R[Resilient]
+    Re[Respectful]
+    
+    L --- U
+    L --- T
+    L --- S
+    L --- F
+    L --- R
+    L --- Re
+    
+    class L core;
+    class U,T,S,F,R,Re quality;
+```
 
 | Quality | Description |
 | :--- | :--- |
@@ -70,7 +114,19 @@ Lenar is defined by six core qualities that separate it from a generic software 
 ### The Trust Model
 Trust is central to Lenar. A visually attractive platform is useless if students cannot trust its content. Users must be able to distinguish between official announcements, verified information, user-generated content, and potentially stale data.
 
-![Lenar Trust Model](../diagrams/security/trust-model.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef final fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+
+    A[SOURCE] --> B[AUTHORITY]
+    B --> C[CONTENT]
+    C --> D[STATUS / FRESHNESS]
+    D --> E[USER UNDERSTANDING]
+    
+    class A,B,C,D step;
+    class E final;
+```
 
 ### The Resilience Model
 Lenar must degrade safely. It is designed to progressively tolerate weak networks, zero connectivity, request failures, and temporary backend outages.

@@ -108,7 +108,64 @@ It preserves the clear conceptual boundaries:
 
 ## 9. State Model
 
-![Authentication State Model](diagrams/authentication-state.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef route fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef endstate fill:#a7f3d0,stroke:#059669,stroke-width:2px,color:#065f46,font-weight:bold
+    classDef error fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
+
+    subgraph Authentication & Resume Flow
+        Reg([Registration]) --> AC[Account Created]
+        AC --> VR[Verification Required]
+        VR --> EV[Email Verification]
+        EV -->|Success| AA[Automatically Authenticated]
+        
+        Login([Login]) -->|Success| AA
+        AA --> NS[New Session Created]
+        
+        NS --> VS[Valid Session]
+        VS --> Det[Determine Current State]
+        
+        Det -->|Unverified| SR_Unv[Verification]
+        Det -->|Profile Incomplete| SR_PC[Profile Completion]
+        Det -->|Pending Review| SR_PR[Pending Review]
+        Det -->|Rejected| SR_Rej[Profile Completion]
+        Det -->|Active| SR_Act[Normal Lenar]
+    end
+
+    subgraph Session Lifecycle
+        Curr[Current Session]
+        Oth[Other Session B]
+        
+        Curr -->|Logout / Revoke Current| Inv[Session Invalidated]
+        Curr -->|Lifetime Exceeded| Inv
+        
+        Curr -->|Revoke Session B| OthInv[Session B Invalid]
+        Oth -->|Lifetime Exceeded| OthInv
+        
+        Curr -->|Log out all other sessions| AllOthInv[Other Sessions Invalidated]
+        Oth --> AllOthInv
+        Curr -->|Remains Valid| Curr
+        
+        Curr -->|Password Reset| AllInv[All Sessions Invalidated]
+        Oth --> AllInv
+        AllInv --> NeedLogin[Login]
+        
+        Curr -->|Change Password| CP[Password Updated]
+        CP -->|Current Session| Curr
+        CP -->|Other Sessions| AllOthInv
+        
+        Susp[Account Suspended] --> AllInv
+    end
+
+    class Reg,EV,Det,Login,CP process;
+    class AC,VR,AA,NS,VS,Curr,Oth,Susp state;
+    class SR_Unv,SR_PC,SR_PR,SR_Rej,SR_Act route;
+    class NeedLogin endstate;
+    class Inv,OthInv,AllOthInv,AllInv error;
+```
 
 ## 10. Main Behaviors
 

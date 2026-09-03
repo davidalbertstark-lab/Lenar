@@ -65,13 +65,71 @@ Simple user experience
 
 The UX is built around a sequential journey of interaction.
 
-![Lenar Experience Model](../diagrams/ux/experience-model.svg)
+```mermaid
+flowchart TD
+    classDef mainStep fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef subStep fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-style:italic
+
+    D[DISCOVER] --> U[UNDERSTAND]
+    U --> DE[DECIDE]
+    DE --> A[ACT]
+    A --> C[CONFIRM]
+    C --> T[TRACK / RETURN]
+    
+    Rel[Relevant Information] -.-> D
+    Rel -.-> U
+    
+    App[Appropriate Action] -.-> DE
+    App -.-> A
+    
+    Feed[Clear Feedback] -.-> C
+    Feed -.-> T
+    
+    class D,U,DE,A,C,T mainStep;
+    class Rel,App,Feed subStep;
+```
 
 ### 2.1 The Onboarding Journey
 
 The user onboarding journey follows a precise progression of distinct product states that must be accurately reflected in the user experience:
 
-![Onboarding Journey](../diagrams/ux/onboarding-journey.svg)
+```mermaid
+flowchart TD
+    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef authority fill:#e2e8f0,stroke:#64748b,stroke-width:1px,color:#334155,font-style:italic
+    classDef endstate fill:#10b981,color:#fff,stroke:#047857,stroke-width:2px,font-weight:bold
+
+    P[PERSON] --> Reg[Registration]
+    Reg --> EV[Email Verification]
+    EV --> PC[Academic Profile Completion]
+    PC --> PS[Profile Submission]
+    
+    PS --> PR[Pending Review]
+    
+    PR --> Rev{Review Decision}
+    
+    AuthAdmin[Admin <br/> university-level authority] -.-> Rev
+    AuthLeader[Leader <br/> Base Community context] -.-> Rev
+    
+    Rev -->|Rejected| Rj[Rejected]
+    Rj --> PC
+    
+    Rev -->|Approved| App[Approved]
+    
+    App --> En[Enrollment Established]
+    En --> AC[Academic Context]
+    AC --> BC[Base Community]
+    BC --> Mem[Membership]
+    Mem --> AA[Active Access]
+
+    class P,Reg,EV,PC,PS process;
+    class PR,Rj,App state;
+    class Rev decision;
+    class AuthAdmin,AuthLeader authority;
+    class En,AC,BC,Mem,AA endstate;
+```
 
 1. **Registration:** User provides initial identity information (e.g., email/password).
 2. **Verification:** User verifies their identity (e.g., email confirmation).
@@ -93,7 +151,36 @@ These product onboarding states (Verified, Profile Complete, Submitted, Pending 
 
 The information architecture structures the major user-facing areas of Lenar.
 
-![Information Architecture](../diagrams/ux/information-architecture.svg)
+```mermaid
+flowchart TD
+    classDef root fill:#1e293b,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
+    classDef section fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef roleDep fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold,stroke-dasharray: 5 5
+
+    Root[Lenar UI]
+    
+    H[Home / Overview]
+    IA[Information & Announcements]
+    S[Search]
+    CS[Campus Services / Issues]
+    O[Opportunities]
+    N[Notifications]
+    P[Profile / Personal Context]
+    Admin[Administration]
+    
+    Root --- H
+    Root --- IA
+    Root --- S
+    Root --- CS
+    Root --- O
+    Root --- N
+    Root --- P
+    Root -.- Admin
+    
+    class Root root;
+    class H,IA,S,CS,O,N,P section;
+    class Admin roleDep;
+```
 
 *(Note: Administration is role-dependent and not universally available to all users).*
 
@@ -103,7 +190,36 @@ The information architecture structures the major user-facing areas of Lenar.
 
 The interface must accurately communicate system state at all times. 
 
-![Interface State Model](../diagrams/ux/interface-state-model.svg)
+```mermaid
+flowchart TD
+    classDef root fill:#334155,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
+    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef pending fill:#fef08a,stroke:#ca8a04,stroke-width:1px,color:#854d0e
+    classDef offline fill:#e2e8f0,stroke:#64748b,stroke-width:1px,color:#334155,stroke-dasharray: 4 4
+    classDef error fill:#fee2e2,stroke:#ef4444,stroke-width:1px,color:#991b1b
+    classDef success fill:#dcfce3,stroke:#22c55e,stroke-width:1px,color:#166534
+
+    title[INTERACTIVE EXPERIENCE<br/>Not all states apply to every component]
+    style title fill:none,stroke:none,font-weight:bold,font-size:14px
+
+    IE[Component / View]
+    
+    IE --- N[Normal]
+    IE --- L[Loading]
+    IE --- S[Success]
+    IE --- E[Empty]
+    IE --- Err[Error]
+    IE --- O[Offline]
+    IE --- P[Pending]
+    IE --- D[Disabled]
+    
+    class IE root;
+    class N,L,E,D state;
+    class S success;
+    class Err error;
+    class O offline;
+    class P pending;
+```
 
 ### 4.1 Important State Distinctions
 
@@ -155,7 +271,31 @@ Do not require Web, PWA, Android, and iOS to have identical layouts. Do not crea
 
 UX is derived from product needs, not isolated visual design. 
 
-![UX Traceability](../diagrams/ux/ux-traceability.svg)
+```mermaid
+flowchart TD
+    classDef origin fill:#f1f5f9,stroke:#475569,stroke-width:2px,font-weight:bold,color:#0f172a
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef target fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,font-weight:bold,color:#1e40af
+
+    UN[User Need]
+    R[Requirement]
+    J[Journey]
+    F[Flow]
+    S[Screen]
+    I[Interaction]
+    FB[Feedback]
+    
+    UN --> R
+    R --> J
+    J --> F
+    F --> S
+    S --> I
+    I --> FB
+    
+    class UN origin;
+    class R,J,F,S,I step;
+    class FB target;
+```
 
 ### 7.1 Documentation Boundaries
 

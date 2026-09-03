@@ -1,8 +1,47 @@
 # Nine-Domain Map
 
-The Lenar foundation is divided into nine explicit domains to ensure clear ownership, prevent monolithic coupling, and enforce strict boundaries. 
+The Lenar foundation is divided into nine explicit behavioural domains to ensure clear ownership, prevent monolithic coupling, and enforce strict boundaries. 
 
-*(Reference Diagram: [Nine-Domain Map](diagrams/nine-domain-map.svg))*
+This conceptual map organizes the domains into four logical groups to help you orient yourself. Note that these groups are for presentation only—they are not architectural layers or sequential pipeline steps.
+
+*(Reference Diagram: ```mermaid
+flowchart TD
+    classDef group fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,stroke-dasharray: 5 5,font-weight:bold
+    classDef domain fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+
+    subgraph Identity ["Identity & Entry"]
+        direction TB
+        Onb["Onboarding<br/>(Manages profile completion and approval)"]:::domain
+        Acc["Account Lifecycle<br/>(Manages overarching account status)"]:::domain
+        Auth["Authentication + Session<br/>(Verifies identity and manages sessions)"]:::domain
+    end
+
+    subgraph Foundation ["Academic Foundation"]
+        direction TB
+        Org["Organization<br/>(Defines institutional hierarchy)"]:::domain
+        Time["Academic Time<br/>(Provides the authoritative temporal calendars)"]:::domain
+        Enr["Enrollment / Academic Context<br/>(Represents the user's academic attachment)"]:::domain
+    end
+
+    subgraph Participation ["Participation"]
+        direction TB
+        Comm["Community / Membership<br/>(Provides context-based structural grouping)"]:::domain
+    end
+
+    subgraph Authority ["Authority & Access"]
+        direction TB
+        Gov["Governance<br/>(Assigns and manages administrative authority)"]:::domain
+        Authz["Authorization<br/>(Evaluates permissions dynamically in real-time)"]:::domain
+    end
+
+    %% High-value orientation relationships
+    Onb -.->|Establishes info for| Enr
+    Enr -.->|Provides context for| Comm
+    Gov -.->|Provides assignments for| Authz
+
+    class Identity,Foundation,Participation,Authority group;
+```)*
+
 
 Below is the baseline ownership for each domain:
 

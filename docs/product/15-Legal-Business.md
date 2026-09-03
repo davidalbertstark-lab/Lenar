@@ -22,7 +22,33 @@ The central principle is:
 
 The objective is to avoid preventable problems caused by ignoring real-world constraints. Major product and integration decisions must account for more than just engineering feasibility.
 
-![Legal & Business Decision Model](../diagrams/legal-business/legal-business-decision-model.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef review fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef decision fill:#dcfce3,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold
+
+    UV[User Value]
+    PF[Product Fit]
+    LPR[Legal / Privacy Review]
+    SR[Security Review]
+    OC[Operational Cost]
+    TPT[Third-Party Terms]
+    S[Sustainability]
+    D((Decision))
+
+    UV --> PF
+    PF --> LPR
+    LPR --> SR
+    SR --> OC
+    OC --> TPT
+    TPT --> S
+    S --> D
+
+    class UV,PF,OC,TPT,S step;
+    class LPR,SR review;
+    class D decision;
+```
 
 ---
 
@@ -45,7 +71,37 @@ Where these are required, they require explicit authority and agreement.
 
 Legal and privacy considerations must follow user data through its entire lifecycle.
 
-![Data / Legal Boundary Model](../diagrams/legal-business/data-legal-boundary.svg)
+```mermaid
+flowchart TD
+    classDef data fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef legal fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+
+    UD[User Data]
+    P[Purpose]
+    PR[Processing]
+    S[Storage]
+    TP[Third Parties]
+    RD[Retention / Deletion]
+
+    ALIR[Applicable Legal / Institutional Requirements]
+
+    UD --> P
+    P --> PR
+    PR --> S
+    S --> TP
+    TP --> RD
+
+    ALIR -.-> P
+    ALIR -.-> PR
+    ALIR -.-> S
+    ALIR -.-> TP
+    ALIR -.-> RD
+
+    class UD data;
+    class P,PR,S,TP,RD step;
+    class ALIR legal;
+```
 
 Lenar's architecture must support fundamental privacy principles:
 - **Data Minimization:** Only collect what is strictly necessary.
@@ -78,7 +134,52 @@ When deciding whether to build or buy a component, we evaluate: *cost, control, 
 
 For our chosen providers, we must ask strict conceptual questions before full production reliance:
 
-![Provider Dependency Model](../diagrams/legal-business/provider-dependency.svg)
+```mermaid
+flowchart LR
+    classDef lenar fill:#0f172a,stroke:#cbd5e1,stroke-width:2px,color:#fff,font-weight:bold
+    classDef domain fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a
+    classDef provider fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef questions fill:#fffbeb,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic
+
+    L[LENAR]
+    
+    A[Authentication]
+    S[Storage]
+    P[Push]
+    AN[Analytics]
+    EM[Error Monitoring]
+    T[Telemetry]
+
+    SA[Lenar JWT Auth]
+    R2[R2]
+    FCM[FCM]
+    PH[PostHog]
+    SE[Sentry]
+    OT[OpenTelemetry]
+
+    Q["Review Questions:<br/>Terms?<br/>Data?<br/>Cost?<br/>Availability?<br/>Exit?"]
+
+    L --> A & S & P & AN & EM & T
+
+    A --> SA
+    S --> R2
+    P --> FCM
+    AN --> PH
+    EM --> SE
+    T --> OT
+
+    SA -.-> Q
+    R2 -.-> Q
+    FCM -.-> Q
+    PH -.-> Q
+    SE -.-> Q
+    OT -.-> Q
+
+    class L lenar;
+    class A,S,P,AN,EM,T domain;
+    class SA,R2,FCM,PH,SE,OT provider;
+    class Q questions;
+```
 
 For providers like **Cloudflare R2, FCM, PostHog, Sentry,** and **OpenTelemetry** infrastructure, we must review their provider terms, data processing agreements, retention policies, pricing limits, and exportability.
 
@@ -99,7 +200,42 @@ Mobile distribution relies on third-party gatekeepers. We must anticipate constr
 
 Operational sustainability requires preparing for dependency failures that go beyond server crashes. 
 
-![Business Continuity Model](../diagrams/legal-business/business-continuity.svg)
+```mermaid
+flowchart TD
+    classDef dep fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef failure fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef impact fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef recovery fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef example fill:none,stroke:#94a3b8,stroke-width:1px,color:#475569,stroke-dasharray: 4 4
+
+    PD[Potential Dependency]
+    F[Failure]
+    I[Impact]
+    FR[Fallback / Recovery]
+    R[Resume]
+
+    subgraph Examples [Dependency Categories]
+        direction LR
+        E1[Provider]
+        E2[Credential]
+        E3[Key Person]
+        E4[Institutional Relationship]
+        E5[Infrastructure]
+    end
+
+    Examples -.-> PD
+
+    PD --> F
+    F --> I
+    I --> FR
+    FR --> R
+
+    class PD dep;
+    class F failure;
+    class I impact;
+    class FR,R recovery;
+    class E1,E2,E3,E4,E5 example;
+```
 
 We must actively manage the risk of:
 - **Key-Person Dependency:** Loss of important organizational knowledge.

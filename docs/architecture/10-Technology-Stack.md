@@ -50,7 +50,61 @@ Cost
 
 The stack is composed of grouped responsibility layers to ensure cohesive development across environments.
 
-![Technology Stack Overview](../diagrams/technology/technology-stack.svg)
+```mermaid
+flowchart TD
+    classDef group fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef item fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+
+    subgraph Web[Web]
+        direction LR
+        W1[React + TypeScript + Vite]
+    end
+
+    subgraph Mobile[Mobile]
+        direction LR
+        M1[Flutter + Dart]
+    end
+
+    subgraph Backend[Backend]
+        direction LR
+        B1[FastAPI + Python]
+        B2[Pydantic]
+        B3[SQLAlchemy]
+        B4[Alembic]
+    end
+
+    subgraph Data[Data]
+        direction LR
+        D1[PostgreSQL]
+        D2[SQLite local persistence]
+    end
+
+    subgraph Supporting[Supporting]
+        direction LR
+        S1[Lenar JWT Auth]
+        S2[Cloudflare R2]
+        S3[FCM]
+        S4[PostHog]
+        S5[Sentry]
+        S6[OpenTelemetry]
+    end
+
+    subgraph Delivery[Delivery]
+        direction LR
+        Del1[GitHub Actions]
+        Del2[Docker]
+        Del3[Managed Infrastructure]
+    end
+
+    Web ~~~ Mobile
+    Mobile ~~~ Backend
+    Backend ~~~ Data
+    Data ~~~ Supporting
+    Supporting ~~~ Delivery
+
+    class Web,Mobile,Backend,Data,Supporting,Delivery group;
+    class W1,M1,B1,B2,B3,B4,D1,D2,S1,S2,S3,S4,S5,S6,Del1,Del2,Del3 item;
+```
 
 ---
 
@@ -58,7 +112,78 @@ The stack is composed of grouped responsibility layers to ensure cohesive develo
 
 Technologies in Lenar have strict responsibility boundaries. A single tool must not silently become responsible for unrelated concerns. 
 
-![Technology Responsibility Map](../diagrams/technology/technology-responsibility.svg)
+```mermaid
+flowchart LR
+    classDef cap fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e
+    classDef bound fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155,stroke-dasharray: 4 4
+    classDef tech fill:#dcfce3,stroke:#22c55e,stroke-width:1px,color:#166534,font-weight:bold
+
+    subgraph Capability [Product Capability]
+        C1[Web UI]
+        C2[Mobile UI]
+        C3[API]
+        C4[Schema validation]
+        C5[Database access]
+        C6[Migrations]
+        C7[Authoritative data]
+        C8[Authentication]
+        C9[Storage]
+        C10[Push]
+        C11[Analytics]
+        C12[Errors]
+        C13[Telemetry]
+    end
+
+    subgraph Boundary [Implementation Boundary]
+        B1(( ))
+        B2(( ))
+        B3(( ))
+        B4(( ))
+        B5(( ))
+        B6(( ))
+        B7(( ))
+        B8(( ))
+        B9(( ))
+        B10(( ))
+        B11(( ))
+        B12(( ))
+        B13(( ))
+    end
+
+    subgraph Technology [Technology]
+        T1[React]
+        T2[Flutter]
+        T3[FastAPI]
+        T4[Pydantic]
+        T5[SQLAlchemy]
+        T6[Alembic]
+        T7[PostgreSQL]
+        T8[Lenar JWT Auth]
+        T9[R2]
+        T10[FCM]
+        T11[PostHog]
+        T12[Sentry]
+        T13[OpenTelemetry]
+    end
+
+    C1 --- B1 --- T1
+    C2 --- B2 --- T2
+    C3 --- B3 --- T3
+    C4 --- B4 --- T4
+    C5 --- B5 --- T5
+    C6 --- B6 --- T6
+    C7 --- B7 --- T7
+    C8 --- B8 --- T8
+    C9 --- B9 --- T9
+    C10 --- B10 --- T10
+    C11 --- B11 --- T11
+    C12 --- B12 --- T12
+    C13 --- B13 --- T13
+
+    class C1,C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13 cap;
+    class B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,B11,B12,B13 bound;
+    class T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13 tech;
+```
 
 ### Current Core Boundaries
 - **React** → Web UI
@@ -85,7 +210,27 @@ Technologies in Lenar have strict responsibility boundaries. A single tool must 
 
 A technology implements product responsibilities; it does not redefine product or domain authority. 
 
-![Technology Boundary Model](../diagrams/technology/technology-boundaries.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef note fill:none,stroke:none,font-style:italic,color:#334155
+
+    PD[Product / Domain]
+    AB[Application Boundary]
+    T[Technology]
+    IP[Infrastructure / Provider]
+    
+    PD --> AB
+    AB --> T
+    T --> IP
+    
+    N["Technology implements product responsibilities.<br/>Technology does not redefine product/domain authority."]
+    
+    IP ~~~ N
+    
+    class PD,AB,T,IP step;
+    class N note;
+```
 
 We explicitly separate related but distinct responsibilities:
 - **AUTHENTICATION ≠ AUTHORIZATION**
@@ -130,7 +275,34 @@ None of these tools are permitted to become a structural dependency for core, au
 
 Technology choices are lifecycle-managed rather than permanent by default.
 
-![Technology Lifecycle](../diagrams/technology/technology-lifecycle.svg)
+```mermaid
+flowchart LR
+    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef reeval fill:#fef08a,stroke:#ca8a04,stroke-width:1px,color:#854d0e,font-style:italic
+
+    P[Proposed]
+    E[Evaluated]
+    S[Selected]
+    I[Implemented]
+    M[Maintained]
+    D[Deprecated]
+    R[Replaced]
+    
+    P --> E
+    E --> S
+    S --> I
+    I --> M
+    M --> D
+    D --> R
+    
+    ERC[Evidence / Requirement Change]
+    
+    M -.-> ERC
+    ERC -.-> E
+    
+    class P,E,S,I,M,D,R state;
+    class ERC reeval;
+```
 
 **The core rule:** If the existing stack can safely and adequately satisfy a requirement, prefer using it over introducing another dependency.
 

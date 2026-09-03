@@ -90,10 +90,71 @@ It explains what Enrollment means as a domain concept, without becoming the spec
 ## 9. State Models and Diagrams
 
 ### Academic Context Model
-![Enrollment Context Model](diagrams/enrollment-context-model.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef route fill:#fef08a,stroke:#ca8a04,stroke-width:2px,color:#854d0e,font-weight:bold
+    classDef domain fill:#e2e8f0,stroke:#64748b,stroke-width:1px,stroke-dasharray: 5 5,color:#475569
+
+    subgraph University Context Model
+        Univ[University]
+        
+        Univ --> AuthOrg[Authoritative Organization]
+        AuthOrg --> Fac[Faculty]
+        AuthOrg --> Dept[Department]
+        AuthOrg --> Lvl[Level]
+        
+        Univ --> AuthTime[Authoritative Academic Time]
+        AuthTime --> AcadSess[Academic Session]
+        AuthTime --> Sem[Semester]
+    end
+
+    subgraph User Attachment
+        Appr[Approved Academic Attachment] -->|Establishes| Enr[Enrollment]
+        
+        Enr -->|Establishes| CAC[Current Academic Context]
+        
+        CAC -.->|References| Univ
+        CAC -.->|References| AuthOrg
+        CAC -.->|References| Lvl
+        CAC -.->|References| AcadSess
+        CAC -.->|References| Sem
+    end
+
+    class Univ,AuthOrg,AuthTime domain;
+    class Appr process;
+    class Enr state;
+    class CAC route;
+```
 
 ### Enrollment Lifecycle
-![Enrollment Lifecycle](diagrams/enrollment-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#bfdbfe,stroke:#2563eb,stroke-width:2px,color:#1e40af,font-weight:bold
+    classDef process fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef endstate fill:#fca5a5,stroke:#dc2626,stroke-width:2px,color:#991b1b,font-weight:bold
+
+    subgraph Enrollment Lifecycle
+        Appr([Approval]) --> EnrEst[Enrollment Established]
+        EnrEst --> ActEnr[Active Enrollment]
+        
+        ActEnr -->|Normal Progression| Trans[Academic Context Transition]
+        Trans --> ActEnrNew[Active Enrollment + New Current Context]
+        ActEnrNew -.->|Continues| ActEnr
+        
+        ActEnr -->|Genuine Attachment End| End[Ended Enrollment]
+    end
+
+    subgraph University Change
+        UnivChg([University Change]) -->|End Old| EndOld[Ended Old Enrollment]
+        UnivChg -->|Establish New| EstNew[New Active Enrollment]
+    end
+    
+    class Appr,Trans,UnivChg process;
+    class EnrEst,ActEnr,ActEnrNew,EstNew state;
+    class End,EndOld endstate;
+```
 
 ## 10. Main Behaviors
 

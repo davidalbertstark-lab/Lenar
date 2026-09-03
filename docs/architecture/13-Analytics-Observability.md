@@ -42,7 +42,37 @@ What decision could this information improve?
 
 Lenar cleanly separates the measurement of product behavior from the measurement of application and infrastructure health.
 
-![Lenar Measurement Model](../diagrams/analytics/measurement-model.svg)
+```mermaid
+flowchart LR
+    classDef layer fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef signal fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+    classDef system fill:#dcfce3,stroke:#22c55e,stroke-width:1px,color:#166534,font-weight:bold
+
+    P[PRODUCT]
+    APP[APPLICATION]
+    INFRA[INFRASTRUCTURE]
+
+    PE[Product Events]
+    LMTE[Logs / Metrics / Traces / Errors]
+    HRS[Health / Resource Signals]
+
+    PA[Product Analytics]
+    OB[Observability]
+    OM[Operational Monitoring]
+
+    P --> PE
+    PE --> PA
+
+    APP --> LMTE
+    LMTE --> OB
+
+    INFRA --> HRS
+    HRS --> OM
+
+    class P,APP,INFRA layer;
+    class PE,LMTE,HRS signal;
+    class PA,OB,OM system;
+```
 
 ---
 
@@ -65,7 +95,27 @@ Analytics may later measure meaningful onboarding outcomes such as: registration
 ### 3.3 Analytics Flow and Failure
 Analytics explicitly do not modify the authoritative state of the product. 
 
-![Analytics Flow](../diagrams/analytics/analytics-flow.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef note fill:none,stroke:none,font-style:italic,color:#334155
+
+    UA[User Action]
+    PE[Product Event]
+    A[Analytics]
+    I[Insight]
+    PD[Product Decision]
+
+    UA --> PE
+    PE --> A
+    A --> I
+    I --> PD
+    
+    N["Analytics explicitly DOES NOT modify authoritative product state"]
+    A ~~~ N
+
+    class UA,PE,A,I,PD step;
+```
 
 **Analytics failure must never be a dependency for core product correctness.** 
 If PostHog is unavailable, the analytics signal is degraded, but the authoritative user action (e.g., submitting an issue) must still succeed.
@@ -78,7 +128,23 @@ Lenar uses **Sentry** for error monitoring and **OpenTelemetry** for application
 
 Observability focuses on system behavior and diagnostic detection. Similar to analytics, observability failure reduces visibility but must not corrupt or block the authoritative product state.
 
-![Observability Flow](../diagrams/analytics/observability-flow.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    SB[System Behavior]
+    LMTE[Logs / Metrics / Traces / Errors]
+    OB[Observability]
+    DD[Detection / Diagnosis]
+    OA[Operational Action]
+
+    SB --> LMTE
+    LMTE --> OB
+    OB --> DD
+    DD --> OA
+    
+    class SB,LMTE,OB,DD,OA step;
+```
 
 ---
 
@@ -122,7 +188,37 @@ Operational metrics capture system dimensions such as request rate, latency, err
 
 During an incident, traces and correlation identifiers connect these technical signals back to actual user impact.
 
-![Incident Investigation Correlation](../diagrams/analytics/incident-correlation.svg)
+```mermaid
+flowchart TD
+    classDef input fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#334155
+    classDef action fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef understanding fill:#eff6ff,stroke:#3b82f6,stroke-width:2px,color:#1e40af,font-weight:bold
+
+    subgraph Signals
+        D[Deployment]
+        L[Logs]
+        M[Metrics]
+        T[Traces]
+        E[Errors]
+        PI[Product Impact]
+    end
+
+    IU[Incident Understanding]
+    AR[Action / Recovery]
+
+    D --> IU
+    L --> IU
+    M --> IU
+    T --> IU
+    E --> IU
+    PI --> IU
+
+    IU --> AR
+
+    class D,L,M,T,E,PI input;
+    class IU understanding;
+    class AR action;
+```
 
 ---
 
@@ -140,7 +236,38 @@ Dashboards are conceptually separated by their audience and purpose. An infrastr
 
 Product use and system health provide parallel paths toward the same goal: **Lenar Improvement.**
 
-![Combined Measurement Model](../diagrams/analytics/combined-measurement.svg)
+```mermaid
+flowchart TD
+    classDef product fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-weight:bold
+    classDef system fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-weight:bold
+    classDef goal fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+
+    PU[PRODUCT USE]
+    A[ANALYTICS]
+    PI[PRODUCT INSIGHT]
+    PA[PRODUCT ACTION]
+
+    SH[SYSTEM HEALTH]
+    O[OBSERVABILITY]
+    DD[DETECTION / DIAGNOSIS]
+    OA[OPERATIONAL ACTION]
+
+    LI[LENAR IMPROVEMENT]
+
+    PU --> A
+    A --> PI
+    PI --> PA
+    PA --> LI
+
+    SH --> O
+    O --> DD
+    DD --> OA
+    OA --> LI
+
+    class PU,A,PI,PA product;
+    class SH,O,DD,OA system;
+    class LI goal;
+```
 
 ### 9.1 Experiments & Feature Flags
 When evaluating improvements via experimentation, the process requires a formal hypothesis, defined audience, success metric, explicit duration, safety boundary, and clear rollback conditions. Feature flags must have an owner and a review/expiry discipline to prevent permanent technical debt.

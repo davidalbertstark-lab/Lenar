@@ -51,7 +51,58 @@ Deletion where appropriate
 
 The Lenar domain requires modeling several conceptual families of data that interact closely to create the student experience.
 
-![Information Model](../diagrams/data/information-model.svg)
+```mermaid
+flowchart TD
+    classDef root fill:#1e293b,color:#fff,stroke:#0f172a,stroke-width:2px,font-weight:bold
+    classDef domain fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+
+    L[LENAR DATA & CONTENT]
+    
+    Reg[Registration / Verification]
+    UserId[User Identity]
+    AcadProf[Academic Profile Claims]
+    Enroll[Enrollment Attachment]
+    
+    Org[Organization]
+    AcadTime[Academic Time]
+    Acad[Academic Context]
+    
+    Comm[Community]
+    Mem[Membership]
+    Gov[Governance]
+    
+    Cont[Content]
+    CS[Campus Services]
+    Notif[Notifications]
+    Files[Files / Media]
+    Search[Search]
+    Sync[Synchronization]
+    Admin[Admin Control Plane / Audit]
+    
+    L --- Reg
+    L --- UserId
+    L --- AcadProf
+    L --- Enroll
+    
+    L --- Org
+    L --- AcadTime
+    L --- Acad
+    
+    L --- Comm
+    L --- Mem
+    L --- Gov
+    
+    L --- Cont
+    L --- CS
+    L --- Notif
+    L --- Files
+    L --- Search
+    L --- Sync
+    L --- Admin
+    
+    class L root;
+    class Reg,UserId,AcadProf,Enroll,Org,AcadTime,Acad,Comm,Mem,Gov,Cont,CS,Notif,Files,Search,Sync,Admin domain;
+```
 
 ### 2.1 Core Conceptual Entities
 
@@ -78,7 +129,30 @@ Lenar relies on the following core conceptual entities. *(Note: This is a domain
 
 A critical boundary in Lenar is the distinction between authoritative state and secondary representations. 
 
-![Data Authority Model](../diagrams/data/data-authority-model.svg)
+```mermaid
+flowchart TD
+    classDef auth fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef secondary fill:#f1f5f9,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef local fill:#e2e8f0,stroke:#475569,stroke-width:1px,color:#334155,font-style:italic
+
+    Auth[AUTHORITATIVE SERVER STATE]
+    
+    CC[CLIENT CACHE]
+    SI[SEARCH INDEX]
+    AT[ANALYTICS / TELEMETRY]
+    
+    LR[LOCAL REPRESENTATION]
+    
+    Auth --> CC
+    Auth --> SI
+    Auth --> AT
+    
+    CC --> LR
+    
+    class Auth auth;
+    class CC,SI,AT secondary;
+    class LR local;
+```
 
 ### 3.1 Essential Distinctions
 
@@ -115,7 +189,29 @@ Information in Lenar is not static. Content transitions through states of visibi
 
 Content (such as Announcements or Opportunities) experiences a visibility and validation lifecycle.
 
-![Content Lifecycle](../diagrams/data/content-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef note fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic,stroke-dasharray: 4 4
+
+    D[Draft]
+    R[Review]
+    P[Published]
+    A[Active / Updated]
+    E[Expired / Archived]
+    
+    D --> R
+    D --> P
+    R --> P
+    P --> A
+    A --> E
+    P --> E
+    
+    N[Note: Content types may use different subsets of these states.<br/>Not a universal state machine.]
+    
+    class D,R,P,A,E state;
+    class N note;
+```
 
 - **Publication State vs Content Validity:** A draft (publication state) is distinct from an expired notice (content validity).
 - **Current State vs Historical State:** The system must distinguish between what is actively applicable today versus what was applicable previously.
@@ -124,7 +220,32 @@ Content (such as Announcements or Opportunities) experiences a visibility and va
 
 At a systemic level, all records proceed through a generalized operational lifecycle.
 
-![Data Lifecycle](../diagrams/data/data-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef note fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic,stroke-dasharray: 4 4
+
+    C[Create]
+    V[Validate]
+    AS[Authoritative Storage]
+    UD[Use / Discover]
+    U[Update]
+    AR[Archive / Retain]
+    DA[Delete / Anonymize where appropriate]
+    
+    C --> V
+    V --> AS
+    AS --> UD
+    UD --> U
+    U --> AS
+    UD --> AR
+    AR --> DA
+    
+    N[Note: Actual lifecycles vary by data type.]
+    
+    class C,V,AS,UD,U,AR,DA step;
+    class N note;
+```
 
 ---
 

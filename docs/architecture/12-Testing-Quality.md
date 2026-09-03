@@ -28,7 +28,31 @@ The required sequence of verification is:
 Requirement → Expected Behavior → Test → Implementation → Verification → Evidence
 ```
 
-![Quality Traceability Chain](../diagrams/testing/quality-traceability.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef evidence fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+
+    P[Problem]
+    UN[User Need]
+    R[Requirement]
+    F[Feature]
+    I[Implementation]
+    T[Test]
+    E[Evidence]
+    RDR[Requirement / Design Review]
+    
+    P --> UN
+    UN --> R
+    R --> F
+    F --> I
+    I --> T
+    T --> E
+    E -.-> RDR
+    
+    class P,UN,R,F,I,T,RDR step;
+    class E evidence;
+```
 
 > [!WARNING]
 > Do not reverse this flow. Do not write the implementation first and then generate tests merely to match what already exists.
@@ -39,11 +63,52 @@ Requirement → Expected Behavior → Test → Implementation → Verification �
 
 Testing is not solely about unit tests. We rely on a multi-layer verification model where no single layer replaces the responsibilities of the others.
 
-![Testing Layers](../diagrams/testing/testing-layers.svg)
+```mermaid
+flowchart TD
+    classDef layer fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-weight:bold
+
+    U[Unit]
+    I[Integration]
+    API[API / Contract]
+    CW[Component / Widget]
+    E2E[E2E]
+    PS[Platform / System]
+    SPR[Security / Performance / Resilience]
+    
+    U --> I
+    I --> API
+    API --> CW
+    CW --> E2E
+    E2E --> PS
+    PS --> SPR
+    
+    class U,I,API,CW,E2E,PS,SPR layer;
+```
 
 This forms a conceptual distribution pyramid: many fast, focused tests at the base, and fewer, highly realistic, expensive tests at the top.
 
-![Test Pyramid](../diagrams/testing/test-pyramid.svg)
+```mermaid
+flowchart BT
+    classDef e2e fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef integ fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#92400e,font-weight:bold
+    classDef unit fill:#dcfce3,stroke:#22c55e,stroke-width:2px,color:#166534,font-weight:bold
+    classDef note fill:none,stroke:none,font-style:italic,color:#334155
+
+    subgraph Pyramid [Testing Volume Distribution]
+        direction BT
+        UC["Unit / Component<br/>(Many, Fast, Focused)"]
+        Int["Integration<br/>(Fewer, Broader)"]
+        E["E2E<br/>(Few, Expensive, Realistic)"]
+        
+        UC --> Int
+        Int --> E
+    end
+
+    class E e2e;
+    class Int integ;
+    class UC unit;
+    style Pyramid fill:none,stroke:none
+```
 
 ---
 
@@ -126,7 +191,31 @@ The policy is: **Identify → Investigate → Fix / Remove when genuinely invali
 ### 7.2 The Failure Verification Loop
 Fixing a bug is not just patching code; it is strengthening the system.
 
-![Failure Verification Loop](../diagrams/testing/failure-loop.svg)
+```mermaid
+flowchart TD
+    classDef state fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#991b1b,font-weight:bold
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef loop fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af,font-style:italic
+
+    F[Failure]
+    D[Detect]
+    R[Reproduce]
+    U[Understand]
+    Fix[Fix]
+    RT[Regression Test]
+    M[Monitor]
+    
+    F --> D
+    D --> R
+    R --> U
+    U --> Fix
+    Fix --> RT
+    RT --> M
+    M -.->|Prevents| F
+    
+    class F state;
+    class D,R,U,Fix,RT,M step;
+```
 
 ### 7.3 Code Coverage
 Code coverage percentage is evidence of testing execution; it is **not** the definition of quality. We do not chase a mandatory arbitrary percentage. The correct question is always: *"What important behavior remains insufficiently verified?"*
@@ -150,7 +239,38 @@ All AI-generated tests must be human-reviewed against:
 
 A feature is considered "Done" and ready for release only when all relevant quality dimensions have been satisfied.
 
-![Definition of Done](../diagrams/testing/definition-of-done.svg)
+```mermaid
+flowchart LR
+    classDef attr fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef ready fill:#dcfce3,stroke:#22c55e,stroke-width:3px,color:#166534,font-weight:bold
+
+    R[Requirement]
+    UX[UX]
+    I[Implementation]
+    T[Tests]
+    S[Security]
+    OS[Offline / Sync]
+    A[Accessibility]
+    P[Performance]
+    O[Observability]
+    D[Documentation]
+    
+    RDY((READY))
+    
+    R --> RDY
+    UX --> RDY
+    I --> RDY
+    T --> RDY
+    S --> RDY
+    OS --> RDY
+    A --> RDY
+    P --> RDY
+    O --> RDY
+    D --> RDY
+    
+    class R,UX,I,T,S,OS,A,P,O,D attr;
+    class RDY ready;
+```
 
 *(Note: This is a generalized quality model. The exact weight of each category scales with the risk of the change).*
 

@@ -69,7 +69,37 @@ PWA
 → browser-first experience with installable capabilities
 ```
 
-![Shared vs Platform Specific](../diagrams/platform/shared-vs-platform-specific.svg)
+```mermaid
+flowchart TD
+    classDef layer fill:#f8fafc,stroke:#94a3b8,stroke-width:2px,color:#0f172a,font-weight:bold
+    classDef item fill:#eff6ff,stroke:#3b82f6,stroke-width:1px,color:#1e40af
+
+    subgraph Shared [SHARED LAYER]
+        direction LR
+        S1[Semantics]
+        S2[Terminology]
+        S3[Identity]
+        S4[Permissions]
+        S5[Data Meaning]
+        S6[Core Workflows]
+    end
+
+    subgraph PlatformSpecific [PLATFORM-SPECIFIC LAYER]
+        direction LR
+        P1[Navigation]
+        P2[UI Layout]
+        P3[System APIs]
+        P4[Permissions Mechanics]
+        P5[Lifecycle]
+        P6[Distribution]
+    end
+    
+    Shared --> PlatformSpecific
+    
+    style Shared fill:#f0fdf4,stroke:#16a34a,stroke-width:2px
+    style PlatformSpecific fill:#fffbeb,stroke:#d97706,stroke-width:2px
+    class S1,S2,S3,S4,S5,S6,P1,P2,P3,P4,P5,P6 item;
+```
 
 ---
 
@@ -77,7 +107,50 @@ PWA
 
 Lenar branches into dedicated platforms to best serve the user's immediate context. 
 
-![Platform Map](../diagrams/platform/platform-map.svg)
+```mermaid
+flowchart TD
+    classDef main fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+    classDef branch fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155,font-weight:bold
+    classDef leaf fill:#e2e8f0,stroke:#64748b,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef props fill:#f1f5f9,stroke:#cbd5e1,stroke-width:1px,color:#1e293b,stroke-dasharray: 4 4
+
+    L[LENAR]
+    
+    W[WEB]
+    P[PWA]
+    M[MOBILE]
+    
+    A[ANDROID]
+    I[IOS]
+    
+    L --- W
+    L --- P
+    L --- M
+    
+    M --- A
+    M --- I
+    
+    subgraph S [Shared]
+        S1[Product Semantics<br/>Account / Identity<br/>Authorization<br/>API / Domain Contracts<br/>Data Meaning<br/>Core Product Behavior]
+    end
+    
+    subgraph PS [Platform-Specific]
+        PS1[UI Interactions<br/>System Capabilities<br/>Permissions<br/>Lifecycle<br/>Distribution<br/>Device Behavior]
+    end
+    
+    L -.-> S
+    A -.-> PS
+    I -.-> PS
+    W -.-> PS
+    P -.-> PS
+    
+    class L main;
+    class W,P,M branch;
+    class A,I leaf;
+    class S1,PS1 props;
+    style S fill:none,stroke:#10b981,stroke-width:2px
+    style PS fill:none,stroke:#f59e0b,stroke-width:2px
+```
 
 ---
 
@@ -95,7 +168,37 @@ It is important to emphasize that framework choices are driven by product requir
 
 The lifecycle of the application varies significantly by platform. For example, mobile app lifecycles (App Store distribution, strict updates) differ mechanically from Browser/PWA lifecycles (continuous deployment, immediate updates).
 
-![Platform Lifecycle Model](../diagrams/platform/platform-lifecycle.svg)
+```mermaid
+flowchart TD
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#0f172a,font-weight:bold
+    classDef note fill:#fef3c7,stroke:#d97706,stroke-width:1px,color:#92400e,font-style:italic,stroke-dasharray: 4 4
+
+    I[Install]
+    FL[First Launch]
+    A[Authentication / Setup]
+    NU[Normal Usage]
+    U[Update]
+    M[Migration if required]
+    FV[Future Versions]
+    Un[Uninstall]
+    
+    I --> FL
+    FL --> A
+    A --> NU
+    NU --> U
+    U --> M
+    M --> FV
+    FV --> Un
+    
+    N[Note: Mobile app vs Browser/PWA lifecycles naturally differ in mechanics]
+    
+    I -.-> N
+    U -.-> N
+    Un -.-> N
+    
+    class I,FL,A,NU,U,M,FV,Un step;
+    class N note;
+```
 
 ---
 
@@ -103,7 +206,31 @@ The lifecycle of the application varies significantly by platform. For example, 
 
 When introducing new features or capabilities, the decision of how to implement them on a platform is guided by a structured evaluation of product needs against platform reality.
 
-![Platform Decision Flow](../diagrams/platform/platform-decision-flow.svg)
+```mermaid
+flowchart TD
+    classDef origin fill:#f1f5f9,stroke:#475569,stroke-width:2px,font-weight:bold,color:#0f172a
+    classDef step fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
+    classDef decision fill:#2563eb,color:#fff,stroke:#1e40af,stroke-width:2px,font-weight:bold
+
+    UN[User Need]
+    R[Requirement]
+    PC[Platform Capability]
+    SP[Security / Privacy]
+    P[Performance]
+    MC[Maintenance Cost]
+    PD[Platform Decision]
+    
+    UN --> R
+    R --> PC
+    PC --> SP
+    SP --> P
+    P --> MC
+    MC --> PD
+    
+    class UN origin;
+    class R,PC,SP,P,MC step;
+    class PD decision;
+```
 
 ---
 

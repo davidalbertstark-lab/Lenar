@@ -1,10 +1,85 @@
-# Current System Model
+# How a Student Moves Through Lenar
 
-This document serves as the central conceptual guide to the Lenar foundation. It walks through the system step by step, illustrating how the nine domains interconnect to form a secure, authoritative platform.
+This document serves as the central conceptual guide to the Lenar foundation. It illustrates the primary behavioural flow, showing how a user moves from registration to normal platform access, and what major system conditions determine whether that access is available.
 
-*(Reference Diagram: [Master System Model](diagrams/master-system-model.svg))*
+To make the system easy to understand at first glance, the model is divided into two parts:
+1. **The Student Journey**: How a person moves from initial registration to becoming an active student.
+2. **Access and Authority**: The specific system conditions evaluated before granting platform access or allowing administrative actions.
 
-## 1. The Core Pipeline
+### Diagram A: The Student Journey
+This flow shows the chronological path a new user takes. Notice that important system states (like *Account Active* or *Enrollment*) are only established after explicit approval.
+
+*(Reference Diagram: ```mermaid
+flowchart TD
+    classDef userAction fill:#f8fafc,stroke:#64748b,stroke-dasharray: 5 5
+    classDef systemState fill:#eff6ff,stroke:#2563eb,stroke-width:2px,font-weight:bold
+    classDef outcome fill:#f0fdf4,stroke:#16a34a,stroke-width:2px,font-weight:bold
+    classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px
+    
+    subgraph 1. Entry & Onboarding
+        direction TB
+        Reg([Registration]) -.-> Acct[Account: Created]:::systemState
+        Acct -.-> Email([Email Verification])
+        Email -.-> Auth([Authentication / Session])
+        Auth -.-> Prof([Submit Academic Profile])
+        Prof --> Pend[State: Pending Review]:::systemState
+    end
+
+    subgraph 2. Academic Foundation
+        direction TB
+        Pend -->|Review Decision| Appr{Approval}:::decision
+        Appr -->|Rejected| Prof
+        Appr -->|Approved| Active[Account: Active]:::systemState
+        Appr -->|Approved| Enr[Authoritative Enrollment]:::systemState
+        Enr -->|Determines| Ctx[Current Academic Context]:::systemState
+    end
+
+    subgraph 3. Community Placement
+        direction TB
+        Ctx -->|Maps to| BC[Base Community]:::systemState
+        BC -->|Automatically grants| Mem[Base Membership]:::systemState
+    end
+
+    Mem ===> Access(((Normal Platform Access))):::outcome
+    Active ===> Access
+```)*
+
+### Diagram B: What Determines Normal Access
+This diagram shows the static checkpoints the system evaluates when a user attempts to do something. It separates the baseline requirements for normal access from the strict evaluation of Governance Authority.
+
+*(Reference Diagram: ```mermaid
+flowchart TD
+    classDef condition fill:#eff6ff,stroke:#2563eb,stroke-width:2px,font-weight:bold
+    classDef decision fill:#fef08a,stroke:#ca8a04,stroke-width:2px
+    classDef allow fill:#f0fdf4,stroke:#16a34a,stroke-width:3px,font-weight:bold
+    classDef deny fill:#fef2f2,stroke:#dc2626,stroke-width:3px,font-weight:bold
+
+    subgraph 1. Baseline Identity Conditions
+        direction TB
+        Act[Account is Active]:::condition
+        Sess[Valid Authentication Session]:::condition
+        Enr[Authoritative Enrollment Exists]:::condition
+        Ctx[Current Academic Context]:::condition
+        Mem[Base Community Membership]:::condition
+    end
+    
+    subgraph 2. Governance Authority
+        direction TB
+        Gov[Governance Assignment]:::condition --> Role[Role + Authority Context]:::condition
+    end
+
+    1. Baseline Identity Conditions --> Authz
+    Role -.->|Optional: If performing admin actions| Authz
+    
+    Authz{Authorization Engine}:::decision
+    Authz -->|All conditions met & scope valid| Allow(((ALLOW: Platform Access))):::allow
+    Authz -->|Missing condition, mismatch, or revoked| Deny(((DENY: Access Blocked))):::deny
+```)*
+
+
+---
+
+## 1. The Core Conceptual Flow
 
 The system evaluates user state through a structured progression. While domains are independent, their conceptual flow follows this pipeline:
 
