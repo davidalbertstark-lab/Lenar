@@ -307,11 +307,11 @@ The intended scaling path is:
 
 ## Related Documentation
 
-- [../product/01-Lenar-Foundation.md](../product/01-Lenar-Foundation.md)
-- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/01-Lenar-Foundation.md](../01-user-requirements/01-Lenar-Foundation.md)
+- [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
 - [05-Platform.md](05-Platform.md)
-- [../product/06-Data-Content.md](../product/06-Data-Content.md)
-- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
+- [../product/06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)

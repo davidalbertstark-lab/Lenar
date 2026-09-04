@@ -19,7 +19,7 @@ Lenar uses a deliberately practical technology stack. The goal is not to assembl
 - effective testing;
 - operational simplicity.
 
-These choices are organized around the system architecture defined in [09-System-Architecture.md](09-System-Architecture.md) and the product requirements defined in [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md).
+These choices are organized around the system architecture defined in [09-System-Architecture.md](09-System-Architecture.md) and the product requirements defined in [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md).
 
 ---
 
@@ -277,10 +277,10 @@ Any new technology addition or replacement must be formally justified by:
 
 For context on how these technologies fulfill product and architectural needs, refer to:
 
-- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
 - [05-Platform.md](05-Platform.md)
-- [../product/06-Data-Content.md](../product/06-Data-Content.md)
-- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
+- [../product/06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)

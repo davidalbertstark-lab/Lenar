@@ -231,7 +231,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 19. 1. Why Lenar Exists
-- **Location**: `docs/product/01-Lenar-Foundation.md`
+- **Location**: `docs/01-user-requirements/01-Lenar-Foundation.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 1. why lenar exists.
 - **Primary reader question**: How does 1. Why Lenar Exists work?
 - **Current visual representation**: flowchart
@@ -242,7 +242,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 20. 3. Product Identity
-- **Location**: `docs/product/01-Lenar-Foundation.md`
+- **Location**: `docs/01-user-requirements/01-Lenar-Foundation.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. product identity.
 - **Primary reader question**: How does 3. Product Identity work?
 - **Current visual representation**: flowchart
@@ -253,7 +253,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 21. The Trust Model
-- **Location**: `docs/product/01-Lenar-Foundation.md`
+- **Location**: `docs/01-user-requirements/01-Lenar-Foundation.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of the trust model.
 - **Primary reader question**: How does The Trust Model work?
 - **Current visual representation**: flowchart
@@ -264,7 +264,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 22. At a Glance
-- **Location**: `docs/product/02-Problem-Users-Domain.md`
+- **Location**: `docs/01-user-requirements/02-Problem-Users-Domain.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of at a glance.
 - **Primary reader question**: How does At a Glance work?
 - **Current visual representation**: flowchart
@@ -275,7 +275,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 23. 2. University Organizational Context
-- **Location**: `docs/product/02-Problem-Users-Domain.md`
+- **Location**: `docs/01-user-requirements/02-Problem-Users-Domain.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. university organizational context.
 - **Primary reader question**: How does 2. University Organizational Context work?
 - **Current visual representation**: flowchart
@@ -286,7 +286,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 24. 3.2 The Authorization Model
-- **Location**: `docs/product/02-Problem-Users-Domain.md`
+- **Location**: `docs/01-user-requirements/02-Problem-Users-Domain.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3.2 the authorization model.
 - **Primary reader question**: How does 3.2 The Authorization Model work?
 - **Current visual representation**: flowchart
@@ -297,7 +297,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 25. 4. Major Domain Concepts
-- **Location**: `docs/product/02-Problem-Users-Domain.md`
+- **Location**: `docs/01-user-requirements/02-Problem-Users-Domain.md`
 - **Actual purpose**: This diagram exists to help the reader understand map out all interactions within 4. major domain concepts.
 - **Primary reader question**: How do elements in 4. Major Domain Concepts interact?
 - **Current visual representation**: flowchart
@@ -308,7 +308,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 26. 2. Major Product Areas
-- **Location**: `docs/product/03-Product-Requirements.md`
+- **Location**: `docs/01-user-requirements/03-Product-Requirements.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. major product areas.
 - **Primary reader question**: How does 2. Major Product Areas work?
 - **Current visual representation**: flowchart
@@ -319,7 +319,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 27. 4. Feature Dependencies
-- **Location**: `docs/product/03-Product-Requirements.md`
+- **Location**: `docs/01-user-requirements/03-Product-Requirements.md`
 - **Actual purpose**: This diagram exists to help the reader understand map out all interactions within 4. feature dependencies.
 - **Primary reader question**: How do elements in 4. Feature Dependencies interact?
 - **Current visual representation**: flowchart
@@ -330,7 +330,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 28. 5.1 Requirement Traceability
-- **Location**: `docs/product/03-Product-Requirements.md`
+- **Location**: `docs/01-user-requirements/03-Product-Requirements.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 5.1 requirement traceability.
 - **Primary reader question**: How does 5.1 Requirement Traceability work?
 - **Current visual representation**: flowchart
@@ -341,7 +341,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 29. 5.2 Generalized Product State Model
-- **Location**: `docs/product/03-Product-Requirements.md`
+- **Location**: `docs/01-user-requirements/03-Product-Requirements.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the product.
 - **Primary reader question**: What states can the product enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -352,7 +352,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 30. 2. The Lenar Experience Model
-- **Location**: `docs/product/04-UX-UI.md`
+- **Location**: `docs/01-user-requirements/04-UX-UI.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. the lenar experience model.
 - **Primary reader question**: How does 2. The Lenar Experience Model work?
 - **Current visual representation**: flowchart
@@ -363,7 +363,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 31. 2.1 The Onboarding Journey
-- **Location**: `docs/product/04-UX-UI.md`
+- **Location**: `docs/01-user-requirements/04-UX-UI.md`
 - **Actual purpose**: This diagram exists to help the reader understand map out all interactions within 2.1 the onboarding journey.
 - **Primary reader question**: How do elements in 2.1 The Onboarding Journey interact?
 - **Current visual representation**: flowchart
@@ -374,7 +374,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 32. 3. Information Architecture
-- **Location**: `docs/product/04-UX-UI.md`
+- **Location**: `docs/01-user-requirements/04-UX-UI.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. information architecture.
 - **Primary reader question**: How does 3. Information Architecture work?
 - **Current visual representation**: flowchart
@@ -385,7 +385,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 33. 4. Interaction Principles & Interface States
-- **Location**: `docs/product/04-UX-UI.md`
+- **Location**: `docs/01-user-requirements/04-UX-UI.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the product.
 - **Primary reader question**: What states can the product enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -396,7 +396,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 34. 7. UX Traceability & Relationships
-- **Location**: `docs/product/04-UX-UI.md`
+- **Location**: `docs/01-user-requirements/04-UX-UI.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7. ux traceability & relationships.
 - **Primary reader question**: How does 7. UX Traceability & Relationships work?
 - **Current visual representation**: flowchart
@@ -407,7 +407,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 35. 2. The Lenar Information Model
-- **Location**: `docs/product/06-Data-Content.md`
+- **Location**: `docs/01-user-requirements/06-Data-Content.md`
 - **Actual purpose**: This diagram exists to help the reader understand structural relationships and boundaries.
 - **Primary reader question**: What are the structural boundaries for product?
 - **Current visual representation**: flowchart
@@ -418,7 +418,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Improve
 
 ### 36. 3. Data Authority & Representations
-- **Location**: `docs/product/06-Data-Content.md`
+- **Location**: `docs/01-user-requirements/06-Data-Content.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. data authority & representations.
 - **Primary reader question**: How does 3. Data Authority & Representations work?
 - **Current visual representation**: flowchart
@@ -429,7 +429,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 37. 4.1 Content Lifecycle
-- **Location**: `docs/product/06-Data-Content.md`
+- **Location**: `docs/01-user-requirements/06-Data-Content.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the product.
 - **Primary reader question**: What states can the product enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -440,7 +440,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 38. 4.2 Data Lifecycle
-- **Location**: `docs/product/06-Data-Content.md`
+- **Location**: `docs/01-user-requirements/06-Data-Content.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the product.
 - **Primary reader question**: What states can the product enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -451,7 +451,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 39. 1. Trust Boundaries & Mental Model
-- **Location**: `docs/product/07-Security-Privacy-Governance.md`
+- **Location**: `docs/01-user-requirements/07-Security-Privacy-Governance.md`
 - **Actual purpose**: This diagram exists to help the reader understand the hierarchy of governance roles and who assigns them.
 - **Primary reader question**: Which role can assign which other role?
 - **Current visual representation**: flowchart
@@ -462,7 +462,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Split
 
 ### 40. Unknown Section
-- **Location**: `docs/product/07-Security-Privacy-Governance.md`
+- **Location**: `docs/01-user-requirements/07-Security-Privacy-Governance.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of unknown section.
 - **Primary reader question**: How does Unknown Section work?
 - **Current visual representation**: flowchart
@@ -473,7 +473,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 41. 3.2 Role vs. Authorization
-- **Location**: `docs/product/07-Security-Privacy-Governance.md`
+- **Location**: `docs/01-user-requirements/07-Security-Privacy-Governance.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3.2 role vs. authorization.
 - **Primary reader question**: How does 3.2 Role vs. Authorization work?
 - **Current visual representation**: flowchart
@@ -484,7 +484,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 42. 5. Incident Response Lifecycle
-- **Location**: `docs/product/07-Security-Privacy-Governance.md`
+- **Location**: `docs/01-user-requirements/07-Security-Privacy-Governance.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the product.
 - **Primary reader question**: What states can the product enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -495,7 +495,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 43. 1. Business & Legal Philosophy
-- **Location**: `docs/product/15-Legal-Business.md`
+- **Location**: `docs/01-user-requirements/15-Legal-Business.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 1. business & legal philosophy.
 - **Primary reader question**: How does 1. Business & Legal Philosophy work?
 - **Current visual representation**: flowchart
@@ -506,7 +506,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 44. 3. Privacy & Data Boundaries
-- **Location**: `docs/product/15-Legal-Business.md`
+- **Location**: `docs/01-user-requirements/15-Legal-Business.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. privacy & data boundaries.
 - **Primary reader question**: How does 3. Privacy & Data Boundaries work?
 - **Current visual representation**: flowchart
@@ -517,7 +517,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 45. 5. Third-Party Dependencies
-- **Location**: `docs/product/15-Legal-Business.md`
+- **Location**: `docs/01-user-requirements/15-Legal-Business.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 5. third-party dependencies.
 - **Primary reader question**: How does 5. Third-Party Dependencies work?
 - **Current visual representation**: flowchart
@@ -528,7 +528,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 46. 7. Business Continuity & Sustainability
-- **Location**: `docs/product/15-Legal-Business.md`
+- **Location**: `docs/01-user-requirements/15-Legal-Business.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7. business continuity & sustainability.
 - **Primary reader question**: How does 7. Business Continuity & Sustainability work?
 - **Current visual representation**: flowchart

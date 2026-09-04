@@ -320,10 +320,10 @@ Synchronization health should be measurable. Key metrics include:
 
 For how offline behavior connects to the broader system, refer to:
 
-- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
-- [../product/04-UX-UI.md](../product/04-UX-UI.md)
-- [../product/06-Data-Content.md](../product/06-Data-Content.md)
-- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
+- [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
+- [../product/04-UX-UI.md](../01-user-requirements/04-UX-UI.md)
+- [../product/06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)

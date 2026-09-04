@@ -308,11 +308,11 @@ This divergence is treated as a defect requiring attention, not as acceptable co
 
 ## Related Documentation
 
-- [../product/01-Lenar-Foundation.md](../product/01-Lenar-Foundation.md)
-- [../product/03-Product-Requirements.md](../product/03-Product-Requirements.md)
+- [../product/01-Lenar-Foundation.md](../01-user-requirements/01-Lenar-Foundation.md)
+- [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
 - [../architecture/05-Platform.md](../architecture/05-Platform.md)
-- [../product/06-Data-Content.md](../product/06-Data-Content.md)
-- [../product/07-Security-Privacy-Governance.md](../product/07-Security-Privacy-Governance.md)
+- [../product/06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
+- [../product/07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
 - [../architecture/08-Offline-Sync-Resilience.md](../architecture/08-Offline-Sync-Resilience.md)
 - [../architecture/09-System-Architecture.md](../architecture/09-System-Architecture.md)
 - [../architecture/10-Technology-Stack.md](../architecture/10-Technology-Stack.md)
@@ -320,5 +320,5 @@ This divergence is treated as a defect requiring attention, not as acceptable co
 - [../architecture/12-Testing-Quality.md](../architecture/12-Testing-Quality.md)
 - [../architecture/13-Analytics-Observability.md](../architecture/13-Analytics-Observability.md)
 - [../architecture/14-Infrastructure-Operations.md](../architecture/14-Infrastructure-Operations.md)
-- [../product/15-Legal-Business.md](../product/15-Legal-Business.md)
+- [../product/15-Legal-Business.md](../01-user-requirements/15-Legal-Business.md)
 - [../architecture/16-Development-Release.md](../architecture/16-Development-Release.md)

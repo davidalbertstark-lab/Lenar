@@ -15,7 +15,7 @@ The system operates on a core set of principles:
 
 ## Canonical References
 To explore the original product vision, UX, and requirements, refer to the product documents:
-- [01 Lenar Foundation](../product/01-Lenar-Foundation.md)
-- [02 Problem, Users & Domain](../product/02-Problem-Users-Domain.md)
-- [03 Product Requirements](../product/03-Product-Requirements.md)
-- [07 Security, Privacy & Governance](../product/07-Security-Privacy-Governance.md)
+- [01 Lenar Foundation](../01-user-requirements/01-Lenar-Foundation.md)
+- [02 Problem, Users & Domain](../01-user-requirements/02-Problem-Users-Domain.md)
+- [03 Product Requirements](../01-user-requirements/03-Product-Requirements.md)
+- [07 Security, Privacy & Governance](../01-user-requirements/07-Security-Privacy-Governance.md)

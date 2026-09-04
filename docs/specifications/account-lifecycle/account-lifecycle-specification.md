@@ -24,12 +24,12 @@ This specification does **not** cover:
 - Database schema, physical deletion, or data-retention implementation.
 
 ## 3. Canonical References
-- `docs/product/01-Lenar-Foundation.md`
-- `docs/product/02-Problem-Users-Domain.md`
-- `docs/product/03-Product-Requirements.md`
-- `docs/product/04-UX-UI.md`
-- `docs/product/06-Data-Content.md`
-- `docs/product/07-Security-Privacy-Governance.md`
+- `docs/01-user-requirements/01-Lenar-Foundation.md`
+- `docs/01-user-requirements/02-Problem-Users-Domain.md`
+- `docs/01-user-requirements/03-Product-Requirements.md`
+- `docs/01-user-requirements/04-UX-UI.md`
+- `docs/01-user-requirements/06-Data-Content.md`
+- `docs/01-user-requirements/07-Security-Privacy-Governance.md`
 
 ## 4. Dependencies
 - Authentication
