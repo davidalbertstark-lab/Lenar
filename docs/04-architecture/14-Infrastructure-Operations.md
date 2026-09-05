@@ -285,13 +285,13 @@ Infrastructure decisions must weigh the cost implications of:
 
 ## Related Documentation
 
-- [../product/07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
+- [07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
-- [../product/15-Legal-Business.md](../01-user-requirements/15-Legal-Business.md)
+- [15-Legal-Business.md](../01-user-requirements/15-Legal-Business.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)
+- [17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

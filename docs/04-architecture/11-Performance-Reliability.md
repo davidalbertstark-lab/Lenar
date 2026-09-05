@@ -226,11 +226,11 @@ flowchart TD
 
 ## Related Documentation
 
-- [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
-- [../product/04-UX-UI.md](../01-user-requirements/04-UX-UI.md)
+- [03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
+- [04-UX-UI.md](../01-user-requirements/04-UX-UI.md)
 - [05-Platform.md](05-Platform.md)
-- [../product/06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
-- [../product/07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
+- [06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
+- [07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
@@ -238,4 +238,4 @@ flowchart TD
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)
+- [17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

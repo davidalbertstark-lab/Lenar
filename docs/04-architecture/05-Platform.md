@@ -226,15 +226,15 @@ The following rules govern how features should be approached across platforms:
 
 For detailed specifications connected to this platform strategy, refer to the following canonical documents:
 
-- [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
-- [../product/04-UX-UI.md](../01-user-requirements/04-UX-UI.md)
-- [../product/06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
-- [../product/07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
+- [03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
+- [04-UX-UI.md](../01-user-requirements/04-UX-UI.md)
+- [06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
+- [07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
 - [08-Offline-Sync-Resilience.md](08-Offline-Sync-Resilience.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
-- [../product/15-Legal-Business.md](../01-user-requirements/15-Legal-Business.md)
+- [15-Legal-Business.md](../01-user-requirements/15-Legal-Business.md)
 - [16-Development-Release.md](16-Development-Release.md)
-- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)
+- [17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

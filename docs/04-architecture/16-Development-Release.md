@@ -263,13 +263,13 @@ Development pipelines are privileged environments. We explicitly protect:
 
 ## Related Documentation
 
-- [../product/01-Lenar-Foundation.md](../01-user-requirements/01-Lenar-Foundation.md)
-- [../product/03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
+- [01-Lenar-Foundation.md](../01-user-requirements/01-Lenar-Foundation.md)
+- [03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
 - [09-System-Architecture.md](09-System-Architecture.md)
 - [10-Technology-Stack.md](10-Technology-Stack.md)
 - [11-Performance-Reliability.md](11-Performance-Reliability.md)
 - [12-Testing-Quality.md](12-Testing-Quality.md)
 - [13-Analytics-Observability.md](13-Analytics-Observability.md)
 - [14-Infrastructure-Operations.md](14-Infrastructure-Operations.md)
-- [../product/15-Legal-Business.md](../01-user-requirements/15-Legal-Business.md)
-- [../decisions/17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)
+- [15-Legal-Business.md](../01-user-requirements/15-Legal-Business.md)
+- [17-Decisions-Risks-Evolution.md](../decisions/17-Decisions-Risks-Evolution.md)

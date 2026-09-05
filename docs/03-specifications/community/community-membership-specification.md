@@ -38,16 +38,16 @@ It outlines the responsibilities and boundaries of Community creation, lifecycle
 
 ## 3. Canonical References
 
-- [01-Lenar-Foundation.md](../../product/01-Lenar-Foundation.md)
-- [02-Problem-Users-Domain.md](../../product/02-Problem-Users-Domain.md)
-- [03-Product-Requirements.md](../../product/03-Product-Requirements.md)
-- [04-UX-UI.md](../../product/04-UX-UI.md)
-- [06-Data-Content.md](../../product/06-Data-Content.md)
-- [07-Security-Privacy-Governance.md](../../product/07-Security-Privacy-Governance.md)
-- [08-Offline-Sync-Resilience.md](../../architecture/08-Offline-Sync-Resilience.md)
-- [09-System-Architecture.md](../../architecture/09-System-Architecture.md)
-- [10-Technology-Stack.md](../../architecture/10-Technology-Stack.md)
-- [12-Testing-Quality.md](../../architecture/12-Testing-Quality.md)
+- [01-Lenar-Foundation.md](../01-user-requirements/01-Lenar-Foundation.md)
+- [02-Problem-Users-Domain.md](../01-user-requirements/02-Problem-Users-Domain.md)
+- [03-Product-Requirements.md](../01-user-requirements/03-Product-Requirements.md)
+- [04-UX-UI.md](../01-user-requirements/04-UX-UI.md)
+- [06-Data-Content.md](../01-user-requirements/06-Data-Content.md)
+- [07-Security-Privacy-Governance.md](../01-user-requirements/07-Security-Privacy-Governance.md)
+- [08-Offline-Sync-Resilience.md](../04-architecture/08-Offline-Sync-Resilience.md)
+- [09-System-Architecture.md](../04-architecture/09-System-Architecture.md)
+- [10-Technology-Stack.md](../04-architecture/10-Technology-Stack.md)
+- [12-Testing-Quality.md](../04-architecture/12-Testing-Quality.md)
 - [17-Decisions-Risks-Evolution.md](../../decisions/17-Decisions-Risks-Evolution.md)
 - [Specification Framework README](../README.md)
 
