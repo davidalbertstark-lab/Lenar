@@ -1,8 +1,11 @@
 # Lenar — Infrastructure & Operations
 
-> **Status:** Infrastructure & Operations Reference  
-> **Document:** 14 — Infrastructure & Operations  
-> **Purpose:** Define how Lenar is deployed, where it runs, how environments are separated, how authoritative data is operated, how backups and recovery are handled, how incidents are resolved, and how the infrastructure evolves safely.
+> [!NOTE]  
+> **Purpose:** Defines the cloud environment, deployment pipelines, and operational readiness requirements.  
+> **Prerequisites:** `10-Technology-Stack.md`  
+> **Primary Audience:** DevOps, Site Reliability Engineers.
+
+
 
 ---
 

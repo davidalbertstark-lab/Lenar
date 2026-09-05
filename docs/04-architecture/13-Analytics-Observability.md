@@ -1,8 +1,11 @@
 # Lenar — Analytics & Observability
 
-> **Status:** Analytics & Observability Reference  
-> **Document:** 13 — Analytics & Observability  
-> **Purpose:** Define how Lenar measures product usage, system behavior, performance, errors, reliability, and operational health while maintaining appropriate privacy boundaries and keeping measurement systems separate from authoritative product state.
+> [!NOTE]  
+> **Purpose:** Defines how the system logs events, monitors health, and reports metrics without violating privacy.  
+> **Prerequisites:** `11-Performance-Reliability.md`  
+> **Primary Audience:** DevOps, Data Engineers.
+
+
 
 ---
 

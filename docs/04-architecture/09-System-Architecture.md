@@ -1,8 +1,11 @@
 # Lenar — System Architecture
 
-> **Status:** Architecture Reference  
-> **Document:** 09 — System Architecture  
-> **Purpose:** Define how Lenar is structurally organized, where system boundaries exist, what responsibilities belong to each major component, how components communicate, where data flows, how external systems are integrated, how failures are contained, and how the architecture can evolve as Lenar grows.
+> [!NOTE]  
+> **Purpose:** Defines the high-level system components, the data flow, and the backend service architecture.  
+> **Prerequisites:** `05-Platform.md`  
+> **Primary Audience:** Backend Engineers, DevOps.
+
+
 
 ---
 

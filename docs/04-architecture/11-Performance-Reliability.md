@@ -1,8 +1,11 @@
 # Lenar — Performance & Reliability
 
-> **Status:** Performance & Reliability Reference  
-> **Document:** 11 — Performance & Reliability  
-> **Purpose:** Define how well Lenar is expected to perform, how the system should behave under constrained conditions, what performance and reliability characteristics matter across platforms and services, how capacity should be approached, and how measurable evidence should guide optimization and scaling.
+> [!NOTE]  
+> **Purpose:** Defines the absolute boundaries for acceptable system latency, throughput, and uptime.  
+> **Prerequisites:** `10-Technology-Stack.md`  
+> **Primary Audience:** Backend Engineers, DevOps.
+
+
 
 ---
 

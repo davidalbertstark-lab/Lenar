@@ -1,8 +1,11 @@
 # Lenar — Offline, Sync & Resilience
 
-> **Status:** Core Architecture Reference  
-> **Document:** 08 — Offline, Sync & Resilience  
-> **Purpose:** Define how Lenar behaves when connectivity is weak, unavailable, interrupted, or restored; how local state and server state relate; how supported offline actions are preserved and synchronized; how conflicts and failures are handled; and how the system recovers without unnecessarily losing user work or data integrity.
+> [!NOTE]  
+> **Purpose:** Defines how the platform behaves when network connectivity is lost or unstable.  
+> **Prerequisites:** `05-Platform.md`  
+> **Primary Audience:** Mobile Engineers, Backend Engineers.
+
+
 
 ---
 

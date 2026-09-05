@@ -272,10 +272,10 @@ This document sits within a broader architectural context. The boundaries are st
 
 - **[03 — Product & Requirements](03-Product-Requirements.md):** What users need the product to accomplish.
 - **04 — UX & UI:** How those needs should be experienced.
-- **[05 — Platform](../architecture/05-Platform.md):** How the experience adapts to platforms.
+- **[05 — Platform](../04-architecture/05-Platform.md):** How the experience adapts to platforms.
 - **[06 — Data & Content](06-Data-Content.md):** What information is represented.
 - **[07 — Security, Privacy & Governance](07-Security-Privacy-Governance.md):** How access and protection are enforced.
-- **[08 — Offline, Sync & Resilience](../architecture/08-Offline-Sync-Resilience.md):** How disconnected behavior works.
-- **[09 — System Architecture](../architecture/09-System-Architecture.md):** How the system implements the experience.
-- **[12 — Testing & Quality](../architecture/12-Testing-Quality.md):** How the experience is validated.
-- **[13 — Analytics & Observability](../architecture/13-Analytics-Observability.md):** How useful product behavior and system health are measured.
+- **[08 — Offline, Sync & Resilience](../04-architecture/08-Offline-Sync-Resilience.md):** How disconnected behavior works.
+- **[09 — System Architecture](../04-architecture/09-System-Architecture.md):** How the system implements the experience.
+- **[12 — Testing & Quality](../04-architecture/12-Testing-Quality.md):** How the experience is validated.
+- **[13 — Analytics & Observability](../04-architecture/13-Analytics-Observability.md):** How useful product behavior and system health are measured.

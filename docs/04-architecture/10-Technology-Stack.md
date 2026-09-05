@@ -1,8 +1,11 @@
 # Lenar — Technology Stack
 
-> **Status:** Technology Reference  
-> **Document:** 10 — Technology Stack  
-> **Purpose:** Define the technologies currently selected for Lenar, the responsibility of each technology, the boundaries between technologies, the reasons for the major choices, and the rules for introducing, replacing, or evolving dependencies.
+> [!NOTE]  
+> **Purpose:** Defines the strict languages, frameworks, and infrastructure tools chosen for Lenar.  
+> **Prerequisites:** `09-System-Architecture.md`  
+> **Primary Audience:** All Engineers.
+
+
 
 ---
 

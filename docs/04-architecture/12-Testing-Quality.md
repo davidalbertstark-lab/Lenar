@@ -1,8 +1,11 @@
 # Lenar — Testing & Quality
 
-> **Status:** Quality & Verification Reference  
-> **Document:** 12 — Testing & Quality  
-> **Purpose:** Define how Lenar is verified across product behavior, domain correctness, security, platforms, offline/synchronization, performance, accessibility, integrations, and releases; establish the testing layers, quality gates, failure validation, regression strategy, and evidence required before functionality is considered trustworthy.
+> [!NOTE]  
+> **Purpose:** Defines the automated testing strategies, QA standards, and deployment gates.  
+> **Prerequisites:** `09-System-Architecture.md`  
+> **Primary Audience:** QA Engineers, DevOps, All Engineers.
+
+
 
 ---
 

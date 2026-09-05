@@ -1,8 +1,11 @@
 # Lenar — Development & Release
 
-> **Status:** Development & Delivery Reference  
-> **Document:** 16 — Development & Release  
-> **Purpose:** Define how Lenar is developed, reviewed, integrated, tested, versioned, released, and maintained so that changes can move from implementation to production in a controlled, repeatable, and understandable way.
+> [!NOTE]  
+> **Purpose:** Defines the git workflows, code review standards, and release management processes.  
+> **Prerequisites:** None  
+> **Primary Audience:** All Engineers, Product Managers.
+
+
 
 ---
 

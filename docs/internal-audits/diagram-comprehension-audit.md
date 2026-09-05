@@ -539,7 +539,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 47. 2.2 Platform-Appropriate Experience
-- **Location**: `docs/architecture/05-Platform.md`
+- **Location**: `docs/04-architecture/05-Platform.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2.2 platform-appropriate experience.
 - **Primary reader question**: How does 2.2 Platform-Appropriate Experience work?
 - **Current visual representation**: flowchart
@@ -550,7 +550,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 48. 3. Platform Map & Roles
-- **Location**: `docs/architecture/05-Platform.md`
+- **Location**: `docs/04-architecture/05-Platform.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. platform map & roles.
 - **Primary reader question**: How does 3. Platform Map & Roles work?
 - **Current visual representation**: flowchart
@@ -561,7 +561,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 49. 5. Platform Lifecycle
-- **Location**: `docs/architecture/05-Platform.md`
+- **Location**: `docs/04-architecture/05-Platform.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the architecture.
 - **Primary reader question**: What states can the architecture enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -572,7 +572,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 50. 6. Platform Decision Flow
-- **Location**: `docs/architecture/05-Platform.md`
+- **Location**: `docs/04-architecture/05-Platform.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 6. platform decision flow.
 - **Primary reader question**: How does 6. Platform Decision Flow work?
 - **Current visual representation**: flowchart
@@ -583,7 +583,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 51. 2. Synchronization Architecture
-- **Location**: `docs/architecture/08-Offline-Sync-Resilience.md`
+- **Location**: `docs/04-architecture/08-Offline-Sync-Resilience.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. synchronization architecture.
 - **Primary reader question**: How does 2. Synchronization Architecture work?
 - **Current visual representation**: flowchart
@@ -594,7 +594,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 52. 3. Offline Write & Synchronization
-- **Location**: `docs/architecture/08-Offline-Sync-Resilience.md`
+- **Location**: `docs/04-architecture/08-Offline-Sync-Resilience.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. offline write & synchronization.
 - **Primary reader question**: How does 3. Offline Write & Synchronization work?
 - **Current visual representation**: sequence diagram
@@ -605,7 +605,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 53. 4. Operation Lifecycle & Idempotency
-- **Location**: `docs/architecture/08-Offline-Sync-Resilience.md`
+- **Location**: `docs/04-architecture/08-Offline-Sync-Resilience.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the architecture.
 - **Primary reader question**: What states can the architecture enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -616,7 +616,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 54. 5.2 Conflict Handling
-- **Location**: `docs/architecture/08-Offline-Sync-Resilience.md`
+- **Location**: `docs/04-architecture/08-Offline-Sync-Resilience.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 5.2 conflict handling.
 - **Primary reader question**: How does 5.2 Conflict Handling work?
 - **Current visual representation**: flowchart
@@ -627,7 +627,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 55. 7. Resilience, Recovery, and Testing
-- **Location**: `docs/architecture/08-Offline-Sync-Resilience.md`
+- **Location**: `docs/04-architecture/08-Offline-Sync-Resilience.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7. resilience, recovery, and testing.
 - **Primary reader question**: How does 7. Resilience, Recovery, and Testing work?
 - **Current visual representation**: flowchart
@@ -638,7 +638,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 56. 1. Architectural Style: Modular Monolith
-- **Location**: `docs/architecture/09-System-Architecture.md`
+- **Location**: `docs/04-architecture/09-System-Architecture.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 1. architectural style: modular monolith.
 - **Primary reader question**: How does 1. Architectural Style: Modular Monolith work?
 - **Current visual representation**: flowchart
@@ -649,7 +649,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 57. 2. System Context
-- **Location**: `docs/architecture/09-System-Architecture.md`
+- **Location**: `docs/04-architecture/09-System-Architecture.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. system context.
 - **Primary reader question**: How does 2. System Context work?
 - **Current visual representation**: flowchart
@@ -660,7 +660,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 58. 3. Layered Architecture & Request Flow
-- **Location**: `docs/architecture/09-System-Architecture.md`
+- **Location**: `docs/04-architecture/09-System-Architecture.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. layered architecture & request flow.
 - **Primary reader question**: How does 3. Layered Architecture & Request Flow work?
 - **Current visual representation**: flowchart
@@ -671,7 +671,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 59. 3.1 The API Boundary and Data Flow
-- **Location**: `docs/architecture/09-System-Architecture.md`
+- **Location**: `docs/04-architecture/09-System-Architecture.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3.1 the api boundary and data flow.
 - **Primary reader question**: How does 3.1 The API Boundary and Data Flow work?
 - **Current visual representation**: flowchart
@@ -682,7 +682,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 60. 5. Failure Boundaries & Dependencies
-- **Location**: `docs/architecture/09-System-Architecture.md`
+- **Location**: `docs/04-architecture/09-System-Architecture.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 5. failure boundaries & dependencies.
 - **Primary reader question**: How does 5. Failure Boundaries & Dependencies work?
 - **Current visual representation**: flowchart
@@ -693,7 +693,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 61. 2. Technology Stack Overview
-- **Location**: `docs/architecture/10-Technology-Stack.md`
+- **Location**: `docs/04-architecture/10-Technology-Stack.md`
 - **Actual purpose**: This diagram exists to help the reader understand detail the comprehensive structure of 2. technology stack overview.
 - **Primary reader question**: What are all the technical components involved in 2. Technology Stack Overview?
 - **Current visual representation**: flowchart
@@ -704,7 +704,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Split
 
 ### 62. 3. Technology Responsibility Map
-- **Location**: `docs/architecture/10-Technology-Stack.md`
+- **Location**: `docs/04-architecture/10-Technology-Stack.md`
 - **Actual purpose**: This diagram exists to help the reader understand detail the comprehensive structure of 3. technology responsibility map.
 - **Primary reader question**: What are all the technical components involved in 3. Technology Responsibility Map?
 - **Current visual representation**: flowchart
@@ -715,7 +715,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Split
 
 ### 63. 4. Critical Boundaries & Distinctions
-- **Location**: `docs/architecture/10-Technology-Stack.md`
+- **Location**: `docs/04-architecture/10-Technology-Stack.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 4. critical boundaries & distinctions.
 - **Primary reader question**: How does 4. Critical Boundaries & Distinctions work?
 - **Current visual representation**: flowchart
@@ -726,7 +726,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 64. 6. Dependency Policy & Technology Lifecycle
-- **Location**: `docs/architecture/10-Technology-Stack.md`
+- **Location**: `docs/04-architecture/10-Technology-Stack.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the architecture.
 - **Primary reader question**: What states can the architecture enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -737,7 +737,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 65. 2.1 End-to-End Performance Focus
-- **Location**: `docs/architecture/11-Performance-Reliability.md`
+- **Location**: `docs/04-architecture/11-Performance-Reliability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2.1 end-to-end performance focus.
 - **Primary reader question**: How does 2.1 End-to-End Performance Focus work?
 - **Current visual representation**: flowchart
@@ -748,7 +748,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 66. 3. Reliability Dimensions
-- **Location**: `docs/architecture/11-Performance-Reliability.md`
+- **Location**: `docs/04-architecture/11-Performance-Reliability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3. reliability dimensions.
 - **Primary reader question**: How does 3. Reliability Dimensions work?
 - **Current visual representation**: flowchart
@@ -759,7 +759,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 67. 7.1 Optimization
-- **Location**: `docs/architecture/11-Performance-Reliability.md`
+- **Location**: `docs/04-architecture/11-Performance-Reliability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7.1 optimization.
 - **Primary reader question**: How does 7.1 Optimization work?
 - **Current visual representation**: flowchart
@@ -770,7 +770,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 68. 7.2 Scaling
-- **Location**: `docs/architecture/11-Performance-Reliability.md`
+- **Location**: `docs/04-architecture/11-Performance-Reliability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7.2 scaling.
 - **Primary reader question**: How does 7.2 Scaling work?
 - **Current visual representation**: flowchart
@@ -781,7 +781,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 69. 1. Critical Quality Principle
-- **Location**: `docs/architecture/12-Testing-Quality.md`
+- **Location**: `docs/04-architecture/12-Testing-Quality.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 1. critical quality principle.
 - **Primary reader question**: How does 1. Critical Quality Principle work?
 - **Current visual representation**: flowchart
@@ -792,7 +792,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 70. 2. Testing Layers and the Pyramid
-- **Location**: `docs/architecture/12-Testing-Quality.md`
+- **Location**: `docs/04-architecture/12-Testing-Quality.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. testing layers and the pyramid.
 - **Primary reader question**: How does 2. Testing Layers and the Pyramid work?
 - **Current visual representation**: flowchart
@@ -803,7 +803,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 71. Unknown Section
-- **Location**: `docs/architecture/12-Testing-Quality.md`
+- **Location**: `docs/04-architecture/12-Testing-Quality.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of unknown section.
 - **Primary reader question**: How does Unknown Section work?
 - **Current visual representation**: flowchart
@@ -814,7 +814,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 72. 7.2 The Failure Verification Loop
-- **Location**: `docs/architecture/12-Testing-Quality.md`
+- **Location**: `docs/04-architecture/12-Testing-Quality.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7.2 the failure verification loop.
 - **Primary reader question**: How does 7.2 The Failure Verification Loop work?
 - **Current visual representation**: flowchart
@@ -825,7 +825,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 73. 9. Definition of Done
-- **Location**: `docs/architecture/12-Testing-Quality.md`
+- **Location**: `docs/04-architecture/12-Testing-Quality.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 9. definition of done.
 - **Primary reader question**: How does 9. Definition of Done work?
 - **Current visual representation**: flowchart
@@ -836,7 +836,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 74. 2. The Measurement Model
-- **Location**: `docs/architecture/13-Analytics-Observability.md`
+- **Location**: `docs/04-architecture/13-Analytics-Observability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. the measurement model.
 - **Primary reader question**: How does 2. The Measurement Model work?
 - **Current visual representation**: flowchart
@@ -847,7 +847,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 75. 3.3 Analytics Flow and Failure
-- **Location**: `docs/architecture/13-Analytics-Observability.md`
+- **Location**: `docs/04-architecture/13-Analytics-Observability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3.3 analytics flow and failure.
 - **Primary reader question**: How does 3.3 Analytics Flow and Failure work?
 - **Current visual representation**: flowchart
@@ -858,7 +858,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 76. 4. Observability
-- **Location**: `docs/architecture/13-Analytics-Observability.md`
+- **Location**: `docs/04-architecture/13-Analytics-Observability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 4. observability.
 - **Primary reader question**: How does 4. Observability work?
 - **Current visual representation**: flowchart
@@ -869,7 +869,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 77. 7. Metrics & Incident Correlation
-- **Location**: `docs/architecture/13-Analytics-Observability.md`
+- **Location**: `docs/04-architecture/13-Analytics-Observability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7. metrics & incident correlation.
 - **Primary reader question**: How does 7. Metrics & Incident Correlation work?
 - **Current visual representation**: flowchart
@@ -880,7 +880,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 78. 9. The Combined Model
-- **Location**: `docs/architecture/13-Analytics-Observability.md`
+- **Location**: `docs/04-architecture/13-Analytics-Observability.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 9. the combined model.
 - **Primary reader question**: How does 9. The Combined Model work?
 - **Current visual representation**: flowchart
@@ -891,7 +891,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 79. 1. Infrastructure Context
-- **Location**: `docs/architecture/14-Infrastructure-Operations.md`
+- **Location**: `docs/04-architecture/14-Infrastructure-Operations.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 1. infrastructure context.
 - **Primary reader question**: How does 1. Infrastructure Context work?
 - **Current visual representation**: flowchart
@@ -902,7 +902,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 80. 2. Environment Separation
-- **Location**: `docs/architecture/14-Infrastructure-Operations.md`
+- **Location**: `docs/04-architecture/14-Infrastructure-Operations.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. environment separation.
 - **Primary reader question**: How does 2. Environment Separation work?
 - **Current visual representation**: flowchart
@@ -913,7 +913,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 81. 3.1 Deployment Flow
-- **Location**: `docs/architecture/14-Infrastructure-Operations.md`
+- **Location**: `docs/04-architecture/14-Infrastructure-Operations.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 3.1 deployment flow.
 - **Primary reader question**: How does 3.1 Deployment Flow work?
 - **Current visual representation**: flowchart
@@ -924,7 +924,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 82. 5.2 Recovery Model
-- **Location**: `docs/architecture/14-Infrastructure-Operations.md`
+- **Location**: `docs/04-architecture/14-Infrastructure-Operations.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 5.2 recovery model.
 - **Primary reader question**: How does 5.2 Recovery Model work?
 - **Current visual representation**: flowchart
@@ -935,7 +935,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 83. 1. Development Philosophy & Source of Truth
-- **Location**: `docs/architecture/16-Development-Release.md`
+- **Location**: `docs/04-architecture/16-Development-Release.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 1. development philosophy & source of truth.
 - **Primary reader question**: How does 1. Development Philosophy & Source of Truth work?
 - **Current visual representation**: flowchart
@@ -946,7 +946,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 84. 2. Change Risk Model
-- **Location**: `docs/architecture/16-Development-Release.md`
+- **Location**: `docs/04-architecture/16-Development-Release.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 2. change risk model.
 - **Primary reader question**: How does 2. Change Risk Model work?
 - **Current visual representation**: flowchart
@@ -957,7 +957,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 85. 4. CI/CD Flow
-- **Location**: `docs/architecture/16-Development-Release.md`
+- **Location**: `docs/04-architecture/16-Development-Release.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 4. ci/cd flow.
 - **Primary reader question**: How does 4. CI/CD Flow work?
 - **Current visual representation**: flowchart
@@ -968,7 +968,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 86. 7. Release & Recovery
-- **Location**: `docs/architecture/16-Development-Release.md`
+- **Location**: `docs/04-architecture/16-Development-Release.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of 7. release & recovery.
 - **Primary reader question**: How does 7. Release & Recovery work?
 - **Current visual representation**: flowchart

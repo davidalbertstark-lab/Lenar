@@ -1,8 +1,11 @@
 # Lenar — Platform & Experience Strategy
 
-> **Status:** Platform Reference  
-> **Document:** 05 — Platform & Experience Strategy  
-> **Purpose:** Define where Lenar exists, how its platforms relate, how the experience should adapt across Web, PWA, Android, and iOS, what the current mobile strategy is, and how platform capabilities, constraints, distribution, and lifecycle should influence the product.
+> [!NOTE]  
+> **Purpose:** Defines the physical boundaries, application layers, and separation of concerns across the Lenar platform.  
+> **Prerequisites:** `../03-specifications/README.md`  
+> **Primary Audience:** Backend Engineers, Mobile Engineers, Architects.
+
+
 
 ---
 
