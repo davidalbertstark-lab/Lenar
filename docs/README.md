@@ -1,36 +1,24 @@
 # Lenar Documentation
 
-## What is Lenar?
-Lenar is a platform built for university students to connect, stay informed, and participate in their academic community. It uses a student's verified academic information to provide the right experience, ensuring secure and correct access to university resources, departments, and communities.
+Welcome to the Lenar product documentation. This repository is structured as a strict 4-step progressive blueprint.
 
-## Who Should Use These Docs?
-These docs are intended for new contributors, partners, engineers, and product designers who need to understand Lenar's purpose, behavior, and technical design.
+To fully understand the system, read the directories in this order:
 
-## How to Start (Recommended Reading Path)
-**START HERE:**
-1. **Foundation & System Model:** Start in `foundation/` to understand the nine domains, how they interact, and the core user journey.
-2. **Behavioral Specifications:** Dive into `specifications/` for strict, authoritative rules on state transitions, constraints, and business logic for each domain.
-3. **Architecture:** Read through `architecture/` to understand the technical stack, infrastructure, and offline capabilities.
-4. **Decisions & Historical Material:** Review `decisions/` for technical rationale.
+## [01. User Requirements](./01-user-requirements/README.md)
+**The "Why" and "What"**
+Start here. These documents define the core campus problems being solved, the distinct user personas, the foundational product philosophy, and the exact features we are building.
 
-## Documentation Layers & Source of Truth
+## [02. System Model](./02-system-model/README.md)
+**The "How (Conceptually)"**
+This bridges requirements and technical implementation. It defines the 9 behavioral domains, the boundaries between them, and the chronological journey of how a student gains access to the platform.
 
-**1. Behavioral Domain Truth (Absolute Authority)**
-- Location: `specifications/`
-- Purpose: The nine behavioral specifications are the undeniable source of truth for their respective domains (Account Lifecycle, Enrollment, Governance, etc.).
+## [03. Specifications](./03-specifications/README.md)
+**The "How (Strict Rules)"**
+The undeniable technical rules for each domain. This includes the state machines for the Account Lifecycle, the logic for Academic Enrollment, and the policy structures for Authorization and Governance.
 
-**2. System Overview (Orientation)**
-- Location: `foundation/`
-- Purpose: High-level maps, master user journeys, and relationships linking the nine domains.
+## [04. Architecture](./04-architecture/README.md)
+**The "How (Technically)"**
+The physical systems and infrastructure that run the code. This covers the backend service architecture, offline sync resilience, technology stack, testing standards, and cloud operations.
 
-**3. Product & Strategy**
-- Location: `product/`
-- Purpose: Original product vision, UX, requirements, and legal/business constraints.
-
-**4. Engineering & Architecture**
-- Location: `architecture/`
-- Purpose: Technical implementation, system architecture, performance, testing, and operational constraints.
-
-**5. Decisions & Risk**
-- Location: `decisions/`
-- Purpose: Architectural decision records, risks, and project evolution.
+---
+*Note: Any strategic decisions or risk logs are tracked in the `decisions/` directory.*
