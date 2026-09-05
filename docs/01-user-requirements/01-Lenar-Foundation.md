@@ -1,8 +1,5 @@
 # Lenar — Foundation
 
-> **Status:** Foundational  
-> **Document:** 01 — Lenar Foundation  
-> **Scope:** Product identity, purpose, principles, and boundaries  
 
 ## At a Glance
 **Lenar is a student-centered digital platform designed to make university life more informed, connected, organized, and resilient.** 

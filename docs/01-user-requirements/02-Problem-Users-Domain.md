@@ -1,8 +1,11 @@
 # Lenar — Problem, Users & Domain
 
-> **Status:** Foundational Domain Reference
-> **Document:** 02 — Problem, Users & Domain
-> **Purpose:** Define the problems Lenar addresses, the people and organizations involved, the roles and responsibilities that exist within the system, and the domain concepts and business relationships that later product and technical decisions must respect.
+> [!NOTE]  
+> **Purpose:** Defines the specific campus problems being solved, the distinct user personas (students vs. institutional actors), and the organizational context.  
+> **Prerequisites:** `01-Lenar-Foundation.md`  
+> **Primary Audience:** Product Managers, Engineers, Designers.
+
+
 
 ---
 

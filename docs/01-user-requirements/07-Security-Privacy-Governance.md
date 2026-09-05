@@ -1,8 +1,11 @@
 # Lenar — Security, Privacy & Governance
 
-> **Status:** Security & Governance Reference  
-> **Document:** 07 — Security, Privacy & Governance  
-> **Purpose:** Define how Lenar protects users, data, resources, and institutional operations; how identity, authentication, authorization, privacy, auditing, abuse prevention, and governance are understood; and what security principles every later implementation must respect.
+> [!NOTE]  
+> **Purpose:** Defines the non-negotiable boundaries for system trust, request verification, and incident response.  
+> **Prerequisites:** `01-Lenar-Foundation.md`  
+> **Primary Audience:** Security Engineers, Backend Engineers, Operations.
+
+
 
 ---
 

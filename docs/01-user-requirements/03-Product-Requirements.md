@@ -1,8 +1,11 @@
 # Lenar — Product & Requirements
 
-> **Status:** Product Reference
-> **Document:** 03 — Product & Requirements
-> **Purpose:** Define what Lenar is intended to provide, what belongs in the current product scope, how features are prioritized, what the system must do, how quality is measured, and what remains outside the current scope.
+> [!NOTE]  
+> **Purpose:** Defines the functional capabilities, feature dependencies, and end-to-end traceability from user needs to technical execution.  
+> **Prerequisites:** `02-Problem-Users-Domain.md`  
+> **Primary Audience:** Product Managers, Engineers.
+
+
 
 ---
 

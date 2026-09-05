@@ -1,8 +1,11 @@
 # Lenar — Legal, Regional & Business Considerations
 
-> **Status:** Legal & Business Reference  
-> **Document:** 15 — Legal, Regional & Business Considerations  
-> **Purpose:** Define the legal, regional, commercial, operational, and licensing considerations that can materially affect Lenar's product, architecture, data handling, distribution, costs, and long-term operation, while clearly separating confirmed decisions from matters that require professional or jurisdiction-specific review.
+> [!NOTE]  
+> **Purpose:** Defines operational viability, privacy compliance (Data Minimization, Transparency), and third-party dependency rules.  
+> **Prerequisites:** `07-Security-Privacy-Governance.md`  
+> **Primary Audience:** Business Stakeholders, Legal, Operations.
+
+
 
 ---
 

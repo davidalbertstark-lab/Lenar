@@ -1,8 +1,11 @@
 # Lenar — UX & UI
 
-> **Status:** Product Experience Reference
-> **Document:** 04 — UX & UI
-> **Purpose:** Define how Lenar should be experienced by users, including its experience principles, information architecture, navigation, user journeys, interaction patterns, interface states, accessibility expectations, and cross-platform experience philosophy.
+> [!NOTE]  
+> **Purpose:** Defines the experience model, information architecture, and the interaction principles guiding the user journey.  
+> **Prerequisites:** `03-Product-Requirements.md`  
+> **Primary Audience:** UI/UX Designers, Frontend Engineers.
+
+
 
 ---
 

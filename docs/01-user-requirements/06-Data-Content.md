@@ -1,8 +1,11 @@
 # Lenar — Data & Content
 
-> **Status:** Data & Content Reference  
-> **Document:** 06 — Data & Content  
-> **Purpose:** Define the information Lenar represents, the relationships and ownership surrounding that information, how content is created and managed, how data changes over time, and the principles that govern storage, search, files, history, freshness, migration, and future evolution.
+> [!NOTE]  
+> **Purpose:** Defines the conceptual information model, defining how content and data are scoped, published, and retired.  
+> **Prerequisites:** `03-Product-Requirements.md`  
+> **Primary Audience:** Backend Engineers, Database Architects.
+
+
 
 ---
 
