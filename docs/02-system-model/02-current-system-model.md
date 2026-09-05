@@ -1,5 +1,11 @@
 # How a Student Moves Through Lenar
 
+> [!NOTE]  
+> **Purpose:** Defines the definitive chronological journey of a student and the strict conditions for system access.  
+> **Prerequisites:** `01-lenar-foundation-overview.md`  
+> **Primary Audience:** Engineers, Product Managers.
+
+
 This document serves as the central conceptual guide to the Lenar foundation. It illustrates the primary behavioural flow, showing how a user moves from registration to normal platform access, and what major system conditions determine whether that access is available.
 
 To make the system easy to understand at first glance, the model is divided into two parts:

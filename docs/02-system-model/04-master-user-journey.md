@@ -1,5 +1,11 @@
 # Master User Journey
 
+> [!NOTE]  
+> **Purpose:** Maps detailed state diagrams charting a user's path through the system.  
+> **Prerequisites:** `03-nine-domain-map.md`  
+> **Primary Audience:** Engineers, Product Managers, Designers.
+
+
 This document outlines the standard path a user takes from first contact to normal platform access, alongside critical return behaviors.
 
 To ensure clarity and avoid visual overload, the journey is separated into two focused diagrams:

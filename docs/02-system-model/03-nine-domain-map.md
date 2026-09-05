@@ -1,5 +1,11 @@
 # Nine-Domain Map
 
+> [!NOTE]  
+> **Purpose:** Provides a visual and conceptual grouping of the 9 foundational behavioral domains.  
+> **Prerequisites:** `02-current-system-model.md`  
+> **Primary Audience:** Engineers, Architects.
+
+
 The Lenar foundation is divided into nine explicit behavioural domains to ensure clear ownership, prevent monolithic coupling, and enforce strict boundaries. 
 
 This conceptual map organizes the domains into four logical groups to help you orient yourself. Note that these groups are for presentation only—they are not architectural layers or sequential pipeline steps.

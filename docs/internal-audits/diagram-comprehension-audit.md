@@ -33,7 +33,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 ## Diagram-by-Diagram Review
 
 ### 1. How a Student Moves Through Lenar (Redesigned)
-- **Location**: `docs/foundation/02-current-system-model.md`
+- **Location**: `docs/02-system-model/02-current-system-model.md`
 - **Actual purpose**: These diagrams exist to help the reader understand the chronological student journey and the distinct checkpoints that determine platform access.
 - **Primary reader question**: How does a user move from registration to access, and what specific conditions grant that access?
 - **Current visual representation**: Split flowcharts (Diagram A: chronologically grouped flowchart; Diagram B: conditional access flowchart)
@@ -44,7 +44,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep (Redesign Complete)
 
 ### 2. Nine-Domain Map (Redesigned)
-- **Location**: `docs/foundation/03-nine-domain-map.md`
+- **Location**: `docs/02-system-model/03-nine-domain-map.md`
 - **Actual purpose**: This diagram exists to orient the reader to the nine behavioral domains, their basic purpose, and conceptual groupings.
 - **Primary reader question**: What are Lenar's nine foundational behavioural domains, and how do they fit together conceptually?
 - **Current visual representation**: Grouped conceptual map (using Flowchart TD)
@@ -55,7 +55,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep (Redesign Complete)
 
 ### 3. Master User Journey
-- **Location**: `docs/foundation/04-master-user-journey.md`
+- **Location**: `docs/02-system-model/04-master-user-journey.md`
 - **Actual purpose**: This diagram exists to help the reader understand detail the comprehensive structure of master user journey.
 - **Primary reader question**: What are all the technical components involved in Master User Journey?
 - **Current visual representation**: flowchart
@@ -66,7 +66,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Split
 
 ### 4. Domain Relationships
-- **Location**: `docs/foundation/05-domain-relationships.md`
+- **Location**: `docs/02-system-model/05-domain-relationships.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of domain relationships.
 - **Primary reader question**: How does Domain Relationships work?
 - **Current visual representation**: flowchart
@@ -77,7 +77,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 5. Decision and Boundary Map
-- **Location**: `docs/foundation/06-decision-and-boundary-map.md`
+- **Location**: `docs/02-system-model/06-decision-and-boundary-map.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of decision and boundary map.
 - **Primary reader question**: How does Decision and Boundary Map work?
 - **Current visual representation**: flowchart

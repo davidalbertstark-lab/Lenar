@@ -1,5 +1,11 @@
 # Domain Relationships
 
+> [!NOTE]  
+> **Purpose:** Explains how data, context, and authority explicitly flow across domain boundaries.  
+> **Prerequisites:** `03-nine-domain-map.md`  
+> **Primary Audience:** Backend Engineers, Architects.
+
+
 This document details how the nine foundational domains interact. 
 
 To maintain clear system boundaries without creating monolithic interdependencies, domain interactions are divided into two complementary perspectives:

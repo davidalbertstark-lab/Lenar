@@ -1,5 +1,11 @@
 # Decision and Boundary Map
 
+> [!NOTE]  
+> **Purpose:** Defines strict architectural boundaries dictating which domains are permitted to interact.  
+> **Prerequisites:** `05-domain-relationships.md`  
+> **Primary Audience:** Backend Engineers, Architects.
+
+
 This map explicitly defines the responsibilities and boundaries of each domain.
 
 ### Diagram A: Client vs. Server Authority Boundary

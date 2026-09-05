@@ -1,5 +1,11 @@
 # Lenar Foundation Overview
 
+> [!NOTE]  
+> **Purpose:** Provides a high-level introduction to Lenar's core behavioral domains and architecture principles.  
+> **Prerequisites:** All files in `01-user-requirements/`  
+> **Primary Audience:** Everyone (Engineers, Product Managers, AIs).
+
+
 ## What is Lenar?
 Lenar is a platform built for university students to connect, stay informed, and participate in their academic community. It provides a secure environment where users log in, verify their official student status (Enrollment), and join groups based on their real-world university courses and departments (Base Community).
 
