@@ -1,6 +1,11 @@
 # Lenar — Governance Specification
 
-> **Status:** DRAFT
+> [!NOTE]  
+> **Purpose:** Defines the strict rules, assignment structures, and revocation logic for Governance.  
+> **Prerequisites:** `../02-system-model/03-nine-domain-map.md`  
+> **Primary Audience:** Backend Engineers, Database Architects.
+
+
 > **Maturity:** BEHAVIORAL
 > **Version:** 0.1
 > **Owner:** TBD

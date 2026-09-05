@@ -1,5 +1,11 @@
 # Lenar — Organization Specification
 
+> [!NOTE]  
+> **Purpose:** Defines the strict rules and data structures for modeling the University Organization.  
+> **Prerequisites:** `../02-system-model/03-nine-domain-map.md`  
+> **Primary Audience:** Backend Engineers, Database Architects.
+
+
 Status: DRAFT  
 Maturity: BEHAVIORAL  
 Version: 0.1  

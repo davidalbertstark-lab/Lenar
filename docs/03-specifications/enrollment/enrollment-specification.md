@@ -1,6 +1,11 @@
 # Lenar — Enrollment / Academic Context Specification
 
-> **Status:** DRAFT
+> [!NOTE]  
+> **Purpose:** Defines the strict rules, state machines, and data structures for Academic Enrollment.  
+> **Prerequisites:** `../02-system-model/03-nine-domain-map.md`  
+> **Primary Audience:** Backend Engineers, Database Architects.
+
+
 > **Maturity:** BEHAVIORAL
 > **Version:** 0.1
 > **Owner:** TBD

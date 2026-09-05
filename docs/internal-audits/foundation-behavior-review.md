@@ -47,7 +47,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** An account only becomes "Active" after a student's submitted profile is formally approved.
 - **What it does NOT control:** It does not control temporary login sessions or specific permissions.
 - **Review prompt:** Should approval really be the exact point where the account becomes Active? 
-- **Canonical Specification:** [Account Lifecycle](../specifications/account-lifecycle/account-lifecycle-specification.md)
+- **Canonical Specification:** [Account Lifecycle](../03-specifications/account-lifecycle/account-lifecycle-specification.md)
 
 ### 2. Authentication
 - **What it is:** Proving who you are and keeping you securely logged in.
@@ -55,7 +55,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** Successfully logging in grants a temporary session. If a session expires, you must log in again.
 - **What it does NOT control:** Email verification does not activate the account, and authentication does not check permissions.
 - **Review prompt:** Is it clear that verifying an email address is just an authentication step and does not grant platform access?
-- **Canonical Specification:** [Authentication](../specifications/authentication/authentication-specification.md)
+- **Canonical Specification:** [Authentication](../03-specifications/authentication/authentication-specification.md)
 
 ### 3. Onboarding
 - **What it is:** The process of a new user building their academic profile.
@@ -63,7 +63,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** A user submits their academic details. The system locks it in "Pending Review" until a decision is made.
 - **What it does NOT control:** Rejection does not suspend or delete the account; it just sends the user back to fix their submission.
 - **Review prompt:** Does the transition from Pending Review to Approved/Rejected make sense?
-- **Canonical Specification:** [Onboarding](../specifications/onboarding/onboarding-specification.md)
+- **Canonical Specification:** [Onboarding](../03-specifications/onboarding/onboarding-specification.md)
 
 ### 4. Organization
 - **What it is:** The structure of a university (faculties, departments, etc.).
@@ -71,7 +71,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** Because every university is different, organizational structure is strictly "University-relative." There is no universal, rigid hierarchy.
 - **What it does NOT control:** It does not dictate how communities function on the platform.
 - **Review prompt:** Do we agree that the platform shouldn't force every university into the exact same organizational hierarchy?
-- **Canonical Specification:** [Organization](../specifications/organization/organization-specification.md)
+- **Canonical Specification:** [Organization](../03-specifications/organization/organization-specification.md)
 
 ### 5. Academic Time
 - **What it is:** How a university divides the calendar (semesters, terms, academic years).
@@ -79,7 +79,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** The system separates future "configured" academic time from the "current effective" academic time.
 - **What it does NOT control:** Moving time forward (e.g., starting a new semester) does not automatically promote students to a new level.
 - **Review prompt:** Should advancing Academic Time be completely separate from student promotion?
-- **Canonical Specification:** [Academic Time](../specifications/academic-time/academic-time-specification.md)
+- **Canonical Specification:** [Academic Time](../03-specifications/academic-time/academic-time-specification.md)
 
 ### 6. Enrollment
 - **What it is:** The official record connecting a student to the university.
@@ -87,7 +87,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** Enrollment is continuous. Moving from 300L to 400L updates the Current Academic Context but does not create a brand-new enrollment record.
 - **What it does NOT control:** It does not control community creation.
 - **Review prompt:** Does a single, continuous Enrollment record per student per university make sense for progression?
-- **Canonical Specification:** [Enrollment](../specifications/enrollment/enrollment-specification.md)
+- **Canonical Specification:** [Enrollment](../03-specifications/enrollment/enrollment-specification.md)
 
 ### 7. Community
 - **What it is:** The spaces where students interact and participate.
@@ -95,7 +95,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** The system automatically maps a student's Current Academic Context to a matching Base Community. Users cannot manually join or leave their Base Community.
 - **What it does NOT control:** Community does not control academic truth or governance roles.
 - **Review prompt:** Should users be strictly locked into the Base Community dictated by their official academic context?
-- **Canonical Specification:** [Community](../specifications/community/community-membership-specification.md)
+- **Canonical Specification:** [Community](../03-specifications/community/community-membership-specification.md)
 
 ### 8. Governance
 - **What it is:** The system of roles and authority.
@@ -103,7 +103,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** Governance assignments consist of a User, a Role, and an Authority Context. Revoking a role is non-cascading (it does not automatically delete everything that person did or assigned).
 - **What it does NOT control:** Being a member of a community does not automatically grant governance authority.
 - **Review prompt:** Do we agree that removing a Leader should not automatically fire all the Managers they hired?
-- **Canonical Specification:** [Governance](../specifications/governance/governance-specification.md)
+- **Canonical Specification:** [Governance](../03-specifications/governance/governance-specification.md)
 
 ### 9. Authorization
 - **What it is:** The strict security check that happens right before an action is performed.
@@ -111,7 +111,7 @@ Lenar is divided into nine clear areas (domains) to keep the system organized an
 - **Current behavior:** Default Deny. If any piece is missing, mismatched, or revoked, the server denies the action. 
 - **What it does NOT control:** It does not assign roles; it only enforces them.
 - **Review prompt:** Does the strict matching of Scope and Context provide the right level of security?
-- **Canonical Specification:** [Authorization](../specifications/authorization/authorization-specification.md)
+- **Canonical Specification:** [Authorization](../03-specifications/authorization/authorization-specification.md)
 
 ---
 
@@ -290,7 +290,7 @@ This is a list of the important existing decisions that the team should consciou
 - **Example:** A registered user cannot browse communities until the university approves their student status.
 - **Things to question:** Should an account be active before approval with restricted features, or is a strict barrier better?
 - **Review status:** Open
-- **Canonical specification:** [Account Lifecycle](../specifications/account-lifecycle/account-lifecycle-specification.md)
+- **Canonical specification:** [Account Lifecycle](../03-specifications/account-lifecycle/account-lifecycle-specification.md)
 
 ### Relationship between Approval and Enrollment
 - **Current behavior:** Approval simultaneously activates the account and establishes the authoritative Enrollment.
@@ -298,7 +298,7 @@ This is a list of the important existing decisions that the team should consciou
 - **Example:** Approving an onboarding submission instantly sets the user's university, department, and level.
 - **Things to question:** Should Enrollment be decoupled from account activation? 
 - **Review status:** Open
-- **Canonical specification:** [Enrollment](../specifications/enrollment/enrollment-specification.md)
+- **Canonical specification:** [Enrollment](../03-specifications/enrollment/enrollment-specification.md)
 
 ### University-relative Organization
 - **Current behavior:** Organizational structure (faculties, departments) is determined by each specific university rather than a forced global tree.
@@ -306,7 +306,7 @@ This is a list of the important existing decisions that the team should consciou
 - **Example:** University A uses "Faculty of Arts" while University B uses "College of Humanities." Both are supported.
 - **Things to question:** Does this create too much complexity for cross-university analytics? 
 - **Review status:** Open
-- **Canonical specification:** [Organization](../specifications/organization/organization-specification.md)
+- **Canonical specification:** [Organization](../03-specifications/organization/organization-specification.md)
 
 ### Academic Level and Base Community
 - **Current behavior:** A student's Base Community is dictated by their Level, and taking a carryover course does not change their Level or Base Community.
@@ -314,7 +314,7 @@ This is a list of the important existing decisions that the team should consciou
 - **Example:** A 400L student taking a 300L class stays in the 400L Base Community.
 - **Things to question:** Do students need simultaneous primary memberships in multiple levels?
 - **Review status:** Open
-- **Canonical specification:** [Community](../specifications/community/community-membership-specification.md)
+- **Canonical specification:** [Community](../03-specifications/community/community-membership-specification.md)
 
 ### Missing Base Community
 - **Current behavior:** If a required Base Community does not exist, Enrollment remains valid but normal access is blocked.
@@ -322,7 +322,7 @@ This is a list of the important existing decisions that the team should consciou
 - **Example:** A new department is added, students are approved, but the community hasn't been initialized. Students are enrolled but wait for access.
 - **Things to question:** Should the system automatically instantiate missing Base Communities on demand?
 - **Review status:** Open
-- **Canonical specification:** [Community](../specifications/community/community-membership-specification.md)
+- **Canonical specification:** [Community](../03-specifications/community/community-membership-specification.md)
 
 ### Non-Cascading Governance Revocation
 - **Current behavior:** Revoking a leader's role does not automatically delete the subordinate assignments or content they created.
@@ -330,7 +330,7 @@ This is a list of the important existing decisions that the team should consciou
 - **Example:** A Leader is removed. The Sub-Leaders they appointed remain in place until reviewed.
 - **Things to question:** Does this leave too many orphaned permissions if a malicious leader is removed?
 - **Review status:** Open
-- **Canonical specification:** [Governance](../specifications/governance/governance-specification.md)
+- **Canonical specification:** [Governance](../03-specifications/governance/governance-specification.md)
 
 ---
 

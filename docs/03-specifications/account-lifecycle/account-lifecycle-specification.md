@@ -1,5 +1,11 @@
 # Lenar — Account Lifecycle Specification
 
+> [!NOTE]  
+> **Purpose:** Defines the strict rules, state machines, and data structures for the Account Lifecycle.  
+> **Prerequisites:** `../02-system-model/03-nine-domain-map.md`  
+> **Primary Audience:** Backend Engineers, Database Architects.
+
+
 Status: DRAFT  
 Maturity: BEHAVIORAL  
 Version: 0.2  

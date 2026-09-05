@@ -1,6 +1,11 @@
 # Lenar — Onboarding Specification
 
-> **Status:** DRAFT
+> [!NOTE]  
+> **Purpose:** Defines the strict rules, verification flows, and state machines for User Onboarding.  
+> **Prerequisites:** `../02-system-model/04-master-user-journey.md`  
+> **Primary Audience:** Backend Engineers, Frontend Engineers.
+
+
 > **Maturity:** BEHAVIORAL
 > **Version:** 0.1
 > **Owner:** TBD

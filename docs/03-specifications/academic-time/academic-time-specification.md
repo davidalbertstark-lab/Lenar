@@ -1,5 +1,11 @@
 # Lenar — Academic Time Specification
 
+> [!NOTE]  
+> **Purpose:** Defines the strict rules, state machines, and data structures for tracking Academic Time.  
+> **Prerequisites:** `../02-system-model/03-nine-domain-map.md`  
+> **Primary Audience:** Backend Engineers, Database Architects.
+
+
 Status: DRAFT  
 Maturity: BEHAVIORAL  
 Version: 0.1  

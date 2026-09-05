@@ -88,7 +88,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 6. 9. State Model
-- **Location**: `docs/specifications/onboarding/onboarding-specification.md`
+- **Location**: `docs/03-specifications/onboarding/onboarding-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the onboarding.
 - **Primary reader question**: What states can the onboarding enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -99,7 +99,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 7. 9. State Model
-- **Location**: `docs/specifications/authentication/authentication-specification.md`
+- **Location**: `docs/03-specifications/authentication/authentication-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the authentication.
 - **Primary reader question**: What states can the authentication enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -110,7 +110,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 8. Academic Context Model
-- **Location**: `docs/specifications/enrollment/enrollment-specification.md`
+- **Location**: `docs/03-specifications/enrollment/enrollment-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand structural relationships and boundaries.
 - **Primary reader question**: What are the structural boundaries for enrollment?
 - **Current visual representation**: flowchart
@@ -121,7 +121,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Improve
 
 ### 9. Enrollment Lifecycle
-- **Location**: `docs/specifications/enrollment/enrollment-specification.md`
+- **Location**: `docs/03-specifications/enrollment/enrollment-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the enrollment.
 - **Primary reader question**: What states can the enrollment enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -132,7 +132,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 10. Community Model
-- **Location**: `docs/specifications/community/community-membership-specification.md`
+- **Location**: `docs/03-specifications/community/community-membership-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of community model.
 - **Primary reader question**: How does Community Model work?
 - **Current visual representation**: flowchart
@@ -143,7 +143,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 11. Membership Lifecycle
-- **Location**: `docs/specifications/community/community-membership-specification.md`
+- **Location**: `docs/03-specifications/community/community-membership-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the community.
 - **Primary reader question**: What states can the community enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -154,7 +154,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 12. Governance Model
-- **Location**: `docs/specifications/governance/governance-specification.md`
+- **Location**: `docs/03-specifications/governance/governance-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand structural relationships and boundaries.
 - **Primary reader question**: What are the structural boundaries for governance?
 - **Current visual representation**: flowchart
@@ -165,7 +165,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Improve
 
 ### 13. Governance Assignment Lifecycle
-- **Location**: `docs/specifications/governance/governance-specification.md`
+- **Location**: `docs/03-specifications/governance/governance-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the governance.
 - **Primary reader question**: What states can the governance enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -176,7 +176,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 14. Authorization Decision Model
-- **Location**: `docs/specifications/authorization/authorization-specification.md`
+- **Location**: `docs/03-specifications/authorization/authorization-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of authorization decision model.
 - **Primary reader question**: How does Authorization Decision Model work?
 - **Current visual representation**: flowchart
@@ -187,7 +187,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 15. Authorization Context
-- **Location**: `docs/specifications/authorization/authorization-specification.md`
+- **Location**: `docs/03-specifications/authorization/authorization-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the concept of authorization context.
 - **Primary reader question**: How does Authorization Context work?
 - **Current visual representation**: flowchart
@@ -198,7 +198,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Keep
 
 ### 16. 9. State Model
-- **Location**: `docs/specifications/account-lifecycle/account-lifecycle-specification.md`
+- **Location**: `docs/03-specifications/account-lifecycle/account-lifecycle-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the account-lifecycle.
 - **Primary reader question**: What states can the account-lifecycle enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -209,7 +209,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 17. 9. State Model
-- **Location**: `docs/specifications/organization/organization-specification.md`
+- **Location**: `docs/03-specifications/organization/organization-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the organization.
 - **Primary reader question**: What states can the organization enter and how does it transition?
 - **Current visual representation**: flowchart
@@ -220,7 +220,7 @@ This audit evaluates whether Lenar's embedded Mermaid diagrams communicate their
 - **Priority**: Redesign
 
 ### 18. 9. State Model
-- **Location**: `docs/specifications/academic-time/academic-time-specification.md`
+- **Location**: `docs/03-specifications/academic-time/academic-time-specification.md`
 - **Actual purpose**: This diagram exists to help the reader understand the valid states and transitions for the academic-time.
 - **Primary reader question**: What states can the academic-time enter and how does it transition?
 - **Current visual representation**: flowchart

@@ -1,6 +1,11 @@
 # Lenar — Authorization Specification
 
-> **Status:** DRAFT
+> [!NOTE]  
+> **Purpose:** Defines the strict rules, policy engine, and scope boundaries for Authorization.  
+> **Prerequisites:** `../01-user-requirements/07-Security-Privacy-Governance.md`  
+> **Primary Audience:** Security Engineers, Backend Engineers.
+
+
 > **Maturity:** BEHAVIORAL
 > **Version:** 0.1
 > **Owner:** TBD
